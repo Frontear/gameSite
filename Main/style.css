@@ -1,0 +1,59 @@
+﻿* {
+	font-family: sans-serif;
+}
+
+h1 {
+	font-size: 42px;
+}
+
+p {
+	font-size: 21px;
+}
+
+.bg-gradient {
+	animation: gradient 10s infinite;
+}
+
+.fg-white {
+	color: #ffffff !important;
+}
+
+.center-text {
+	text-align: center;
+}
+
+canvas {
+	border: 1px solid black;
+	display: inline-block;
+	vertical-align: top;
+}
+
+pre {
+	border: 1px solid black;
+	display: inline-block;
+	width: 400px;
+	height: 500px;
+	background-color: #F5F5F5;
+}
+
+@keyframes gradient {
+	0% {
+		background-color: #2BB2F1;
+	}
+
+	25% {
+		background-color: #552BF1;
+	}
+
+	50% {
+		background-color: #EB2BF1;
+	}
+
+	75% {
+		background-color: #F12B76;
+	}
+
+	100% {
+		background-color: #2BB2F1;
+	}
+}

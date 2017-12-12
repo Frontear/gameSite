@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://static.codehs.com/gulp/e26ebba34dbd5a61508528cd3ed00b5c328f4c09/chs-js-lib/chs.js"></script>
+	<title>Human Reaction Test</title>
+</head>
+<body class="bg-gradient fg-white center-text">
+	<h1>Human Reaction Test</h1>
+	<canvas width="400" height="500" class="codehs-editor-canvas" style="background-color: lightgrey;"></canvas>
+	<script>
+		window.onload = function () {
+
+			// Global Variables
+			var playedBefore;
+			var beginPlaying;
+			var playerScore;
+			var doesExistCircle;
+			var playerLost;
+
+			// Gets the width and height of canvas, then finds the center.
+			var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+			var colors = [Color.red, Color.green];
+
+			// Cleanup
+			var title = drawTitle(); // Interact with title later
+			var underline = drawUnderline();
+			var score = drawScore();
+
+			/// Main entry point for javascript
+			function start() {
+				// Assign values to variables
+				playerScore = 0;
+				playedBefore = false;
+				beginPlaying = false;
+				doesExistCircle = false;
+				playerLost = false;
+
+				createInitialGraphics();
+				mainGame();
+			}
+
+			/// Main function to control game, treat as the true start function
+			function mainGame() {
+				//if (!playedBefore) { introduction(); }
+				//getConfirmation();
+				if (playerLost == false) {
+					mouseClickMethod(assignPoints);
+					setTimer(beginDrawingCircles, Randomizer.nextInt(1000, 2000));
+				}
+				else {
+				}
+			}
+
+			function assignPoints(e) {
+				var element = getElementAt(e.getX(), e.getY());
+				if (element != null && element.color == colors[1]) {
+					playerScore++;
+					setScore(e);
+					checkScore();
+				}
+				else if (element != null) {
+					playerScore--;
+					setScore(e);
+					checkScore();
+				}
+			}
+
+			/// Main function to control score values
+			function checkScore() {
+				if (playerScore <= 0) {
+					// Player lost
+					playerLost = true;
+					mainGame();
+				}
+			}
+
+			// Main function to control circle generation
+			function beginDrawingCircles() {
+				var circle = new Circle(100);
+				circle.setPosition(screen[2], screen[3]);
+				/* Set color, from the colors defined in the color array,
+				* and get a randomized value, to pull a random color from said array
+				*/
+				circle.setColor(colors[Randomizer.nextInt(0, colors.length - 1)]);
+				if (doesExistCircle == false) {
+					add(circle);
+					doesExistCircle = true;
+				}
+				else {
+					remove(circle);
+					doesExistCircle = false;
+				}
+			}
+
+			function introduction() {
+				document.getElementById("introText").innerHtml = ""; // Write intro stuff
+				playedBefore = true;
+			}
+
+			function getConfirmation() {
+				var button = document.getElementById("confirm");
+				button.addEventListener("click", function () { beginPlaying = true; });
+			}
+
+			function createInitialGraphics() {
+				add(score);
+			}
+
+			function setScore(e) {
+				score.setText("Score: " + playerScore);
+				remove(getElementAt(e.getX(), e.getY()));
+				doesExistCircle = false;
+			}
+
+			/// Helper Functions, mostly reusable/modular
+			function drawUnderline() {
+				// Get the titles' x and y, located in the top left, then find the corresponding x on the right, by adding the width.
+				var u = new Line(title.getX(), title.getY() + 4, title.getX() + title.getWidth(), title.getY() + 4);
+				u.setColor(Color.black);
+				return u;
+			}
+
+			function drawTitle(text, fontType, color) {
+				var t = new Text("Human Reaction Test", "30pt Calibri");
+				t.setPosition(screen[2] - t.getWidth() / 2, screen[3] - t.getHeight() * 5);
+				t.setColor(Color.black);
+				return t;
+			}
+
+			function drawScore() {
+				var s = new Text("Score: 0", "12pt Calibri");
+				s.setPosition(0 + 3, screen[1] - 4);
+				s.setColor(Color.black);
+				return s;
+			}
+
+			if (typeof start === 'function') {
+				start();
+			}
+		};
+	</script>
+</body>
+</html>
