@@ -1,16 +1,33 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" href="https://puu.sh/yEw4H/72b9c91b03.png">
 	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.codehs.com/gulp/e26ebba34dbd5a61508528cd3ed00b5c328f4c09/chs-js-lib/chs.js"></script>
 	<title>Human Reaction Test</title>
 </head>
 <body class="bg-gradient fg-white center-text">
-	<h1>Human Reaction Test</h1>
-	<canvas width="400" height="500" class="codehs-editor-canvas" style="background-color: lightgrey;"></canvas>
-	<!-- Script is currently very inefficient, and doesn't perform its function well. -->
+	<div>
+		<h1>Human Reaction Test</h1>
+		<canvas width="400" height="500" class="codehs-editor-canvas" style="background-color: lightgrey;"></canvas>
+		<p>Welcome to the Human Reaction Test. You will attempt to press a green circle as fast as you can when it appears. Try to beat the world average of 250ms.</p>
+		<button id="button" class="button button-shadow"><i class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/Human-Reaction-Site" style="color: black;">&nbsp;GitHub</a></button>
+	</div>
 	<script>
+		var b = document.getElementById("button"), t = document.getElementById("text");
+		b.addEventListener("mouseover", function () {
+			b.style.backgroundColor = "#303030";
+			t.style.color = "white";
+		});
+
+		b.addEventListener("mouseout", function () {
+			b.style.backgroundColor = "#D3D3D3";
+			t.style.color = "black";
+		});
+
+		// Script is currently very inefficient, and doesn't perform its function well.
 		window.onload = function () {
 
 			// Global Variables
@@ -44,7 +61,6 @@
 
 			/// Main function to control game, treat as the true start function
 			function mainGame() {
-				//if (!playedBefore) { introduction(); }
 				//getConfirmation();
 				if (playerLost == false) {
 					mouseClickMethod(assignPoints);
@@ -93,11 +109,6 @@
 					remove(circle);
 					doesExistCircle = false;
 				}
-			}
-
-			function introduction() {
-				document.getElementById("introText").innerHtml = ""; // Write intro stuff
-				playedBefore = true;
 			}
 
 			function getConfirmation() {
