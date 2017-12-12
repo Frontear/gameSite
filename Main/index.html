@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<link rel="icon" href="https://puu.sh/yEw4H/72b9c91b03.png">
+	<link rel="icon" href="https://puu.sh/yF7r5/6b4c2965e9.png">
 	<link href="style.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -11,147 +11,25 @@
 <body class="bg-gradient fg-white center-text">
 	<div>
 		<h1>Human Reaction Test</h1>
-		<canvas width="400" height="500" class="codehs-editor-canvas" style="background-color: lightgrey;"></canvas>
+		<canvas class="codehs-editor-canvas"></canvas>
 		<p>Welcome to the Human Reaction Test. You will attempt to press a green circle as fast as you can when it appears. Try to beat the world average of 250ms.</p>
-		<button id="button" class="button button-shadow"><i class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/Human-Reaction-Site" style="color: black;">&nbsp;GitHub</a></button>
+		<button id="button" class="button button-shadow"><i id="icon" class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/Human-Reaction-Site" style="color: black;" target="_blank">&nbsp;GitHub</a></button>
 	</div>
 	<script>
-		var b = document.getElementById("button"), t = document.getElementById("text");
+		var b = document.getElementById("button"), t = document.getElementById("text"), i = document.getElementById("icon");
 		b.addEventListener("mouseover", function () {
+		    b.style.boxShadow = "0 0 100px 0 rgba(255, 255, 255, 0.4)";
 			b.style.backgroundColor = "#303030";
 			t.style.color = "white";
+			i.style.color = "white";
 		});
 
 		b.addEventListener("mouseout", function () {
+		    b.style.boxShadow = "0 0 10px 0 rgba(0, 0, 0, 0.4)";
 			b.style.backgroundColor = "#D3D3D3";
 			t.style.color = "black";
+			i.style.color = "black";
 		});
-
-		// Script is currently very inefficient, and doesn't perform its function well.
-		window.onload = function () {
-
-			// Global Variables
-			var playedBefore;
-			var beginPlaying;
-			var playerScore;
-			var doesExistCircle;
-			var playerLost;
-
-			// Gets the width and height of canvas, then finds the center.
-			var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
-			var colors = [Color.red, Color.green];
-
-			// Cleanup
-			var title = drawTitle(); // Interact with title later
-			var underline = drawUnderline();
-			var score = drawScore();
-
-			/// Main entry point for javascript
-			function start() {
-				// Assign values to variables
-				playerScore = 0;
-				playedBefore = false;
-				beginPlaying = false;
-				doesExistCircle = false;
-				playerLost = false;
-
-				createInitialGraphics();
-				mainGame();
-			}
-
-			/// Main function to control game, treat as the true start function
-			function mainGame() {
-				//getConfirmation();
-				if (playerLost == false) {
-					mouseClickMethod(assignPoints);
-					setTimer(beginDrawingCircles, Randomizer.nextInt(1000, 2000));
-				}
-				else {
-				}
-			}
-
-			function assignPoints(e) {
-				var element = getElementAt(e.getX(), e.getY());
-				if (element != null && element.color == colors[1]) {
-					playerScore++;
-					setScore(e);
-					checkScore();
-				}
-				else if (element != null) {
-					playerScore--;
-					setScore(e);
-					checkScore();
-				}
-			}
-
-			/// Main function to control score values
-			function checkScore() {
-				if (playerScore <= 0) {
-					// Player lost
-					playerLost = true;
-					mainGame();
-				}
-			}
-
-			// Main function to control circle generation
-			function beginDrawingCircles() {
-				var circle = new Circle(100);
-				circle.setPosition(screen[2], screen[3]);
-				/* Set color, from the colors defined in the color array,
-				* and get a randomized value, to pull a random color from said array
-				*/
-				circle.setColor(colors[Randomizer.nextInt(0, colors.length - 1)]);
-				if (doesExistCircle == false) {
-					add(circle);
-					doesExistCircle = true;
-				}
-				else {
-					remove(circle);
-					doesExistCircle = false;
-				}
-			}
-
-			function getConfirmation() {
-				var button = document.getElementById("confirm");
-				button.addEventListener("click", function () { beginPlaying = true; });
-			}
-
-			function createInitialGraphics() {
-				add(score);
-			}
-
-			function setScore(e) {
-				score.setText("Score: " + playerScore);
-				remove(getElementAt(e.getX(), e.getY()));
-				doesExistCircle = false;
-			}
-
-			/// Helper Functions, mostly reusable/modular
-			function drawUnderline() {
-				// Get the titles' x and y, located in the top left, then find the corresponding x on the right, by adding the width.
-				var u = new Line(title.getX(), title.getY() + 4, title.getX() + title.getWidth(), title.getY() + 4);
-				u.setColor(Color.black);
-				return u;
-			}
-
-			function drawTitle(text, fontType, color) {
-				var t = new Text("Human Reaction Test", "30pt Calibri");
-				t.setPosition(screen[2] - t.getWidth() / 2, screen[3] - t.getHeight() * 5);
-				t.setColor(Color.black);
-				return t;
-			}
-
-			function drawScore() {
-				var s = new Text("Score: 0", "12pt Calibri");
-				s.setPosition(0 + 3, screen[1] - 4);
-				s.setColor(Color.black);
-				return s;
-			}
-
-			if (typeof start === 'function') {
-				start();
-			}
-		};
 	</script>
 </body>
 </html>
