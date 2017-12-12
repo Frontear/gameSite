@@ -11,7 +11,7 @@ p {
 }
 
 .bg-gradient {
-	animation: gradient 10s infinite;
+	animation: gradient 20s infinite;
 }
 
 .fg-white {
@@ -42,15 +42,15 @@ pre {
 	}
 
 	25% {
-		background-color: #552BF1;
+		background-color: #2B37F1;
 	}
 
 	50% {
-		background-color: #EB2BF1;
+		background-color: #AF2BF1;
 	}
 
 	75% {
-		background-color: #F12B76;
+		background-color: #E4ED23;
 	}
 
 	100% {
