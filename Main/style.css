@@ -10,8 +10,18 @@ a {
 	text-decoration: none;
 }
 
+.tables {
+	width: 100%;
+	height: 36px;
+	display: block;
+	border: solid;
+	border-radius: 4px;
+	box-shadow: 0 0 10px 0 #D3D3D3;
+	animation: gradient-darker 20s infinite;
+}
+
 i, a, .button {
-    transition: all 0.7s;
+	transition: all 0.7s;
 }
 
 p {
@@ -23,7 +33,7 @@ img {
 }
 
 canvas, .button {
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
 }
 
 canvas {
@@ -92,5 +102,27 @@ canvas {
 
 	100% {
 		background-color: #2BB2F1;
+	}
+}
+
+@keyframes gradient-darker {
+	0% {
+		background-color: #1177A7;
+	}
+
+	25% {
+		background-color: #111BA7;
+	}
+
+	50% {
+		background-color: #7511A7;
+	}
+
+	75% {
+		background-color: #959C0D;
+	}
+
+	100% {
+		background-color: #1177A7;
 	}
 }
