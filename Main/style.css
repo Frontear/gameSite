@@ -1,5 +1,6 @@
 ﻿* {
 	font-family: sans-serif;
+	transition: all 0.7s;
 }
 
 h1 {
@@ -13,15 +14,10 @@ a {
 .tables {
 	width: 100%;
 	height: 36px;
-	display: block;
 	border: solid;
 	border-radius: 4px;
 	box-shadow: 0 0 10px 0 #D3D3D3;
 	animation: gradient-darker 20s infinite;
-}
-
-i, a, .button {
-	transition: all 0.7s;
 }
 
 p {
