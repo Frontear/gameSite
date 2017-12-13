@@ -11,22 +11,8 @@ a {
 	text-decoration: none;
 }
 
-.table-a {
-	font-size: 22px;
-	user-select: none;
-}
-
-.tables {
-	width: 100%;
-	height: 42px;
-	border: solid;
-	border-radius: 5px;
-	box-shadow: 0 0 10px 0 #D3D3D3;
-	animation: gradient-darker 20s infinite;
-}
-
 p {
-	font-size: 21px;
+	font-size: 22px;
 }
 
 img {
@@ -46,6 +32,20 @@ canvas {
 	vertical-align: top;
 }
 
+.table-a {
+	font-size: 22px;
+	user-select: none;
+}
+
+.tables {
+	width: 100%;
+	height: 42px;
+	border: solid;
+	border-radius: 5px;
+	box-shadow: 0 0 10px 0 #D3D3D3;
+	animation: gradient-darker 20s ease-in-out infinite;
+}
+
 .button {
 	border-radius: 40px;
 	background-color: #D3D3D3;
@@ -59,7 +59,7 @@ canvas {
 }
 
 .bg-gradient {
-	animation: gradient 20s infinite;
+	animation: gradient 20s ease-in-out infinite;
 }
 
 .fg-white {
