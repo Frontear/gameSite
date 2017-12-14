@@ -28,6 +28,127 @@
 		<button id="button" class="button button-shadow"><i id="icon" class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/Human-Reaction-Site" style="color: black;" target="_blank">&nbsp;GitHub</a></button>
 	</div>
 	<script>
+		/* Imported from CodeHS */
+		window.onload = function () {
+
+			// Global Variables
+			var loops;
+			var playedBefore;
+			var beginPlaying;
+			var doesCircleExist;
+			var playerLost;
+			var secondsBeforeClicked;
+			var reactionAverage;
+
+			// Gets the width and height of canvas, then find the center.
+			var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+
+			var reactionText = drawReactionText();
+
+			/// Main entry point for javascript
+			function start() {
+				// Assign values to variables
+				loops = 0;
+				playedBefore = false;
+				beginPlaying = false;
+				doesCircleExist = false;
+				playerLost = false;
+				secondsBeforeClicked = 0;
+				reactionAverage = [];
+
+				beginGame();
+			}
+
+			/// Main function to get time
+			function setTime() {
+				var date = new Date();
+				return date.getTime() / 1000; // Get seconds since Epoch (1/1/1970)
+			}
+
+			/// Main function to control game, treat as the true start function
+			function beginGame() {
+
+				mouseClickMethod(assignPoints);
+				setTimer(step, Randomizer.nextInt(5000, 12000)); // Why doesn't it continously randomize?
+			}
+
+			function assignPoints(e) {
+				var element = getElementAt(e.getX(), e.getY());
+				if (element != null && element.color == Color.green && element.type == "Circle") {
+					setReaction(e);
+				}
+			}
+
+			function step() {
+				if (loops == 5) {
+					endGame();
+				}
+				else {
+					beginDrawingCircles();
+				}
+			}
+
+			// Main function to control circle generation
+			function beginDrawingCircles() {
+				var circle = drawCircle();
+				if (doesCircleExist == false) {
+					add(circle);
+					secondsBeforeClicked = setTime();
+					doesCircleExist = true;
+				}
+			}
+
+			function setReaction(e) {
+				remove(getElementAt(e.getX(), e.getY()));
+				var reactionTime = setTime() - secondsBeforeClicked;
+				reactionAverage.push(reactionTime * 1000);
+				loops++;
+				doesCircleExist = false;
+			}
+
+			/// Helper Functions, mostly reusable/modular
+			function drawReactionText() {
+				var s = new Text("Reaction Time: ", "30pt Calibri");
+				s.setPosition(screen[2] - s.getWidth() / 2, screen[3]);
+				s.setColor(Color.black);
+				return s;
+			}
+
+			function drawCircle() {
+				var c = new Circle(100);
+				c.setPosition(screen[2], screen[3]);
+				/* Set color, from the colors defined in the color array,
+				* and get a randomized value, to pull a random color from said array
+				*/
+				c.setColor(Color.green);
+				return c;
+			}
+
+			/// Main function to end game
+			function endGame() {
+				stopTimer(step);
+				var reactionText = drawReactionText();
+				var reactionTime = calculateAverage();
+				reactionText.setText("Reaction Time: " + reactionTime + "ms");
+				reactionText.setPosition(screen[2] - reactionText.getWidth() / 2, screen[3]);
+				add(reactionText);
+			}
+
+			function calculateAverage() {
+				var arrAverage = 0;
+				var arrLength = reactionAverage.length;
+				for (var i = 0; i < arrLength; i++) {
+					arrAverage += reactionAverage[i];
+				}
+				return Math.round(arrAverage / arrLength);
+			}
+
+
+			if (typeof start === 'function') {
+				start();
+			}
+		};
+
 		// Messy script
 		var b = document.getElementById("button"), t = document.getElementById("text"), i = document.getElementById("icon");
 		b.addEventListener("mouseover", function () {
@@ -43,6 +164,7 @@
 			t.style.color = "black";
 			i.style.color = "black";
 		});
+
 	</script>
 </body>
 </html>
