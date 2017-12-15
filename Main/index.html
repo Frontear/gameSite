@@ -23,7 +23,7 @@
 			</tr>
 		</table>
 		<h1>Human Reaction Test</h1>
-        <button id="begin" class="button button-shadow" style=" width: 400px; background-color: green; outline: none;"><i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i><a style="color: white;">&nbsp;Start</a></button>
+        <button id="begin" class="button button-shadow" style=" width: 400px; background-color: green; outline: none;"><a style="color: white;">Start&nbsp;</a><i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
         <br />
 		<canvas 
     width="400"
@@ -36,7 +36,7 @@
 		/* Imported from CodeHS */
 	    document.getElementById("begin").onclick = function () {
 	        var startIcon = document.getElementById("startIcon");
-	        startIcon.className = "fa fa-spinner rotate";
+			startIcon.className = "fa fa-check";
 
 	        // Global Variables
 	        var loops;
