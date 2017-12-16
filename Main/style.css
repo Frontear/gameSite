@@ -33,6 +33,7 @@ canvas {
 .table-a {
 	font-size: 22px;
 	user-select: none;
+    color: white;
 }
 
 .tables {
@@ -54,6 +55,7 @@ canvas {
 	width: 100px;
 	cursor: pointer;
 	margin: 5px;
+    outline: none;
 }
 
 .bg-gradient {

@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<!-- Import StyleSheet, Icon, and FontAwesome -->
+	<link rel="icon" href="https://puu.sh/yF7r5/6b4c2965e9.png">
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- Import CodeHS dependancies-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://static.codehs.com/gulp/53366a3967fea97b1970f5538992dce3675bdc16/chs-js-lib/chs.js"></script>
+
+	<!-- Import my custom time script -->
+	<script type="text/javascript" src="https://puu.sh/yF8jv/897fde5cdc.js"></script>
+	<title>Human Reaction Test</title>
+</head>
+<body class="bg-gradient fg-white center-text">
+	<div class="fade-in">
+		<table class="tables">
+			<tr>
+				<td><a href="index.html" style="float: left; margin-left: 5px;" class="table-a">Play Human Reaction Test</a></td>
+				<td><a style="float: right; margin-right: 5px;" class="table-a" id="time"></a></td>
+			</tr>
+		</table>
+		<h1>First Person Shooter</h1>
+		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;</a><i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
+        <br />
+		<canvas 
+    width="400"
+    height="500"
+    class="codehs-editor-canvas"></canvas>
+		<p>Welcome to a First Person Shooter. You will attempt to kill all enemies as fast as you can when they appear. You will only get three lives, so be careful. Good luck and Have fun!</p>
+        <button id="button" class="button button-shadow"><i id="icon" class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/gameSite" style="color: black;" target="_blank">&nbsp;GitHub</a></button>
+	</div>
+	<script>
+	    /* Imported from CodeHS */
+		document.getElementById("begin").onclick = function () {
+			var startIcon = document.getElementById("startIcon");
+			startIcon.className = "fa fa-check";
+	    };
+
+	    // Messy script
+	    var b = document.getElementById("button"), t = document.getElementById("text"), i = document.getElementById("icon");
+	    b.addEventListener("mouseover", function () {
+	        b.style.boxShadow = "0 0 100px 0 rgba(255, 255, 255, 0.4)";
+	        b.style.backgroundColor = "#303030";
+	        t.style.color = "white";
+	        i.style.color = "white";
+	    });
+
+	    b.addEventListener("mouseout", function () {
+	        b.style.boxShadow = "0 0 10px 0 rgba(0, 0, 0, 0.4)";
+	        b.style.backgroundColor = "#D3D3D3";
+	        t.style.color = "black";
+	        i.style.color = "black";
+	    });
+
+	</script>
+</body>
+</html>
