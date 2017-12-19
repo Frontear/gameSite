@@ -90,6 +90,18 @@ li a:hover {
 	animation: fade 0.8s
 }
 
+@keyframes gradient {
+	0% {
+		background-color: #1bbd9d;
+	}
+	50% {
+		background-color: #8e44ae;
+	}
+	100% {
+		background-color: #1bbd9d;
+	}
+}
+
 @keyframes fade {
 	from {
 		opacity: 0
@@ -100,46 +112,16 @@ li a:hover {
 	}
 }
 
-@keyframes gradient {
-	0% {
-		background-color: #2BB2F1;
-	}
-
-	25% {
-		background-color: #2B37F1;
-	}
-
-	50% {
-		background-color: #AF2BF1;
-	}
-
-	75% {
-		background-color: #E4ED23;
-	}
-
-	100% {
-		background-color: #2BB2F1;
-	}
-}
-
 @keyframes gradient-darker {
 	0% {
-		background-color: #1177A7;
-	}
-
-	25% {
-		background-color: #111BA7;
+		background-color: #10715d;
 	}
 
 	50% {
-		background-color: #7511A7;
-	}
-
-	75% {
-		background-color: #959C0D;
+		background-color: #4f2661;
 	}
 
 	100% {
-		background-color: #1177A7;
+		background-color: #10715d;
 	}
 }
