@@ -16,21 +16,20 @@
 </head>
 <body class="bg-gradient fg-white center-text">
 	<div class="fade-in">
-		<table class="tables">
-			<tr>
-				<td><a href="index.html" style="float: left; margin-left: 5px;" class="table-a">Play Human Reaction Test</a></td>
-				<td><a style="float: right; margin-right: 5px;" class="table-a" id="time"></a></td>
-			</tr>
-		</table>
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="hrt.html">Human Reaction</a></li>
+			<li><a href="ctc.html">Catch Circles</a></li>
+			<li style="float: right;"><a id="time"></a></li>
+		</ul>
 		<h1>Catch the Circles</h1>
 		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;</a><i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
-        <br />
-		<canvas 
-    width="400"
-    height="500"
-    class="codehs-editor-canvas"></canvas>
+		<br />
+		<canvas width="400"
+				height="500"
+				class="codehs-editor-canvas"></canvas>
 		<p>Welcome to Catch the Circles. You will attempt to catch the falling circles. It gets progressively more challenging, so be careful. Good luck and Have fun!</p>
-        <button id="button" class="button button-shadow"><i id="icon" class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/gameSite" style="color: black;" target="_blank">&nbsp;GitHub</a></button>
+		<button id="button" class="button button-shadow"><i id="icon" class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/gameSite" style="color: black;" target="_blank">&nbsp;GitHub</a></button>
 	</div>
 	<script>
 		document.getElementById("begin").onclick = function () {
@@ -38,24 +37,23 @@
 			startIcon.className = "fa fa-check";
 
 			/* Imported from CodeHS */
-	    };
+		};
 
-	    // Messy script
-	    var b = document.getElementById("button"), t = document.getElementById("text"), i = document.getElementById("icon");
-	    b.addEventListener("mouseover", function () {
-	        b.style.boxShadow = "0 0 100px 0 rgba(255, 255, 255, 0.4)";
-	        b.style.backgroundColor = "#303030";
-	        t.style.color = "white";
-	        i.style.color = "white";
-	    });
+		// Messy script
+		var b = document.getElementById("button"), t = document.getElementById("text"), i = document.getElementById("icon");
+		b.addEventListener("mouseover", function () {
+			b.style.boxShadow = "0 0 100px 0 rgba(255, 255, 255, 0.4)";
+			b.style.backgroundColor = "#303030";
+			t.style.color = "white";
+			i.style.color = "white";
+		});
 
-	    b.addEventListener("mouseout", function () {
-	        b.style.boxShadow = "0 0 10px 0 rgba(0, 0, 0, 0.4)";
-	        b.style.backgroundColor = "#D3D3D3";
-	        t.style.color = "black";
-	        i.style.color = "black";
-	    });
-
+		b.addEventListener("mouseout", function () {
+			b.style.boxShadow = "0 0 10px 0 rgba(0, 0, 0, 0.4)";
+			b.style.backgroundColor = "#D3D3D3";
+			t.style.color = "black";
+			i.style.color = "black";
+		});
 	</script>
 </body>
 </html>

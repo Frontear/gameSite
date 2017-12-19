@@ -16,147 +16,145 @@
 </head>
 <body class="bg-gradient fg-white center-text">
 	<div class="fade-in">
-		<table class="tables">
-			<tr>
-				<td><a href="ctc.html" style="float: left; margin-left: 5px;" class="table-a">Play Catch the Circles</a></td>
-				<td><a style="float: right; margin-right: 5px;" class="table-a" id="time"></a></td>
-			</tr>
-		</table>
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="hrt.html">Human Reaction</a></li>
+			<li><a href="ctc.html">Catch Circles</a></li>
+			<li style="float: right;"><a id="time"></a></li>
+		</ul>
 		<h1>Human Reaction Test</h1>
-        <button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;</a><i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
-        <br />
-		<canvas 
-    width="400"
-    height="500"
-    class="codehs-editor-canvas"></canvas>
+		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;</a><i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
+		<br />
+		<canvas width="400"
+				height="500"
+				class="codehs-editor-canvas"></canvas>
 		<p>Welcome to the Human Reaction Test. You will attempt to press a green circle as fast as you can when it appears. You will get five tries, and the site will average all scores into your reaction time. Try to beat the world average of 250ms!</p>
-        <button id="button" class="button button-shadow"><i id="icon" class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/gameSite" style="color: black;" target="_blank">&nbsp;GitHub</a></button>
+		<button id="button" class="button button-shadow"><i id="icon" class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/gameSite" style="color: black;" target="_blank">&nbsp;GitHub</a></button>
 	</div>
 	<script>
-	    document.getElementById("begin").onclick = function () {
-	        var startIcon = document.getElementById("startIcon");
+		document.getElementById("begin").onclick = function () {
+			var startIcon = document.getElementById("startIcon");
 			startIcon.className = "fa fa-check";
 
 			/* Imported from CodeHS */
 
-	        // Global Variables
-	        var loops;
-	        var playedBefore;
-	        var beginPlaying;
-	        var doesCircleExist;
-	        var playerLost;
-	        var secondsBeforeClicked;
-	        var reactionAverage;
-	        var shouldQuit;
+			// Global Variables
+			var loops;
+			var playedBefore;
+			var beginPlaying;
+			var doesCircleExist;
+			var playerLost;
+			var secondsBeforeClicked;
+			var reactionAverage;
+			var shouldQuit;
 
-	        var lightgray = new Color(211, 211, 211);
+			var lightgray = new Color(211, 211, 211);
 
-	        // Gets the width and height of canvas, then find the center.
-	        var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+			// Gets the width and height of canvas, then find the center.
+			var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
 
-	        var reactionText = drawReactionText();
+			var reactionText = drawReactionText();
 
-	        /// Main entry point for javascript
-	        function start() {
-	            // Assign values to variables
-	            loops = 0;
-	            playedBefore = false;
-	            beginPlaying = false;
-	            doesCircleExist = false;
-	            playerLost = false;
-	            secondsBeforeClicked = 0;
-	            reactionAverage = [];
-	            shouldQuit = false;
+			/// Main entry point for javascript
+			function start() {
+				// Assign values to variables
+				loops = 0;
+				playedBefore = false;
+				beginPlaying = false;
+				doesCircleExist = false;
+				playerLost = false;
+				secondsBeforeClicked = 0;
+				reactionAverage = [];
+				shouldQuit = false;
 
-	            beginGame();
-	        }
+				beginGame();
+			}
 
-	        /// Main function to get time
-	        function setTime() {
-	            var date = new Date();
-	            return date.getTime() / 1000; // Get seconds since Epoch Time (1/1/1970)
-	        }
+			/// Main function to get time
+			function setTime() {
+				var date = new Date();
+				return date.getTime() / 1000; // Get seconds since Epoch Time (1/1/1970)
+			}
 
-	        /// Main function to control game, treat as the true start function
-	        function beginGame() {
-	            mouseClickMethod(assign);
-	            setTimer(step, Randomizer.nextInt(5000, 12000)); // Why doesn't it continously randomize?
-	        }
+			/// Main function to control game, treat as the true start function
+			function beginGame() {
+				mouseClickMethod(assign);
+				setTimer(step, Randomizer.nextInt(5000, 12000)); // Why doesn't it continously randomize?
+			}
 
-	        function assign(e) {
-	            var element = getElementAt(e.getX(), e.getY());
-	            if (element != null && element.color == Color.green && element.type == "Circle") {
-	                setReaction(e);
-	            }
-	        }
+			function assign(e) {
+				var element = getElementAt(e.getX(), e.getY());
+				if (element != null && element.color == Color.green && element.type == "Circle") {
+					setReaction(e);
+				}
+			}
 
-	        function step() {
-	            beginDrawingCircles();
-	        }
+			function step() {
+				beginDrawingCircles();
+			}
 
-	        // Main function to control circle generation
-	        function beginDrawingCircles() {
-	            var circle = drawCircle();
-	            if (doesCircleExist == false) {
-	                add(circle);
-	                secondsBeforeClicked = setTime();
-	                doesCircleExist = true;
-	            }
-	        }
+			// Main function to control circle generation
+			function beginDrawingCircles() {
+				var circle = drawCircle();
+				if (doesCircleExist == false) {
+					add(circle);
+					secondsBeforeClicked = setTime();
+					doesCircleExist = true;
+				}
+			}
 
-	        function setReaction(e) {
-	            remove(getElementAt(e.getX(), e.getY()));
-	            var reactionTime = setTime() - secondsBeforeClicked;
-	            reactionAverage.push(reactionTime * 1000);
-	            loops++;
-	            doesCircleExist = false;
-	            if (loops == 4) {
-	                endGame();
-	            }
-	        }
+			function setReaction(e) {
+				remove(getElementAt(e.getX(), e.getY()));
+				var reactionTime = setTime() - secondsBeforeClicked;
+				reactionAverage.push(reactionTime * 1000);
+				loops++;
+				doesCircleExist = false;
+				if (loops == 4) {
+					endGame();
+				}
+			}
 
-	        /// Helper Functions, mostly reusable/modular
-	        function drawReactionText() {
-	            var s = new Text("Reaction Time: ", "30pt sans-serif");
-	            s.setPosition(screen[2] - s.getWidth() / 2, screen[3]);
-	            s.setColor(Color.black);
-	            return s;
-	        }
+			/// Helper Functions, mostly reusable/modular
+			function drawReactionText() {
+				var s = new Text("Reaction Time: ", "30pt sans-serif");
+				s.setPosition(screen[2] - s.getWidth() / 2, screen[3]);
+				s.setColor(Color.black);
+				return s;
+			}
 
-	        function drawCircle() {
-	            var c = new Circle(100);
-	            c.setPosition(screen[2], screen[3]);
-	            /* Set color, from the colors defined in the color array,
-                * and get a randomized value, to pull a random color from said array
-                */
-	            c.setColor(Color.green);
-	            return c;
-	        }
+			function drawCircle() {
+				var c = new Circle(100);
+				c.setPosition(screen[2], screen[3]);
+				/* Set color, from the colors defined in the color array,
+				* and get a randomized value, to pull a random color from said array
+				*/
+				c.setColor(Color.green);
+				return c;
+			}
 
-	        /// Main function to end game
-	        function endGame() {
-	            stopTimer(step);
-	            var reactionText = drawReactionText();
-	            var reactionTime = calculateAverage();
-	            reactionText.setText("Reaction Time: " + reactionTime + "ms");
-	            reactionText.setPosition(screen[2] - reactionText.getWidth() / 2, screen[3]);
-	            add(reactionText);
-	        }
+			/// Main function to end game
+			function endGame() {
+				stopTimer(step);
+				var reactionText = drawReactionText();
+				var reactionTime = calculateAverage();
+				reactionText.setText("Reaction Time: " + reactionTime + "ms");
+				reactionText.setPosition(screen[2] - reactionText.getWidth() / 2, screen[3]);
+				add(reactionText);
+			}
 
-	        function calculateAverage() {
-	            var arrAverage = 0;
-	            var arrLength = reactionAverage.length;
-	            for (var i = 0; i < arrLength; i++) {
-	                arrAverage += reactionAverage[i];
-	            }
-	            return Math.round(arrAverage / arrLength);
-	        }
+			function calculateAverage() {
+				var arrAverage = 0;
+				var arrLength = reactionAverage.length;
+				for (var i = 0; i < arrLength; i++) {
+					arrAverage += reactionAverage[i];
+				}
+				return Math.round(arrAverage / arrLength);
+			}
 
-
-	        if (typeof start === 'function') {
-	            start();
-	        }
-	    };
+			if (typeof start === 'function') {
+				start();
+			}
+		};
 
 		// Messy script
 		var b = document.getElementById("button"), t = document.getElementById("text"), i = document.getElementById("icon");
@@ -173,7 +171,6 @@
 			t.style.color = "black";
 			i.style.color = "black";
 		});
-
 	</script>
 </body>
 </html>
