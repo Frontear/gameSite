@@ -13,8 +13,8 @@
 	<!-- Import my custom time script -->
 	<script type="text/javascript" src="https://puu.sh/yF8jv/897fde5cdc.js"></script>
 
-	<!-- Import Header script -->
-	<script type="text/javascript" src="header.js"></script>
+	<!-- Import Main Control script -->
+	<script type="text/javascript" src="main.js"></script>
 	<title>Human Reaction Test</title>
 </head>
 <body class="bg-gradient fg-white center-text">
@@ -27,7 +27,6 @@
 				height="500"
 				class="codehs-editor-canvas"></canvas>
 		<p>Welcome to the Human Reaction Test. You will attempt to press a green circle as fast as you can when it appears. You will get five tries, and the site will average all scores into your reaction time. Try to beat the world average of 250ms!</p>
-		<button id="button" class="button button-shadow"><i id="icon" class="fa fa-github" aria-hidden="true"></i><a id="text" href="https://github.com/Frontear/gameSite" style="color: black;" target="_blank">&nbsp;GitHub</a></button>
 	</div>
 	<script>
 		document.getElementById("begin").onclick = function () {
@@ -153,22 +152,6 @@
 				start();
 			}
 		};
-
-		// Messy script
-		var b = document.getElementById("button"), t = document.getElementById("text"), i = document.getElementById("icon");
-		b.addEventListener("mouseover", function () {
-			b.style.boxShadow = "0 0 100px 0 rgba(255, 255, 255, 0.4)";
-			b.style.backgroundColor = "#303030";
-			t.style.color = "white";
-			i.style.color = "white";
-		});
-
-		b.addEventListener("mouseout", function () {
-			b.style.boxShadow = "0 0 10px 0 rgba(0, 0, 0, 0.4)";
-			b.style.backgroundColor = "#D3D3D3";
-			t.style.color = "black";
-			i.style.color = "black";
-		});
 	</script>
 </body>
 </html>

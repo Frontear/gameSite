@@ -37,12 +37,9 @@ ul {
 	overflow: hidden;
 	border: solid;
 	border-radius: 5px;
+	border-color: white;
 	box-shadow: 0 0 10px 0 #D3D3D3;
 	animation: gradient-darker 20s ease-in-out infinite;
-}
-
-a, #disabled {
-	color: gray;
 }
 
 li {
@@ -61,6 +58,12 @@ li a:hover {
 	background-color: darkgray;
 }
 
+footer {
+	bottom: 5px;
+	position: absolute;
+	width: 98.8%;
+}
+
 .button {
 	border-radius: 40px;
 	background-color: #D3D3D3;
@@ -68,7 +71,7 @@ li a:hover {
 	text-align: center;
 	font-size: 18px;
 	padding: 8px;
-	width: 100px;
+	width: auto;
 	cursor: pointer;
 	margin: 5px;
 	outline: none;
@@ -88,6 +91,21 @@ li a:hover {
 
 .fade-in {
 	animation: fade 0.8s
+}
+
+.license-text, .license-button {
+	float: left !important;
+	text-shadow: 0 0 8px #d3d3d3, 0 0 8px #d3d3d3;
+}
+
+.license-button {
+	animation: gradient-border 20s ease-in-out infinite;
+	border: solid;
+	box-shadow: 0 0 10px 0 #D3D3D3;
+}
+
+.license-text {
+	margin: 12px;
 }
 
 @keyframes gradient {
@@ -123,5 +141,22 @@ li a:hover {
 
 	100% {
 		background-color: #10715d;
+	}
+}
+
+@keyframes gradient-border {
+	0% {
+		background-color: #10715d;
+		border-color: #10715d;
+	}
+
+	50% {
+		background-color: #4f2661;
+		border-color: #4f2661;
+	}
+
+	100% {
+		background-color: #10715d;
+		border-color: #10715d;
 	}
 }

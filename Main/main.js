@@ -19,5 +19,19 @@
             '<li style="float: right;">' +
                 '<a id="time"></a>' +
             '</li>' +
-        '</ul>';
+		'</ul>';
+
+	document.getElementById("footer").innerHTML =
+		'<ul>' +
+			'<li>' +
+				'<a href="troubleshoot.html">' +
+					'<i class="fa fa-question-circle-o" aria-hidden="true"></i>' +
+				'&nbsp;Troubleshoot</a>' +
+			'</li>' +
+			'<li style="float: right;">' +
+				'<a href="license.html">' +
+					'<i id="icon" class="fa fa-info-circle" aria-hidden="true"></i>' +
+				'&nbsp;License</a>' +
+			'</li>' +
+		'</ul>';
 }
