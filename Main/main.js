@@ -1,5 +1,8 @@
 ﻿window.onload = function () {
-    document.getElementById("header").innerHTML =
+    var header = document.getElementById("header");
+    var footer = document.getElementById("footer");
+
+    header.innerHTML =
         '<ul>' +
             '<li>' +
                 '<a href="index.html">' +
@@ -9,7 +12,7 @@
             '<li>' +
                 '<a href="hrt.html">' +
                     '<i id="icon" class="fa fa-user" aria-hidden="true"></i>' +
-                '&nbsp;Human Reaction</a>' +
+                '&nbsp;Reaction Test</a>' +
             '</li>' +
             '<li>' +
                 '<a href="ctc.html">' +
@@ -21,7 +24,7 @@
             '</li>' +
 		'</ul>';
 
-	document.getElementById("footer").innerHTML =
+	footer.innerHTML =
 		'<ul>' +
 			'<li>' +
 				'<a href="troubleshoot.html">' +

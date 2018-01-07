@@ -25,7 +25,7 @@ canvas, .button {
 
 canvas {
 	border: 1px solid black;
-	background-color: lightgrey;
+	background-color: white;
 	display: inline-block;
 	vertical-align: top;
 }
