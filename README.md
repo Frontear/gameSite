@@ -1,2 +1,2 @@
 # Human Reaction Site
-This is my final project for class ICS201. This site allows you to find your reaction time by clicking green circles as fast as possible. Made on CodeHS and exported to a website.
+This is my final project for class ICS201. The website provides two games that you can play, one being a Reaction Time Test, and another being an object collection game.
