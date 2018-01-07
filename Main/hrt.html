@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="https://static.codehs.com/gulp/53366a3967fea97b1970f5538992dce3675bdc16/chs-js-lib/chs.js"></script>
 
 	<!-- Import my custom time script -->
-	<script type="text/javascript" src="https://puu.sh/yF8jv/897fde5cdc.js"></script>
+	<script type="text/javascript" src="https://puu.sh/yVTqR.js"></script>
 
     <!-- Import Main Control script -->
 	<script type="text/javascript" src="main.js"></script>
@@ -21,7 +21,7 @@
 	<div class="fade-in">
 		<div id="header"></div>
 		<h1>Reaction Speed Test</h1>
-		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;</a><i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
+		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;</a><i class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
 		<br />
 		<canvas width="400"
 				height="500"
@@ -29,175 +29,185 @@
 		<p>Welcome to the Reaction Speed Test. You will attempt to press a green circle as fast as you can when it appears. You will get five tries, and the site will average all scores into your reaction time. Try to beat the world average of 250ms!</p>
 	</div>
 	<script>
+		var hasBeenToggledBefore = false;
 		document.getElementById("begin").onclick = function () {
-			var startIcon = document.getElementById("startIcon");
-			startIcon.className = "fa fa-check";
-
-			/* Imported from CodeHS */
-
-			// Global Variables
-			var loops;
-			var playedBefore;
-			var beginPlaying;
-			var doesCircleExist;
-			var playerLost;
-			var secondsBeforeClicked;
-			var reactionAverage;
-			var shouldQuit;
-			var buttonElement;
-
-			var lightgray = new Color(211, 211, 211);
-
-			// Gets the width and height of canvas, then find the center.
-			var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
-			var color = [new Color(0, 0, 0), new Color(1, 1, 1)];
-
-			var reactionText = drawReactionText();
-
-			/// Main entry point for javascript
-			function start() {
-				// Assign values to variables
-				loops = 0;
-				playedBefore = false;
-				beginPlaying = false;
-				doesCircleExist = false;
-				playerLost = false;
-				secondsBeforeClicked = 0;
-				reactionAverage = [];
-				shouldQuit = false;
-
-				drawMenu();
+			if (hasBeenToggledBefore != false) {
+				stopTimer(step); // Nessecary to completely stop thread wastage
+				removeAll(); // Remove all active elements.
+				document.getElementById("begin").innerHTML = '<a style="color: white;">Start&nbsp;</a><i class="fa fa-play" style="color: white;" aria-hidden="true"></i>';
+				document.getElementById("begin").style.backgroundColor = 'green';
+				hasBeenToggledBefore = false;
 			}
+			else {
+				document.getElementById("begin").innerHTML = '<a style="color: white;">Stop&nbsp;</a><i class="fa fa-stop" style="color: white;" aria-hidden="true"></i>';
+				document.getElementById("begin").style.backgroundColor = 'red';
+				hasBeenToggledBefore = true;
 
-			/// Main function to draw the main Menu
-			function drawMenu() {
-				createTextElement("Reaction Test!", "30pt sans-serif", screen[2], 0, color[1]);
-				createButtonElement(100, 50, screen[2], screen[3], Color.gray, "Start", "24pt sans-serif");
-				mouseClickMethod(performAction_Click);
-			}
+				// Global Variables
+				var loops;
+				var playedBefore;
+				var beginPlaying;
+				var doesCircleExist;
+				var playerLost;
+				var secondsBeforeClicked;
+				var reactionAverage;
+				var shouldQuit;
+				var buttonElement;
 
-			/// Main function to get time
-			function setTime() {
-				return new Date().getTime() / 1000; // Get seconds since Epoch Time (1/1/1970)
-			}
+				var lightgray = new Color(211, 211, 211);
 
-			/// Main function to control game, treat as the true start function
-			function beginGame() {
-				removeAll();
-				setTimer(step, Randomizer.nextInt(5000, 12000)); // Every run shouldn't be the same interval
-			}
+				// Gets the width and height of canvas, then find the center.
+				var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+				var color = [new Color(0, 0, 0), new Color(1, 1, 1)];
 
-			function performAction_Click(e) {
-				var element = getElementAt(e.getX(), e.getY());
-				if (element != null && element.color == Color.green && element.type == "Circle") {
-					setReaction(e);
-				}
-
-				// Long and ugly condition
-				if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == color[0] || element.color == Color.gray)) {
-					beginGame();
-				}
-			}
-
-			function step() {
-				beginDrawingCircles();
-			}
-
-			// Main function to control circle generation
-			function beginDrawingCircles() {
-				var circle = drawCircle();
-				if (doesCircleExist == false) {
-					add(circle);
-					secondsBeforeClicked = setTime();
-					doesCircleExist = true;
-				}
-			}
-
-			function setReaction(e) {
-				remove(getElementAt(e.getX(), e.getY()));
-				var reactionTime = setTime() - secondsBeforeClicked;
-				reactionAverage.push(reactionTime * 1000);
-				loops++;
-				doesCircleExist = false;
-				if (loops == 4) {
-					endGame();
-				}
-			}
-
-			/// Helper Functions, mostly reusable/modular
-			function drawReactionText() {
-				var s = new Text("Reaction Time: ", "30pt sans-serif");
-				s.setPosition(screen[2] - s.getWidth() / 2, screen[3]);
-				s.setColor(Color.black);
-				return s;
-			}
-
-			function drawCircle() {
-				var c = new Circle(100);
-				c.setPosition(screen[2], screen[3]);
-				/* Set color, from the colors defined in the color array,
-				* and get a randomized value, to pull a random color from said array
-				*/
-				c.setColor(Color.green);
-				return c;
-			}
-
-			// Creates a title, at the top of the canvas
-			function createTextElement(stringOfText, fontType, xValue, yValue, colorType) {
-				var textElement = new Text(stringOfText, fontType);
-				textElement.setPosition(xValue - textElement.getWidth() / 2, yValue + textElement.getHeight() + 10);
-				textElement.setColor(colorType);
-				add(textElement);
-			}
-
-			// Creates a smooth looking button, centered at the xPlane
-			function createButtonElement(width, height, xValue, yValue, colorType, stringOfText, fontType) {
-				buttonElement = {
-					Rect: new Rectangle(width, height),
-					Circle_One: new Circle(height / 2),
-					Circle_Two: new Circle(height / 2),
-					Text: new Text(stringOfText, fontType)
-				};
-				// The positioning doesn't actually work with any other text, other than the values provided in welcomeUser. I will attempt to make it modular.
-				buttonElement.Rect.setPosition(xValue - buttonElement.Rect.getWidth() / 2, yValue);
-				buttonElement.Rect.setColor(colorType);
-
-				buttonElement.Circle_One.setPosition(xValue - buttonElement.Rect.getWidth() / 2, yValue + buttonElement.Rect.getHeight() / 2);
-				buttonElement.Circle_One.setColor(colorType);
-
-				buttonElement.Circle_Two.setPosition(xValue + buttonElement.Rect.getWidth() / 2, yValue + buttonElement.Rect.getHeight() / 2);
-				buttonElement.Circle_Two.setColor(colorType);
-
-				buttonElement.Text.setPosition(xValue - (buttonElement.Rect.getWidth() / 2 - buttonElement.Text.getWidth() / 4), yValue + buttonElement.Rect.getHeight() / 1.405);
-				buttonElement.Text.setColor(color[0]);
-
-				add(buttonElement.Circle_One);
-				add(buttonElement.Circle_Two);
-				add(buttonElement.Rect);
-				add(buttonElement.Text);
-			}
-
-			/// Main function to end game
-			function endGame() {
-				stopTimer(step);
 				var reactionText = drawReactionText();
-				var reactionTime = calculateAverage();
-				reactionText.setText("Reaction Time: " + reactionTime + "ms");
-				reactionText.setPosition(screen[2] - reactionText.getWidth() / 2, screen[3]);
-				add(reactionText);
-			}
 
-			function calculateAverage() {
-				var arrAverage = 0;
-				var arrLength = reactionAverage.length;
-				for (var i = 0; i < arrLength; i++) {
-					arrAverage += reactionAverage[i];
+				/// Main entry point for javascript
+				function start() {
+					// Assign values to variables
+					loops = 0;
+					playedBefore = false;
+					beginPlaying = false;
+					doesCircleExist = false;
+					playerLost = false;
+					secondsBeforeClicked = 0;
+					reactionAverage = [];
+					shouldQuit = false;
+
+					drawMenu();
 				}
-				return Math.round(arrAverage / arrLength);
-			}
 
-			if (typeof start === 'function') {
-				start();
+				/// Main function to draw the main Menu
+				function drawMenu() {
+					createTextElement("Reaction Test!", "30pt sans-serif", screen[2], 0, color[1]);
+					createButtonElement(100, 50, screen[2], screen[3], Color.gray, "Start", "24pt sans-serif");
+					mouseClickMethod(performAction_Click);
+				}
+
+				/// Main function to get time
+				function setTime() {
+					return new Date().getTime() / 1000; // Get seconds since Epoch Time (1/1/1970)
+				}
+
+				/// Main function to control game, treat as the true start function
+				function beginGame() {
+					removeAll();
+					setTimer(step, Randomizer.nextInt(5000, 12000)); // Every run shouldn't be the same interval
+				}
+
+				function performAction_Click(e) {
+					var element = getElementAt(e.getX(), e.getY());
+					if (element != null && element.color == Color.green && element.type == "Circle") {
+						setReaction(e);
+					}
+
+					// Long and ugly condition
+					if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == color[0] || element.color == Color.gray)) {
+						beginGame();
+					}
+				}
+
+				function step() {
+					beginDrawingCircles();
+				}
+
+				// Main function to control circle generation
+				function beginDrawingCircles() {
+					var circle = drawCircle();
+					if (doesCircleExist == false) {
+						add(circle);
+						secondsBeforeClicked = setTime();
+						doesCircleExist = true;
+					}
+				}
+
+				function setReaction(e) {
+					remove(getElementAt(e.getX(), e.getY()));
+					var reactionTime = setTime() - secondsBeforeClicked;
+					reactionAverage.push(reactionTime * 1000);
+					loops++;
+					doesCircleExist = false;
+					if (loops == 4) {
+						endGame();
+					}
+				}
+
+				/// Helper Functions, mostly reusable/modular
+				function drawReactionText() {
+					var s = new Text("Reaction Time: ", "30pt sans-serif");
+					s.setPosition(screen[2] - s.getWidth() / 2, screen[3]);
+					s.setColor(Color.black);
+					return s;
+				}
+
+				function drawCircle() {
+					var c = new Circle(100);
+					c.setPosition(screen[2], screen[3]);
+					/* Set color, from the colors defined in the color array,
+					* and get a randomized value, to pull a random color from said array
+					*/
+					c.setColor(Color.green);
+					return c;
+				}
+
+				// Creates a title, at the top of the canvas
+				function createTextElement(stringOfText, fontType, xValue, yValue, colorType) {
+					var textElement = new Text(stringOfText, fontType);
+					textElement.setPosition(xValue - textElement.getWidth() / 2, yValue + textElement.getHeight() + 10);
+					textElement.setColor(colorType);
+					add(textElement);
+				}
+
+				// Creates a smooth looking button, centered at the xPlane
+				function createButtonElement(width, height, xValue, yValue, colorType, stringOfText, fontType) {
+					buttonElement = {
+						Rect: new Rectangle(width, height),
+						Circle_One: new Circle(height / 2),
+						Circle_Two: new Circle(height / 2),
+						Text: new Text(stringOfText, fontType)
+					};
+					// The positioning doesn't actually work with any other text, other than the values provided in welcomeUser. I will attempt to make it modular.
+					buttonElement.Rect.setPosition(xValue - buttonElement.Rect.getWidth() / 2, yValue);
+					buttonElement.Rect.setColor(colorType);
+
+					buttonElement.Circle_One.setPosition(xValue - buttonElement.Rect.getWidth() / 2, yValue + buttonElement.Rect.getHeight() / 2);
+					buttonElement.Circle_One.setColor(colorType);
+
+					buttonElement.Circle_Two.setPosition(xValue + buttonElement.Rect.getWidth() / 2, yValue + buttonElement.Rect.getHeight() / 2);
+					buttonElement.Circle_Two.setColor(colorType);
+
+					buttonElement.Text.setPosition(xValue - (buttonElement.Rect.getWidth() / 2 - buttonElement.Text.getWidth() / 4), yValue + buttonElement.Rect.getHeight() / 1.405);
+					buttonElement.Text.setColor(color[0]);
+
+					add(buttonElement.Circle_One);
+					add(buttonElement.Circle_Two);
+					add(buttonElement.Rect);
+					add(buttonElement.Text);
+				}
+
+				/// Main function to end game
+				function endGame() {
+					stopTimer(step);
+					var reactionText = drawReactionText();
+					var reactionTime = calculateAverage();
+					reactionText.setText("Reaction Time: " + reactionTime + "ms");
+					reactionText.setPosition(screen[2] - reactionText.getWidth() / 2, screen[3]);
+					add(reactionText);
+				}
+
+				function calculateAverage() {
+					var arrAverage = 0;
+					var arrLength = reactionAverage.length;
+					for (var i = 0; i < arrLength; i++) {
+						arrAverage += reactionAverage[i];
+					}
+					return Math.round(arrAverage / arrLength);
+				}
+
+
+				if (typeof start === 'function') {
+					start();
+				}
 			}
 		};
 	</script>

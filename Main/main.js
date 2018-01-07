@@ -1,6 +1,6 @@
 ﻿window.onload = function () {
     var header = document.getElementById("header");
-    var footer = document.getElementById("footer");
+	var footer = document.getElementById("footer");
 
     header.innerHTML =
         '<ul>' +
