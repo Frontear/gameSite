@@ -35,14 +35,14 @@
 				stopTimer(playerMove);
 				stopTimer(drawCircles);
 				stopTimer(setup);
-				removeAll(); // Remove all active elements.
+				removeAll();
 				document.getElementById("begin").innerHTML = '<a style="color: white;">Start&nbsp;</a><i class="fa fa-play" style="color: white;" aria-hidden="true"></i>';
-				document.getElementById("begin").style.backgroundColor = 'green';
+				document.getElementById("begin").style.backgroundColor = '#328332';
 				hasBeenToggledBefore = false;
 			}
 			else {
 				document.getElementById("begin").innerHTML = '<a style="color: white;">Stop&nbsp;</a><i class="fa fa-stop" style="color: white;" aria-hidden="true"></i>';
-				document.getElementById("begin").style.backgroundColor = 'red';
+				document.getElementById("begin").style.backgroundColor = '#833232';
 				hasBeenToggledBefore = true;
 
 				var score, highscore, lives;
@@ -57,7 +57,7 @@
 				var circleColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple, Color.cyan];
 
 				function beginGame() {
-					removeAll();
+				    removeAll(); // Remove all active elements.
 					createPlayerElement();
 					createScoreAndLivesLabel();
 					setTimer(playerMove, 16.666667);
@@ -232,7 +232,6 @@
 					var randomX = Randomizer.nextInt(circle.obj.getRadius(),
 						screenTypes[0] - circle.obj.getWidth());
 
-
 					circle.obj.setPosition(randomX, 0);
 					circle.obj.setColor(circleColors[Randomizer.nextInt(0, circleColors.length - 1)]);
 					add(circle.obj);
@@ -329,7 +328,6 @@
 						beginGame();
 					}
 				}
-
 
 				if (typeof start === 'function') {
 					start();

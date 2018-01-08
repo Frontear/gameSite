@@ -32,15 +32,15 @@
 		var hasBeenToggledBefore = false;
 		document.getElementById("begin").onclick = function () {
 			if (hasBeenToggledBefore != false) {
-				stopTimer(step); // Nessecary to completely stop thread wastage
-				removeAll(); // Remove all active elements.
+				stopTimer(step);
+				removeAll();
 				document.getElementById("begin").innerHTML = '<a style="color: white;">Start&nbsp;</a><i class="fa fa-play" style="color: white;" aria-hidden="true"></i>';
-				document.getElementById("begin").style.backgroundColor = 'green';
+				document.getElementById("begin").style.backgroundColor = '#328332';
 				hasBeenToggledBefore = false;
 			}
 			else {
 				document.getElementById("begin").innerHTML = '<a style="color: white;">Stop&nbsp;</a><i class="fa fa-stop" style="color: white;" aria-hidden="true"></i>';
-				document.getElementById("begin").style.backgroundColor = 'red';
+				document.getElementById("begin").style.backgroundColor = '#833232';
 				hasBeenToggledBefore = true;
 
 				// Global Variables
@@ -203,7 +203,6 @@
 					}
 					return Math.round(arrAverage / arrLength);
 				}
-
 
 				if (typeof start === 'function') {
 					start();
