@@ -9,7 +9,11 @@ h1 {
 
 a {
 	text-decoration: none;
-    color: white;
+	color: white;
+}
+
+a, .license-text {
+	text-shadow: 0 0 8px #d3d3d3, 0 0 8px #d3d3d3;
 }
 
 p {
@@ -40,33 +44,22 @@ ul {
 	border-radius: 5px;
 	border-color: white;
 	box-shadow: 0 0 10px 0 #D3D3D3;
-    background: linear-gradient(270deg, #008a6a, #5b117b, #7b4d11, #7b1133);
-    background-size: 800% 800%;
-	-webkit-animation: darkerGradient 20s ease infinite;
-    -moz-animation: darkerGradient 20s ease infinite;
-    -o-animation: darkerGradient 20s ease infinite;
-    animation: darkerGradient 20s ease infinite;
 }
 
 li {
 	float: left;
 }
 
-li a, .dropbtn {
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 8px 10px;
-	text-decoration: none;
-}
+	li a, .dropbtn {
+		display: inline-block;
+		color: white;
+		text-align: center;
+		padding: 8px 10px;
+		text-decoration: none;
+	}
 
 ul, .license-button {
-    background: linear-gradient(270deg, #008a6a, #5b117b, #7b4d11, #7b1133);
-    background-size: 800% 800%;
-	-webkit-animation: darkerGradient 30s ease infinite;
-    -moz-animation: darkerGradient 30s ease infinite;
-    -o-animation: darkerGradient 30s ease infinite;
-    animation: darkerGradient 30s ease infinite;
+	background-color: rgba(0, 0, 0, 0.3);
 }
 
 li a:hover {
@@ -81,7 +74,6 @@ footer {
 
 .button {
 	border-radius: 40px;
-	background-color: #D3D3D3;
 	border: none;
 	text-align: center;
 	font-size: 18px;
@@ -93,12 +85,12 @@ footer {
 }
 
 .bg-gradient {
-    background: linear-gradient(270deg, #1bbd9d, #8e44ae, #ae8044, #ae4466);
-    background-size: 800% 800%;
-	-webkit-animation: mainGradient 30s ease infinite;
-    -moz-animation: mainGradient 30s ease infinite;
-    -o-animation: mainGradient 30s ease infinite;
-    animation: mainGradient 30s ease infinite;
+	background: linear-gradient(270deg, #4467ae, #449fae, #44ae8e, #9eae44, #ae7844, #ae4444, #ae4497, #7544ae);
+	background-size: 1600% 1600%;
+	-webkit-animation: gradient 30s ease infinite;
+	-moz-animation: gradient 30s ease infinite;
+	-o-animation: gradient 30s ease infinite;
+	animation: gradient 30s ease infinite;
 }
 
 .fg-white {
@@ -115,12 +107,11 @@ footer {
 
 .license-text, .license-button {
 	float: left !important;
-	text-shadow: 0 0 8px #d3d3d3, 0 0 8px #d3d3d3;
 }
 
 .license-button {
-	border: solid;
-    border-color: antiquewhite;
+	border: solid 2px;
+	border-color: antiquewhite;
 	box-shadow: 0 0 10px 0 #D3D3D3;
 }
 
@@ -138,50 +129,26 @@ footer {
 	}
 }
 
-@-webkit-keyframes mainGradient {
-    0%{background-position:0% 51%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 51%}
-    }
-
-@-moz-keyframes mainGradient {
-    0%{background-position:0% 51%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 51%}
-    }
-
-@-o-keyframes mainGradient {
-    0%{background-position:0% 51%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 51%}
-    }
-
-@keyframes mainGradient {
-    0%{background-position:0% 51%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 51%}
-    }
-
-@-webkit-keyframes darkerGradient {
-    0%{background-position:0% 51%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 51%}
+@-webkit-keyframes gradient {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
 
-@-moz-keyframes darkerGradient {
-    0%{background-position:0% 51%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 51%}
+@-moz-keyframes gradient {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
 
-@-o-keyframes darkerGradient {
-    0%{background-position:0% 51%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 51%}
+@-o-keyframes gradient {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
 
-@keyframes darkerGradient {
-    0%{background-position:0% 51%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 51%}
+@keyframes gradient {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
