@@ -9,6 +9,7 @@ h1 {
 
 a {
 	text-decoration: none;
+    color: white;
 }
 
 p {
@@ -39,7 +40,12 @@ ul {
 	border-radius: 5px;
 	border-color: white;
 	box-shadow: 0 0 10px 0 #D3D3D3;
-	animation: gradient-darker 20s ease-in-out infinite;
+    background: linear-gradient(270deg, #008a6a, #5b117b, #7b4d11, #7b1133);
+    background-size: 800% 800%;
+	-webkit-animation: darkerGradient 20s ease infinite;
+    -moz-animation: darkerGradient 20s ease infinite;
+    -o-animation: darkerGradient 20s ease infinite;
+    animation: darkerGradient 20s ease infinite;
 }
 
 li {
@@ -52,6 +58,15 @@ li a, .dropbtn {
 	text-align: center;
 	padding: 8px 10px;
 	text-decoration: none;
+}
+
+ul, .license-button {
+    background: linear-gradient(270deg, #008a6a, #5b117b, #7b4d11, #7b1133);
+    background-size: 800% 800%;
+	-webkit-animation: darkerGradient 30s ease infinite;
+    -moz-animation: darkerGradient 30s ease infinite;
+    -o-animation: darkerGradient 30s ease infinite;
+    animation: darkerGradient 30s ease infinite;
 }
 
 li a:hover {
@@ -78,7 +93,12 @@ footer {
 }
 
 .bg-gradient {
-	animation: gradient 20s ease-in-out infinite;
+    background: linear-gradient(270deg, #1bbd9d, #8e44ae, #ae8044, #ae4466);
+    background-size: 800% 800%;
+	-webkit-animation: mainGradient 30s ease infinite;
+    -moz-animation: mainGradient 30s ease infinite;
+    -o-animation: mainGradient 30s ease infinite;
+    animation: mainGradient 30s ease infinite;
 }
 
 .fg-white {
@@ -99,25 +119,13 @@ footer {
 }
 
 .license-button {
-	animation: gradient-border 20s ease-in-out infinite;
 	border: solid;
+    border-color: antiquewhite;
 	box-shadow: 0 0 10px 0 #D3D3D3;
 }
 
 .license-text {
 	margin: 12px;
-}
-
-@keyframes gradient {
-	0% {
-		background-color: #1bbd9d;
-	}
-	50% {
-		background-color: #8e44ae;
-	}
-	100% {
-		background-color: #1bbd9d;
-	}
 }
 
 @keyframes fade {
@@ -130,33 +138,50 @@ footer {
 	}
 }
 
-@keyframes gradient-darker {
-	0% {
-		background-color: #10715d;
-	}
+@-webkit-keyframes mainGradient {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+    }
 
-	50% {
-		background-color: #4f2661;
-	}
+@-moz-keyframes mainGradient {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+    }
 
-	100% {
-		background-color: #10715d;
-	}
+@-o-keyframes mainGradient {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+    }
+
+@keyframes mainGradient {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+    }
+
+@-webkit-keyframes darkerGradient {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
 }
 
-@keyframes gradient-border {
-	0% {
-		background-color: #10715d;
-		border-color: #10715d;
-	}
+@-moz-keyframes darkerGradient {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+}
 
-	50% {
-		background-color: #4f2661;
-		border-color: #4f2661;
-	}
+@-o-keyframes darkerGradient {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+}
 
-	100% {
-		background-color: #10715d;
-		border-color: #10715d;
-	}
+@keyframes darkerGradient {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
 }
