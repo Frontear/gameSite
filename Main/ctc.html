@@ -21,12 +21,12 @@
 	<div class="fade-in">
 		<div id="header"></div>
 		<h1>Catch the Circles</h1>
-		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;</a><i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
+		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;<i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></a></button>
 		<br />
 		<canvas width="400"
 				height="500"
 				class="codehs-editor-canvas"></canvas>
-		<p>Welcome to Catch the Circles. You will attempt to catch the falling circles. Use WASD or arrows keys to move player. Press Shift to speed up your character 4 times. Good Luck and Have Fun!</p>
+		<p>Welcome to Catch the Circles. You will attempt to catch the falling circles. Use WASD or arrows keys to move player. Press shift to move your character faster. Good Luck and Have Fun!</p>
 	</div>
 	<script>
 		var hasBeenToggledBefore = false;
@@ -36,12 +36,12 @@
 				stopTimer(drawCircles);
 				stopTimer(setup);
 				removeAll();
-				document.getElementById("begin").innerHTML = '<a style="color: white;">Start&nbsp;</a><i class="fa fa-play" style="color: white;" aria-hidden="true"></i>';
+				document.getElementById("begin").innerHTML = '<a style="color: white;">Start&nbsp;<i class="fa fa-play" style="color: white;" aria-hidden="true"></a></i>';
 				document.getElementById("begin").style.backgroundColor = '#328332';
 				hasBeenToggledBefore = false;
 			}
 			else {
-				document.getElementById("begin").innerHTML = '<a style="color: white;">Stop&nbsp;</a><i class="fa fa-stop" style="color: white;" aria-hidden="true"></i>';
+			    document.getElementById("begin").innerHTML = '<a style="color: white;">Stop&nbsp;<i class="fa fa-stop" style="color: white;" aria-hidden="true"></a></i>';
 				document.getElementById("begin").style.backgroundColor = '#833232';
 				hasBeenToggledBefore = true;
 

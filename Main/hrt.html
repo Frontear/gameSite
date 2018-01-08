@@ -21,12 +21,12 @@
 	<div class="fade-in">
 		<div id="header"></div>
 		<h1>Reaction Speed Test</h1>
-		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;</a><i class="fa fa-play" style="color: white;" aria-hidden="true"></i></button>
+		<button id="begin" class="button button-shadow" style=" width: 400px; background-color: green;"><a style="color: white;">Start&nbsp;<i id="startIcon" class="fa fa-play" style="color: white;" aria-hidden="true"></i></a></button>
 		<br />
 		<canvas width="400"
 				height="500"
 				class="codehs-editor-canvas"></canvas>
-		<p>Welcome to the Reaction Speed Test. You will attempt to press a green circle as fast as you can when it appears. You will get five tries, and the site will average all scores into your reaction time. Try to beat the world average of 250ms!</p>
+		<p>Welcome to the Reaction Speed Test. You will attempt to press a green circle as fast as you can when it appears. You will get five tries, and the site will average all scores into your reaction time. Remember, lower is better!</p>
 	</div>
 	<script>
 		var hasBeenToggledBefore = false;
@@ -34,12 +34,12 @@
 			if (hasBeenToggledBefore != false) {
 				stopTimer(step);
 				removeAll();
-				document.getElementById("begin").innerHTML = '<a style="color: white;">Start&nbsp;</a><i class="fa fa-play" style="color: white;" aria-hidden="true"></i>';
+				document.getElementById("begin").innerHTML = '<a style="color: white;">Start&nbsp;<i class="fa fa-play" style="color: white;" aria-hidden="true"></a></i>';
 				document.getElementById("begin").style.backgroundColor = '#328332';
 				hasBeenToggledBefore = false;
 			}
 			else {
-				document.getElementById("begin").innerHTML = '<a style="color: white;">Stop&nbsp;</a><i class="fa fa-stop" style="color: white;" aria-hidden="true"></i>';
+			    document.getElementById("begin").innerHTML = '<a style="color: white;">Stop&nbsp;<i class="fa fa-stop" style="color: white;" aria-hidden="true"></a></i>';
 				document.getElementById("begin").style.backgroundColor = '#833232';
 				hasBeenToggledBefore = true;
 
