@@ -42,3 +42,17 @@
 function redirectToSite(urlOfSite) {
 	window.open(urlOfSite, "_blank");
 }
+
+function buttonHighlighting(buttonID, isHoveringCurrently) {
+	var button = document.getElementById(buttonID);
+	if (isHoveringCurrently == true) {
+		button.style.boxShadow = "0 0 100px 0 rgba(255, 255, 255, 0.4)";
+		button.style.backgroundColor = "#faebd7";
+		button.style.color = "#051428";
+	}
+	else {
+		button.style.boxShadow = "";
+		button.style.backgroundColor = "";
+		button.style.color = "";
+	}
+}
