@@ -12,7 +12,7 @@ a {
 	color: white;
 }
 
-a, .license-text {
+a, .license-text, .license-button {
 	text-shadow: 0 0 8px #d3d3d3, 0 0 8px #d3d3d3;
 }
 
@@ -58,7 +58,7 @@ li {
 		text-decoration: none;
 	}
 
-ul, .license-button {
+ul, button {
 	background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -74,14 +74,17 @@ footer {
 
 .button {
 	border-radius: 40px;
-	border: none;
+	border: solid 2px;
 	text-align: center;
 	font-size: 18px;
+	border-color: antiquewhite;
 	padding: 8px;
 	width: auto;
 	cursor: pointer;
 	margin: 5px;
 	outline: none;
+	box-shadow: 0 0 10px 0 #D3D3D3;
+	color: white;
 }
 
 .bg-gradient {
@@ -107,12 +110,6 @@ footer {
 
 .license-text, .license-button {
 	float: left !important;
-}
-
-.license-button {
-	border: solid 2px;
-	border-color: antiquewhite;
-	box-shadow: 0 0 10px 0 #D3D3D3;
 }
 
 .license-text {

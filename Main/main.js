@@ -38,3 +38,7 @@
 			'</li>' +
 		'</ul>';
 };
+
+function redirectToSite(urlOfSite) {
+	window.open(urlOfSite, "_blank");
+}
