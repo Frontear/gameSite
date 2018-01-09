@@ -1,6 +1,6 @@
 ﻿* {
 	font-family: sans-serif;
-	transition: all 0.7s;
+	transition: all 0.7s !important;
 }
 
 h1 {
@@ -90,10 +90,10 @@ footer {
 .bg-gradient {
 	background: linear-gradient(225deg, #4467ae, #449fae, #44ae8e, #9eae44, #ae7844, #ae4444, #ae4497, #7544ae);
 	background-size: 1600% 1600%;
-	-webkit-animation: gradient 30s ease infinite;
-	-moz-animation: gradient 30s ease infinite;
-	-o-animation: gradient 30s ease infinite;
-	animation: gradient 30s ease infinite;
+	-webkit-animation: gradient 120s ease infinite;
+	-moz-animation: gradient 120s ease infinite;
+	-o-animation: gradient 120s ease infinite;
+	animation: gradient 120s ease infinite;
 }
 
 .fg-white {
