@@ -12,7 +12,7 @@ a {
 	color: white;
 }
 
-a, .license-text, .license-button {
+a, .license-text, .license-button, .button {
 	text-shadow: 0 0 8px #d3d3d3, 0 0 8px #d3d3d3;
 }
 
