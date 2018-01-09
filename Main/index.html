@@ -23,25 +23,8 @@
 		<h1>Welcome to GameSite!</h1>
 		<p>We attempt to create a platform for multiple games to be played. Most of the games here are imported from CodeHS. We hope you enjoy your visit!
 		<br />To play any games, please select them from the top bar!</p>
-		<button id="button" class="button" onclick="https://github.com/Frontear/gameSite"><i id="icon" class="fa fa-github" aria-hidden="true"></i>&nbsp;GitHub</a></button>
+		<button id="button" class="button" onclick="https://github.com/Frontear/gameSite" onmouseout="buttonHighlighting(this.id, false)" onmouseover="buttonHighlighting(this.id, true)"><i id="icon" class="fa fa-github" aria-hidden="true"></i>&nbsp;GitHub</a></button>
 		<footer id="footer"></footer>
 	</div>
-		<script>
-			// Messy script
-			var b = document.getElementById("button"), t = document.getElementById("text"), i = document.getElementById("icon");
-			b.addEventListener("mouseover", function () {
-				b.style.boxShadow = "0 0 100px 0 rgba(255, 255, 255, 0.4)";
-				b.style.backgroundColor = "#303030";
-				t.style.color = "white";
-				i.style.color = "white";
-			});
-
-			b.addEventListener("mouseout", function () {
-				b.style.boxShadow = "0 0 10px 0 rgba(0, 0, 0, 0.4)";
-				b.style.backgroundColor = "#D3D3D3";
-				t.style.color = "black";
-				i.style.color = "black";
-			});
-		</script>
 </body>
 </html>
