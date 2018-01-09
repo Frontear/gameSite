@@ -46,7 +46,7 @@ function redirectToSite(urlOfSite) {
 function buttonHighlighting(buttonID, isHoveringCurrently) {
 	var button = document.getElementById(buttonID);
 	if (isHoveringCurrently == true) {
-		button.style.boxShadow = "0 0 100px 0 rgba(255, 255, 255, 0.4)";
+		button.style.boxShadow = "0 0 40px 0 #051428";
 		button.style.backgroundColor = "#faebd7";
 		button.style.color = "#051428";
 	}
