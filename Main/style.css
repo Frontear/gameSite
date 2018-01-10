@@ -86,6 +86,11 @@ footer {
 	box-shadow: 0 0 10px 0 #D3D3D3;
 	color: white;
 }
+	.button:hover {
+		box-shadow: 0 0 16px 0 #051428;
+		background-color: #faebd7;
+		color: #051428;
+	}
 
 .bg-gradient {
 	background: linear-gradient(225deg, #4467ae, #449fae, #44ae8e, #9eae44, #ae7844, #ae4444, #ae4497, #7544ae);
