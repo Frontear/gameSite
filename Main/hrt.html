@@ -70,7 +70,13 @@
 			/// Main function to control game, treat as the true start function
 			function startGame() {
 				removeAll();
-				setTimer(step, Randomizer.nextInt(500, 1200)); // Every run shouldn't be the same interval
+				randomize();
+			}
+
+			// Main function to randomize spawn rate
+			function randomize() {
+				stopTimer(step);
+				setTimer(step, Randomizer.nextInt(2000, 8000));
 			}
 
 			function performAction_Click(e) {
@@ -88,6 +94,7 @@
 
 			function step() {
 				beginDrawingCircles();
+				randomize();
 			}
 
 			// Main function to control circle generation
