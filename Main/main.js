@@ -43,7 +43,7 @@
 };
 
 function redirectToSite(urlOfSite) {
-	window.open(urlOfSite, "_blank");
+	window.open(urlOfSite, "_blank"); // Open a new tab with the specified url
 }
 
 function setTime() {
