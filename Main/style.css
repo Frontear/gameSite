@@ -50,7 +50,7 @@ li {
 	float: left;
 }
 
-	li a, .dropbtn {
+	li a {
 		display: inline-block;
 		color: white;
 		text-align: center;
@@ -109,7 +109,7 @@ footer {
 }
 
 .license-text, .license-button {
-	float: left !important;
+	float: left;
 }
 
 .license-text {
