@@ -8,9 +8,9 @@
 
 	<!-- Import CodeHS dependancies-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script type="text/javascript" src="https://static.codehs.com/gulp/53366a3967fea97b1970f5538992dce3675bdc16/chs-js-lib/chs.js"></script>
+	<script type="text/javascript" src="https://static.codehs.com/gulp/9fad0d591712b48ff1a19f4027446782eed9c0c4/chs-js-lib/chs.js"></script>
 
-    <!-- Import Main Control script -->
+	<!-- Import Main Control script -->
 	<script type="text/javascript" src="main.js"></script>
 	<title>Catch the Circles</title>
 </head>
@@ -33,11 +33,12 @@
 			var playerImage = "http://etc.usf.edu/clipart/42600/42634/irregdec_42634_md.gif";
 
 			var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
-			var colorTypes = [new Color(0, 0, 0), new Color(1, 1, 1)];
+			var shiftedGray = new Color(205, 205, 205);
+			var shiftedBlack = new Color(1, 1, 1);
 			var circleColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple, Color.cyan];
 
 			function beginGame() {
-				removeAll(); // Remove all active elements.
+				removeAll();
 				createPlayerElement();
 				createScoreAndLivesLabel();
 				setTimer(playerMove, 16.666667);
@@ -65,7 +66,8 @@
 
 			function endGame() {
 				setHighScore();
-				showHighscore();
+				createText("Highscore: " + sessionStorage.getItem("highScore"), "24pt sans-serif", screenTypes[2], 200);
+				createButton("Retry", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
 			}
 
 			function start() {
@@ -79,8 +81,8 @@
 			}
 
 			function welcomeUser() {
-				createTextElement("React Clicker!", "30pt sans-serif", screenTypes[2], 0, colorTypes[1]);
-				createButtonElement(100, 50, screenTypes[2], screenTypes[3], Color.gray, "Start", "24pt sans-serif");
+				createText("React Clicker!", "30pt sans-serif", screenTypes[2], 0, false);
+				createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
 
 				mouseClickMethod(performAction_Click);
 			}
@@ -103,7 +105,7 @@
 
 			// Checks if the Player and the Circles have collided, that is, touched.
 			function hasCollided(playerObject, circleObject) {
-				// Get the exact position of the four corners of the image.
+				// Get the exact position of the four corners of the object.
 				var playerX = {
 					topLeft: playerObject.getX(),
 					topRight: playerObject.getX() + playerObject.getWidth(),
@@ -113,7 +115,7 @@
 					topLeft: playerObject.getY(),
 					topRight: playerObject.getY(),
 				};
-				// Find the four corners of a square
+				// Find the four corners of a circle (assuming a square with the same diameter as lengths)
 				var circleX = {
 					topLeft: circleObject.getX() - circleObject.getRadius(),
 					topRight: circleObject.getX() + circleObject.getRadius(),
@@ -142,13 +144,6 @@
 				add(playerElement);
 			}
 
-			function showHighscore() {
-				var highScoreLabel = new Text("Highscore: " + sessionStorage.getItem("highScore"), "15pt sans-serif");
-				highScoreLabel.setPosition(5, getHeight() - highScoreLabel.getHeight())
-				highScoreLabel.setColor(Color.black);
-				add(highScoreLabel);
-			}
-
 			function createScoreAndLivesLabel() {
 				// We wont be using CreateTextElement, since we need to perform more calculations on the text position
 				scoreLabel = new Text("Score: " + score, "15pt sans-serif");
@@ -162,42 +157,52 @@
 				add(livesLabel);
 			}
 
-			// Creates a title, at the top of the canvas
-			function createTextElement(stringOfText, fontType, xValue, yValue, colorType) {
-				var textElement = new Text(stringOfText, fontType);
-				textElement.setPosition(xValue - textElement.getWidth() / 2, yValue + textElement.getHeight() + 10);
-				textElement.setColor(colorType);
-				add(textElement);
+			// Creates a graphic text string
+			function createText(text, font, cX, cY, messageBox = true) {
+				var t = new Text(text, font);
+				var c = new Rectangle(getWidth(), t.getHeight() + 50);
+
+				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+				t.setColor(shiftedBlack);
+
+				c.setPosition(cX - c.getWidth() / 2, cY);
+				c.setColor(shiftedGray);
+
+				if (messageBox) {
+					add(c);
+				}
+				add(t);
 			}
 
-			// Creates a smooth looking button, centered at the xPlane
-			function createButtonElement(width, height, xValue, yValue, colorType, stringOfText, fontType) {
-				buttonElement = {
-					Rect: new Rectangle(width, height),
-					Circle_One: new Circle(height / 2),
-					Circle_Two: new Circle(height / 2),
-					Text: new Text(stringOfText, fontType)
-				};
-				// The positioning doesn't actually work with any other text, other than the values provided in welcomeUser. I will attempt to make it modular.
-				buttonElement.Rect.setPosition(xValue - buttonElement.Rect.getWidth() / 2, yValue);
-				buttonElement.Rect.setColor(colorType);
+			// Creates a smooth button, with text inside it, where c = container, and t = text
+			function createButton(text, font, cWidth, cHeight, cX, cY) {
+				var t = new Text(text, font);
+				var c = new Rectangle(cWidth, cHeight);
+				var c1 = new Circle(cHeight / 2);
+				var c2 = new Circle(cHeight / 2);
 
-				buttonElement.Circle_One.setPosition(xValue - buttonElement.Rect.getWidth() / 2, yValue + buttonElement.Rect.getHeight() / 2);
-				buttonElement.Circle_One.setColor(colorType);
+				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+				t.setColor(Color.black);
 
-				buttonElement.Circle_Two.setPosition(xValue + buttonElement.Rect.getWidth() / 2, yValue + buttonElement.Rect.getHeight() / 2);
-				buttonElement.Circle_Two.setColor(colorType);
+				c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
+				c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
 
-				buttonElement.Text.setPosition(xValue - (buttonElement.Rect.getWidth() / 2 - buttonElement.Text.getWidth() / 4), yValue + buttonElement.Rect.getHeight() / 1.405);
-				buttonElement.Text.setColor(colorTypes[0]);
+				c1.setColor(Color.gray);
+				c2.setColor(Color.gray);
 
-				add(buttonElement.Circle_One);
-				add(buttonElement.Circle_Two);
-				add(buttonElement.Rect);
-				add(buttonElement.Text);
+				c.setPosition(cX - c.getWidth() / 2, cY);
+				c.setColor(Color.gray);
+
+				add(c1);
+				add(c2);
+				add(c);
+				add(t);
 			}
 
 			function setup() {
+				if (lives == 0) {
+					beginEndGame();
+				}
 				fallCircles();
 			}
 
@@ -211,6 +216,7 @@
 
 				var randomX = Randomizer.nextInt(circle.obj.getRadius(),
 					screenTypes[0] - circle.obj.getWidth());
+
 
 				circle.obj.setPosition(randomX, 0);
 				circle.obj.setColor(circleColors[Randomizer.nextInt(0, circleColors.length - 1)]);
@@ -248,20 +254,23 @@
 			}
 
 			function fallCircles() {
-				if (lives == 0) {
-					beginEndGame();
-				}
 				for (var i = 0; i < theCircle.length; i++) {
 					theCircle[i].obj.move(0, theCircle[i].speed);
+					// If the object collides with the player
 					if (hasCollided(playerElement, theCircle[i].obj)) {
 						remove(theCircle[i].obj);
 						theCircle.remove(i);
-						setScoreAndLives(score + 1, lives);
+						if (lives != 0) {
+							setScoreAndLives(score + 1, lives);
+						}
 					}
-					else if (theCircle[i].obj.getY() > screenTypes[1] - theCircle[i].obj.getRadius()) {
+					// Offer the player some lenience, the object must sink halfway into the ground to lose a life
+					else if (theCircle[i].obj.getY() > screenTypes[1] - theCircle[i].obj.getRadius() / 2) {
 						remove(theCircle[i].obj);
 						theCircle.remove(i);
-						setScoreAndLives(score, lives - 1);
+						if (lives != 0) {
+							setScoreAndLives(score, lives - 1);
+						}
 						i--;
 					}
 				}
@@ -281,12 +290,12 @@
 
 			function playerMove() {
 				if (playerDirection == "LEFT" && playerElement.getX() > 0) {
-					if (speedMove) { playerElement.move(-30, 0); }
-					else { playerElement.move(-7.5, 0); }
+					if (speedMove) { playerElement.move(-60, 0); }
+					else { playerElement.move(-15, 0); }
 				}
 				if (playerDirection == "RIGHT" && (playerElement.getX() + playerElement.getWidth()) < getWidth()) {
-					if (speedMove) { playerElement.move(30, 0); }
-					else { playerElement.move(7.5, 0); }
+					if (speedMove) { playerElement.move(60, 0); }
+					else { playerElement.move(15, 0); }
 				}
 			}
 
@@ -304,7 +313,9 @@
 				var element = getElementAt(e.getX(), e.getY());
 
 				// Long and ugly condition
-				if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == colorTypes[0] || element.color == Color.gray)) {
+				if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
+					score = 0;
+					lives = 3;
 					beginGame();
 				}
 			}
