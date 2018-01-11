@@ -10,8 +10,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.codehs.com/gulp/3ee6f1489a3909a788e32cbc39525a167dc5988d/chs-js-lib/chs.js"></script>
 
-	<!-- Import Main Control script -->
+	<!-- Import JavaScripts -->
 	<script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="time.js"></script>
 	<title>Human Reaction Test</title>
 </head>
 <body class="bg-gradient fg-white center-text">
@@ -25,170 +26,170 @@
 	</div>
 	<script>
 		window.addEventListener("load", function () {
-			// Global Variables
-			var loops;
-			var playedBefore;
-			var beginPlaying;
-			var doesCircleExist;
-			var playerLost;
-			var secondsBeforeClicked;
-			var reactionAverage;
-			var shouldQuit;
+		    // Global Variables
+		    var loops;
+		    var playedBefore;
+		    var beginPlaying;
+		    var doesCircleExist;
+		    var playerLost;
+		    var secondsBeforeClicked;
+		    var reactionAverage;
+		    var shouldQuit;
 
-			var shiftedGray = new Color(205, 205, 205);
-			var shiftedBlack = new Color(1, 1, 1);
+		    var shiftedGray = new Color(205, 205, 205);
+		    var shiftedBlack = new Color(1, 1, 1);
 
-			// Gets the width and height of canvas, then find the center.
-			var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+		    // Gets the width and height of canvas, then find the center.
+		    var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
 
-			/// Main entry point for javascript
-			function start() {
-				// Assign values to variables
-				playedBefore = false;
-				beginPlaying = false;
-				doesCircleExist = false;
-				playerLost = false;
-				secondsBeforeClicked = 0;
-				reactionAverage = [];
-				shouldQuit = false;
+		    /// Main entry point for javascript
+		    function start() {
+		        // Assign values to variables
+		        playedBefore = false;
+		        beginPlaying = false;
+		        doesCircleExist = false;
+		        playerLost = false;
+		        secondsBeforeClicked = 0;
+		        reactionAverage = [];
+		        shouldQuit = false;
+    
+		        drawMenu();
+		    }
 
-				drawMenu();
-			}
+		    /// Main function to draw the main Menu
+		    function drawMenu(){
+		        createText("Reaction Test!", "30pt sans-serif", screen[2], 0, false);
+		        createButton("Start", "24pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
+		        mouseClickMethod(performAction_Click);
+		    }
 
-			/// Main function to draw the main Menu
-			function drawMenu() {
-				createText("Reaction Test!", "30pt sans-serif", screen[2], 0, false);
-				createButton("Start", "24pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
-				mouseClickMethod(performAction_Click);
-			}
+		    /// Main function to get time
+		    function setTime() {
+		        return new Date() .getTime() / 1000; // Get seconds since Epoch Time (1/1/1970)
+		    }
 
-			/// Main function to get time
-			function setTime() {
-				return new Date().getTime() / 1000; // Get seconds since Epoch Time (1/1/1970)
-			}
+		    /// Main function to control game, treat as the true start function
+		    function startGame() {
+		        removeAll();
+		        randomize();
+		    }
 
-			/// Main function to control game, treat as the true start function
-			function startGame() {
-				removeAll();
-				randomize();
-			}
+		    // Main function to randomize spawn rate
+		    function randomize() {
+		        stopTimer(step);
+		        setTimer(step, Randomizer.nextInt(2000, 8000));
+		    }
 
-			// Main function to randomize spawn rate
-			function randomize() {
-				stopTimer(step);
-				setTimer(step, Randomizer.nextInt(2000, 8000));
-			}
+		    function performAction_Click(e) {
+		        var element = getElementAt(e.getX(), e.getY());
+		        if (element != null && element.color == Color.green && element.type == "Circle") {
+		            setReaction(e);
+		        }
+    
+		        // Long and ugly condition
+		        if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
+		            loops = 0;
+		            startGame();
+		        }
+		    }
 
-			function performAction_Click(e) {
-				var element = getElementAt(e.getX(), e.getY());
-				if (element != null && element.color == Color.green && element.type == "Circle") {
-					setReaction(e);
-				}
+		    function step() {
+		        beginDrawingCircles();
+		        randomize();
+		    }
 
-				// Long and ugly condition
-				if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
-					loops = 0;
-					startGame();
-				}
-			}
+		    // Main function to control circle generation
+		    function beginDrawingCircles() {
+		        var circle = drawCircle();
+		        if (doesCircleExist == false) {
+		            add(circle);
+		            secondsBeforeClicked = setTime();
+		            doesCircleExist = true;
+		        }
+		    }
 
-			function step() {
-				beginDrawingCircles();
-				randomize();
-			}
+		    function setReaction(e) {
+		        remove(getElementAt(e.getX(), e.getY()));
+		        var reactionTime = setTime() - secondsBeforeClicked;
+		        reactionAverage.push(reactionTime * 1000);
+		        loops++;
+		        doesCircleExist = false;
+		        if (loops == 5) {
+		            endGame();
+		        }
+		    }
 
-			// Main function to control circle generation
-			function beginDrawingCircles() {
-				var circle = drawCircle();
-				if (doesCircleExist == false) {
-					add(circle);
-					secondsBeforeClicked = setTime();
-					doesCircleExist = true;
-				}
-			}
+		    /// Helper Functions, mostly reusable/modular
+		    function drawCircle() {
+		        var c = new Circle(100);
+		        c.setPosition(screen[2], screen[3]);
+		        c.setColor(Color.green);
+		        return c;
+		    }
 
-			function setReaction(e) {
-				remove(getElementAt(e.getX(), e.getY()));
-				var reactionTime = setTime() - secondsBeforeClicked;
-				reactionAverage.push(reactionTime * 1000);
-				loops++;
-				doesCircleExist = false;
-				if (loops == 5) {
-					endGame();
-				}
-			}
+		    // Creates a graphic text string
+		    function createText(text, font, cX, cY, messageBox = true) {
+		        var t = new Text(text, font);
+		        var c = new Rectangle(getWidth(), t.getHeight() + 50);
+    
+		        t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+		        t.setColor(shiftedBlack);
+    
+		        c.setPosition(cX - c.getWidth() / 2, cY);
+		        c.setColor(shiftedGray);
+    
+		        if (messageBox) {
+		            add(c);
+		        }
+		        add(t);
+		    }
 
-			/// Helper Functions, mostly reusable/modular
-			function drawCircle() {
-				var c = new Circle(100);
-				c.setPosition(screen[2], screen[3]);
-				c.setColor(Color.green);
-				return c;
-			}
+		        // Creates a smooth button, with text inside it, where c = container, and t = text
+		        function createButton(text, font, cWidth, cHeight, cX, cY) {
+		            var t = new Text(text, font);
+		            var c = new Rectangle(cWidth, cHeight);
+		            var c1 = new Circle(cHeight / 2);
+		            var c2 = new Circle(cHeight / 2);
+    
+		            t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+		            t.setColor(Color.black);
+    
+		            c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
+		            c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
+    
+		            c1.setColor(Color.gray);
+		            c2.setColor(Color.gray);
+    
+		            c.setPosition(cX - c.getWidth() / 2, cY);
+		            c.setColor(Color.gray);
+    
+		            add(c1);
+		            add(c2);
+		            add(c);
+		            add(t);
+		        }
 
-			// Creates a graphic text string
-			function createText(text, font, cX, cY, messageBox = true) {
-				var t = new Text(text, font);
-				var c = new Rectangle(getWidth(), t.getHeight() + 50);
+		        /// Main function to end game
+		        function endGame() {
+		            stopTimer(step);
+    
+		            var reactionTime = calculateAverage();
+		            createText("Reaction Time: " + reactionTime + "ms", "22pt sans-serif", screen[2], 200);
+		            createButton("Retry", "22pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
+		        }
 
-				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-				t.setColor(shiftedBlack);
+		        function calculateAverage() {
+		            var arrAverage = 0;
+		            var arrLength = reactionAverage.length;
+		            for (var i = 0; i < arrLength; i++) {
+		                arrAverage += reactionAverage[i];
+		            }
+		            return Math.round(arrAverage / arrLength);
+		        }
 
-				c.setPosition(cX - c.getWidth() / 2, cY);
-				c.setColor(shiftedGray);
-
-				if (messageBox) {
-					add(c);
-				}
-				add(t);
-			}
-
-			// Creates a smooth button, with text inside it, where c = container, and t = text
-			function createButton(text, font, cWidth, cHeight, cX, cY) {
-				var t = new Text(text, font);
-				var c = new Rectangle(cWidth, cHeight);
-				var c1 = new Circle(cHeight / 2);
-				var c2 = new Circle(cHeight / 2);
-
-				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-				t.setColor(Color.black);
-
-				c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
-				c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
-
-				c1.setColor(Color.gray);
-				c2.setColor(Color.gray);
-
-				c.setPosition(cX - c.getWidth() / 2, cY);
-				c.setColor(Color.gray);
-
-				add(c1);
-				add(c2);
-				add(c);
-				add(t);
-			}
-
-			/// Main function to end game
-			function endGame() {
-				stopTimer(step);
-
-				var reactionTime = calculateAverage();
-				createText("Reaction Time: " + reactionTime + "ms", "22pt sans-serif", screen[2], 200);
-				createButton("Retry", "22pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
-			}
-
-			function calculateAverage() {
-				var arrAverage = 0;
-				var arrLength = reactionAverage.length;
-				for (var i = 0; i < arrLength; i++) {
-					arrAverage += reactionAverage[i];
-				}
-				return Math.round(arrAverage / arrLength);
-			}
-
-			if (typeof start === 'function') {
-				start();
-			}
+		        if (typeof start === 'function') {
+		            start();
+		        }
 		});
 	</script>
 </body>

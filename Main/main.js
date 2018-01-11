@@ -1,4 +1,4 @@
-﻿window.onload = function () {
+﻿window.addEventListener("load", function () {
 	var header = document.getElementById("header");
 	var footer = document.getElementById("footer");
 
@@ -22,6 +22,11 @@
 			'<li style="float: right;">' +
 				'<a id="time"></a>' +
 			'</li>' +
+            '<li>' +
+                '<a href="faim.html">' +
+                    '<i class="fa fa-dot-circle-o" aria-hidden="true"></i>' +
+                '&nbsp;Fast Aim</a>' +
+            '</li>' +
 		'</ul>';
 
 	footer.innerHTML =
@@ -37,15 +42,8 @@
 				'&nbsp;License</a>' +
 			'</li>' +
 		'</ul>';
-
-	setTime(); //Initial call to show time immediatly
-	setInterval(setTime, 1000); // Set a timer to call function setTime every 1000ms, or 1 second.
-};
+});
 
 function redirectToSite(urlOfSite) {
 	window.open(urlOfSite, "_blank"); // Open a new tab with the specified url
-}
-
-function setTime() {
-	document.getElementById("time").innerHTML = new Date().toLocaleTimeString(); // Find the element with ID date, and modify contents to the local time, which gets time from System Clock.
 }
