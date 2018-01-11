@@ -29,8 +29,6 @@
 			var score, highscore, lives;
 			var theCircle, speedMove;
 
-			const playerDimensions = 120;
-
 			var scoreLabel, livesLabel, buttonElement, playerElement, playerDirection;
 
 			var playerImage = "https://puu.sh/yZmDf/c11c111ae2.png";
@@ -40,6 +38,7 @@
 			var shiftedGray = new Color(205, 205, 205);
 			var shiftedBlack = new Color(1, 1, 1);
 			var circleColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple, Color.cyan];
+			var playerDimensions = 120;
 
 			function beginGame() {
 				removeAll();
@@ -301,7 +300,6 @@
 					theCircle[i].obj.move(0, theCircle[i].speed);
 					// If the object collides with the player
 					if (hasCollided(playerElement, theCircle[i].obj)) {
-						println("YEET");
 						remove(theCircle[i].obj);
 						theCircle.remove(i);
 						if (lives != 0) {
