@@ -12,7 +12,7 @@
 
 	<!-- Import JavaScripts -->
 	<script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="time.js"></script>
+	<script type="text/javascript" src="time.js"></script>
 	<title>Fast Aim</title>
 </head>
 <body class="bg-gradient fg-white center-text">
@@ -25,151 +25,149 @@
 		<p>Welcome to Fast Aim. You will attempt click circles as they appear on the screen. The game will get progressively faster as you keep playing. Good luck and have fun!</p>
 	</div>
 	<script>
-	    window.addEventListener("load", function () {
-	        var circle, circleArr, difficulty, title;
+		window.addEventListener("load", function () {
+			// Global Variables
+			var circle, circleArr, difficulty, title, score;
 
-	        // Text Variables
-	        var timeText;
-	        var pointText;
+			// Text Variables
+			var timeText;
+			var scoreText;
 
-	        // Time Variables
-	        var gameTime;
-	        var timeGameStarted;
+			// Time Variables
+			var gameTime;
 
-	        // Color Variables
-	        var shiftedGray = new Color(205, 205, 205);
-	        var shiftedBlack = new Color(1, 1, 1);
+			// Color Variables
+			var shiftedGray = new Color(205, 205, 205);
+			var shiftedBlack = new Color(1, 1, 1);
 
-	        // Gets the width and height of canvas, then find the center.
-	        var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+			// Gets the width and height of canvas, then find the center.
+			var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
 
-	        function start() {
-	            circleArr = [];
-	            difficulty = 33;
-    
-	            drawMenu();
-	        }
+			function start() {
+				circleArr = [];
+				difficulty = 1000;
+				score = 0;
 
-	        function startGame() {
-	            timeGameStarted = currentTime();
-	            gameTime = 0;
-	            removeAll();
-	            renderText();
-	            setTimer(drawRandomCircles, 1000);
-	            stepDifficulty();
-	        }
+				drawMenu();
+			}
 
-	        function renderText() {
-	            createText(timeText, "Time: " + gameTime, "16pt sans-serif", screen[2], 0 - 16, false);
-	        }
+			function startGame() {
+				removeAll();
+				renderText();
+				Randomize();
+			}
 
-	        function stepDifficulty() {
-	            stopTimer(step);
-	            setTimer(step, 33);
-	        }
+			function renderText() {
+				scoreText = createText("Score: " + score, "14pt sans-serif", 0 + 42, 0 - 14, false);
+				add(scoreText);
+			}
 
-	        function step() {
-	            updateText();
-	            circleExpoGrowth();
-	            stepDifficulty();
-	        }
+			function Randomize() {
+				stopTimer(drawRandomCircles);
+				setTimer(drawRandomCircles, difficulty);
+			}
 
-	        function updateText() {
-	            gameTime = currentTime() - timeGameStarted;
-	            remove(timeText);
-	            renderText(); // Render it again, thread waste?
-	        }
+			function step() {
+				circleHandle();
+				Randomize();
+			}
 
-	        function drawRandomCircles() {
-	            circle = {
-	                _self: new Circle(25),
-	                aliveFor: currentTime(),
-	            };
-	            circle._self.setPosition(Randomizer.nextInt(0, getWidth() - circle._self.getRadius()), Randomizer.nextInt(0, getHeight() - circle._self.getRadius()));
-	            circle._self.setColor(Randomizer.nextColor());
-	            circleArr.push(circle);
-	            add(circle._self);
-	        }
+			function drawRandomCircles() {
+				var circleSize = (50 - (score / 10));
+				circle = {
+					_self: new Circle(circleSize),
+					birth: currentTime(),
+				};
+				circle._self.setPosition(Randomizer.nextInt(0, getWidth() - circle._self.getRadius()), Randomizer.nextInt(0, getHeight() - circle._self.getRadius()));
+				circle._self.setColor(Randomizer.nextColor());
+				circleArr.push(circle);
+				add(circle._self);
+			}
 
-	        function circleExpoGrowth() {
-	            for (var i = 0; i < circleArr.length; i++) {
-	            }
-	        }
+			function circleHandle() {
+				for (var i = 0; i < circleArr.length; i++) {
+					if ((currentTime() - circleArr[i].birth) > 500) {
+						remove(circleArr[i]._self);
+					}
+				}
+			}
 
-	        function drawMenu() {
-	            createText(title, "FastAim!", "30pt sans-serif", screen[2], 0, false);
-	            createButton("Start", "24pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
-    
-	            mouseClickMethod(performAction_Click);
-	        }
+			function drawMenu() {
+				add(createText("FastAim!", "30pt sans-serif", screen[2], 0, false));
+				createButton("Start", "24pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
 
-	        function points() {
-    
-	        }
+				mouseClickMethod(performAction_Click);
+			}
 
-	        /// Helper Functions
+			function points() {
+				score++;
+				scoreText.setText("Score: " + score);
+			}
 
-	        function currentTime() {
-	            return new Date() .getTime() / 1000;
-	        }
+			/// Helper Functions
 
-	        // Creates a graphic text string
-	        function createText(textVar, text, font, cX, cY, messageBox = true) {
-	            textVar = new Text(text, font);
-	            var c = new Rectangle(getWidth(), textVar.getHeight() + 50);
-    
-	            textVar.setPosition(cX - textVar.getWidth() / 2, cY + c.getHeight() / 2 + (textVar.getHeight() / 3));
-	            textVar.setColor(shiftedBlack);
-    
-	            c.setPosition(cX - c.getWidth() / 2, cY);
-	            c.setColor(shiftedGray);
-    
-	            if (messageBox) {
-	                add(c);
-	            }
-	            add(textVar);
-	        }
+			function currentTime() {
+				return new Date().getTime() / 1000;
+			}
 
-	            // Creates a smooth button, with text inside it, where c = container, and t = text
-	            function createButton(text, font, cWidth, cHeight, cX, cY) {
-	                var t = new Text(text, font);
-	                var c = new Rectangle(cWidth, cHeight);
-	                var c1 = new Circle(cHeight / 2);
-	                var c2 = new Circle(cHeight / 2);
-    
-	                t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-	                t.setColor(Color.black);
-    
-	                c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
-	                c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
-    
-	                c1.setColor(Color.gray);
-	                c2.setColor(Color.gray);
-    
-	                c.setPosition(cX - c.getWidth() / 2, cY);
-	                c.setColor(Color.gray);
-    
-	                add(c1);
-	                add(c2);
-	                add(c);
-	                add(t);
-	            }
+			// Creates a graphic text string
+			function createText(text, font, cX, cY, messageBox = true) {
+				var textVar = new Text(text, font);
+				var c = new Rectangle(getWidth(), textVar.getHeight() + 50);
 
-	            function performAction_Click(e) {
-	                var element = getElementAt(e.getX(), e.getY());
-	                if (element != null && element.type == "Circle") {
-	                    points();
-	                }
-    
-	                // Long and ugly condition
-	                if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
-	                    startGame();
-	                }
-	            }
+				textVar.setPosition(cX - textVar.getWidth() / 2, cY + c.getHeight() / 2 + (textVar.getHeight() / 3));
+				textVar.setColor(shiftedBlack);
 
-	            if (typeof start === 'function') {
-	                start();
-	            }
+				c.setPosition(cX - c.getWidth() / 2, cY);
+				c.setColor(shiftedGray);
+
+				if (messageBox) {
+					add(c);
+				}
+				return textVar;
+			}
+
+			// Creates a smooth button, with text inside it, where c = container, and t = text
+			function createButton(text, font, cWidth, cHeight, cX, cY) {
+				var t = new Text(text, font);
+				var c = new Rectangle(cWidth, cHeight);
+				var c1 = new Circle(cHeight / 2);
+				var c2 = new Circle(cHeight / 2);
+
+				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+				t.setColor(Color.black);
+
+				c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
+				c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
+
+				c1.setColor(Color.gray);
+				c2.setColor(Color.gray);
+
+				c.setPosition(cX - c.getWidth() / 2, cY);
+				c.setColor(Color.gray);
+
+				add(c1);
+				add(c2);
+				add(c);
+				add(t);
+			}
+
+			function performAction_Click(e) {
+				var element = getElementAt(e.getX(), e.getY());
+				if (element != null && element.type == "Circle") {
+					remove(element);
+					points();
+				}
+
+				// Long and ugly condition
+				if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
+					startGame();
+				}
+			}
+
+			if (typeof start === 'function') {
+				start();
+			}
 		});
 	</script>
 </body>
