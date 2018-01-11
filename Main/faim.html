@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<!-- Import StyleSheet, Icon, and FontAwesome -->
+	<link rel="icon" href="https://puu.sh/yF7r5/6b4c2965e9.png">
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- Import CodeHS dependancies-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://static.codehs.com/gulp/9fad0d591712b48ff1a19f4027446782eed9c0c4/chs-js-lib/chs.js"></script>
+
+	<!-- Import JavaScripts -->
+	<script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="time.js"></script>
+	<title>Fast Aim</title>
+</head>
+<body class="bg-gradient fg-white center-text">
+	<div class="fade-in">
+		<div id="header"></div>
+		<h1>Fast Aim</h1>
+		<canvas width="600"
+				height="600"
+				class="codehs-editor-canvas"></canvas>
+		<p>Welcome to Fast Aim. You will attempt click circles as they appear on the screen. The game will get progressively faster as you keep playing. Good luck and have fun!</p>
+	</div>
+	<script>
+	    window.addEventListener("load", function () {
+	        var circle, circleArr, difficulty, title;
+
+	        // Text Variables
+	        var timeText;
+	        var pointText;
+
+	        // Time Variables
+	        var gameTime;
+	        var timeGameStarted;
+
+	        // Color Variables
+	        var shiftedGray = new Color(205, 205, 205);
+	        var shiftedBlack = new Color(1, 1, 1);
+
+	        // Gets the width and height of canvas, then find the center.
+	        var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+
+	        function start() {
+	            circleArr = [];
+	            difficulty = 33;
+    
+	            drawMenu();
+	        }
+
+	        function startGame() {
+	            timeGameStarted = currentTime();
+	            gameTime = 0;
+	            removeAll();
+	            renderText();
+	            setTimer(drawRandomCircles, 1000);
+	            stepDifficulty();
+	        }
+
+	        function renderText() {
+	            createText(timeText, "Time: " + gameTime, "16pt sans-serif", screen[2], 0 - 16, false);
+	        }
+
+	        function stepDifficulty() {
+	            stopTimer(step);
+	            setTimer(step, 33);
+	        }
+
+	        function step() {
+	            updateText();
+	            circleExpoGrowth();
+	            stepDifficulty();
+	        }
+
+	        function updateText() {
+	            gameTime = currentTime() - timeGameStarted;
+	            remove(timeText);
+	            renderText(); // Render it again, thread waste?
+	        }
+
+	        function drawRandomCircles() {
+	            circle = {
+	                _self: new Circle(25),
+	                aliveFor: currentTime(),
+	            };
+	            circle._self.setPosition(Randomizer.nextInt(0, getWidth() - circle._self.getRadius()), Randomizer.nextInt(0, getHeight() - circle._self.getRadius()));
+	            circle._self.setColor(Randomizer.nextColor());
+	            circleArr.push(circle);
+	            add(circle._self);
+	        }
+
+	        function circleExpoGrowth() {
+	            for (var i = 0; i < circleArr.length; i++) {
+	            }
+	        }
+
+	        function drawMenu() {
+	            createText(title, "FastAim!", "30pt sans-serif", screen[2], 0, false);
+	            createButton("Start", "24pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
+    
+	            mouseClickMethod(performAction_Click);
+	        }
+
+	        function points() {
+    
+	        }
+
+	        /// Helper Functions
+
+	        function currentTime() {
+	            return new Date() .getTime() / 1000;
+	        }
+
+	        // Creates a graphic text string
+	        function createText(textVar, text, font, cX, cY, messageBox = true) {
+	            textVar = new Text(text, font);
+	            var c = new Rectangle(getWidth(), textVar.getHeight() + 50);
+    
+	            textVar.setPosition(cX - textVar.getWidth() / 2, cY + c.getHeight() / 2 + (textVar.getHeight() / 3));
+	            textVar.setColor(shiftedBlack);
+    
+	            c.setPosition(cX - c.getWidth() / 2, cY);
+	            c.setColor(shiftedGray);
+    
+	            if (messageBox) {
+	                add(c);
+	            }
+	            add(textVar);
+	        }
+
+	            // Creates a smooth button, with text inside it, where c = container, and t = text
+	            function createButton(text, font, cWidth, cHeight, cX, cY) {
+	                var t = new Text(text, font);
+	                var c = new Rectangle(cWidth, cHeight);
+	                var c1 = new Circle(cHeight / 2);
+	                var c2 = new Circle(cHeight / 2);
+    
+	                t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+	                t.setColor(Color.black);
+    
+	                c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
+	                c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
+    
+	                c1.setColor(Color.gray);
+	                c2.setColor(Color.gray);
+    
+	                c.setPosition(cX - c.getWidth() / 2, cY);
+	                c.setColor(Color.gray);
+    
+	                add(c1);
+	                add(c2);
+	                add(c);
+	                add(t);
+	            }
+
+	            function performAction_Click(e) {
+	                var element = getElementAt(e.getX(), e.getY());
+	                if (element != null && element.type == "Circle") {
+	                    points();
+	                }
+    
+	                // Long and ugly condition
+	                if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
+	                    startGame();
+	                }
+	            }
+
+	            if (typeof start === 'function') {
+	                start();
+	            }
+		});
+	</script>
+</body>
+</html>
