@@ -12,7 +12,7 @@
 
 	<!-- Import JavaScripts -->
 	<script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="time.js"></script>
+	<script type="text/javascript" src="time.js"></script>
 	<title>Catch the Circles</title>
 </head>
 <body class="bg-gradient fg-white center-text">
@@ -26,344 +26,352 @@
 	</div>
 	<script>
 		window.addEventListener("load", function () {
-		    var score, highscore, lives;
-		    var theCircle, speedMove;
+			var score, highscore, lives;
+			var theCircle, speedMove;
 
-		    var scoreLabel, livesLabel, buttonElement, playerElement, playerDirection;
+			const playerDimensions = 120;
 
-		    var playerImage = "https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824144_960_720.png";
+			var scoreLabel, livesLabel, buttonElement, playerElement, playerDirection;
 
-		    var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
-		    var shiftedGray = new Color(205, 205, 205);
-		    var shiftedBlack = new Color(1, 1, 1);
-		    var circleColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple, Color.cyan];
+			var playerImage = "https://puu.sh/yZmDf/c11c111ae2.png";
+			var playerImage_Flip = "https://puu.sh/yZmCU/45c66b28d8.png";
 
-		    function beginGame() {
-		        removeAll();
-		        createPlayerElement();
-		        createScoreAndLivesLabel();
-		        setTimer(playerMove, 16);
-		        /// -- Code credited and attributed to Cohen, Jordan.
-    
-		        // Code recieved from FallingSquares example, modified for personal game idea.
-		        setTimer(drawCircles, 400);
-		        setTimer(setup, 8);
-    
-		        // Code recieved from SmoothMove example, modified for personal game idea.
-		        keyDownMethod(startMovingPlayer);
-		        keyUpMethod(stopMovingPlayer);
-    
-		        /// -- End Code Crediting and Attributing.
-		    }
+			var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+			var shiftedGray = new Color(205, 205, 205);
+			var shiftedBlack = new Color(1, 1, 1);
+			var circleColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple, Color.cyan];
 
-		    function beginEndGame(){
-		        stopTimer(playerMove);
-		        stopTimer(drawCircles);
-		        if (theCircle.length == 0) {
-		            stopTimer(setup);
-		            endGame();
-		        }
-		    }
+			function beginGame() {
+				removeAll();
+				createPlayerElement();
+				createScoreAndLivesLabel();
+				setTimer(playerMove, 16);
+				/// -- Code credited and attributed to Cohen, Jordan.
 
-		    function endGame() {
-		        setHighScore();
-		        createText("Highscore: " + sessionStorage.getItem("highScore"), "24pt sans-serif", screenTypes[2], 200);
-		        createButton("Retry", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
-		    }
+				// Code recieved from FallingSquares example, modified for personal game idea.
+				setTimer(drawCircles, 400);
+				setTimer(setup, 8);
 
-		    function start() {
-		        // Assign global values
-		        score = 0;
-		        lives = 3;
-		        theCircle = [];
-		        speedMove = false;
-    
-		        drawMenu();
-		    }
+				// Code recieved from SmoothMove example, modified for personal game idea.
+				keyDownMethod(startMovingPlayer);
+				keyUpMethod(stopMovingPlayer);
 
-		    function drawMenu() {
-		        createText("Catch The Circles!", "30pt sans-serif", screenTypes[2], 0, false);
-		        createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
-    
-		        mouseClickMethod(performAction_Click);
-		    }
+				/// -- End Code Crediting and Attributing.
+			}
 
-		    function setHighScore() {
-		        var Score = score;
-		        var HighScore = sessionStorage.getItem("highScore");
-    
-		        if (HighScore !== null) {
-		            if (Score > HighScore) {
-		                sessionStorage.setItem("highScore", score);
-		            }
-		        }
-		        else {
-		            sessionStorage.setItem("highScore", score);
-		        }
-		    }
+			function beginEndGame() {
+				stopTimer(playerMove);
+				stopTimer(drawCircles);
+				if (theCircle.length == 0) {
+					stopTimer(setup);
+					endGame();
+				}
+			}
 
-		    // Creates a graphic text string
-		    function createText(text, font, cX, cY, messageBox = true) {
-		        var t = new Text(text, font);
-		        var c = new Rectangle(getWidth(), t.getHeight() + 50);
-    
-		        t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-		        t.setColor(shiftedBlack);
-    
-		        c.setPosition(cX - c.getWidth() / 2, cY);
-		        c.setColor(shiftedGray);
-    
-		        if (messageBox) {
-		            add(c);
-		        }
-		        add(t);
-		    }
+			function endGame() {
+				setHighScore();
+				createText("Highscore: " + sessionStorage.getItem("highScore"), "24pt sans-serif", screenTypes[2], 200);
+				createButton("Retry", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
+			}
 
-		        // Creates a smooth button, with text inside it, where c = container, and t = text
-		        function createButton(text, font, cWidth, cHeight, cX, cY) {
-		            var t = new Text(text, font);
-		            var c = new Rectangle(cWidth, cHeight);
-		            var c1 = new Circle(cHeight / 2);
-		            var c2 = new Circle(cHeight / 2);
-    
-		            t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-		            t.setColor(Color.black);
-    
-		            c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
-		            c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
-    
-		            c1.setColor(Color.gray);
-		            c2.setColor(Color.gray);
-    
-		            c.setPosition(cX - c.getWidth() / 2, cY);
-		            c.setColor(Color.gray);
-    
-		            add(c1);
-		            add(c2);
-		            add(c);
-		            add(t);
-		        }
+			function start() {
+				// Assign global values
+				score = 0;
+				lives = 3;
+				theCircle = [];
+				speedMove = false;
 
-		        // Checks if the Player and the Circles have collided, that is, touched.
-		        function hasCollided(playerObject, circleObject) {
-		            // Get the exact position of the four corners of the object.
-		            var playerX = {
-		                topLeft: playerObject.getX(),
-		                topRight: playerObject.getX() + playerObject.getWidth(),
-		            };
-    
-		            var playerY = {
-		                topLeft: playerObject.getY(),
-		                topRight: playerObject.getY(),
-		            };
-		            // Find the four corners of a circle (assuming a square with the same diameter as lengths)
-		            var circleX = {
-		                topLeft: circleObject.getX() - circleObject.getRadius(),
-		                topRight: circleObject.getX() + circleObject.getRadius(),
-		            };
-    
-		            var circleY = {
-		                topLeft: circleObject.getY() - circleObject.getRadius(),
-		                topRight: circleObject.getY() - circleObject.getRadius(),
-		            };
-		            /// -- Code credited and attributed to Cohen, Jordan.
-    
-		            // Code recieved from SquaresCollisionCheck example, modified for personal game idea.
-		            if (playerX.topRight > circleX.topLeft && playerX.topLeft < circleX.topRight
-                    &&  playerY.topLeft + playerObject.getWidth() > circleY.topLeft
-                    &&  playerY.topRight < circleObject.getY() + circleObject.getWidth()) {
-		                return true;
-		            }
-		            /// -- End Code Crediting and Attributing.
-		        }
+				drawMenu();
+			}
 
-		        // Creates a player image, right at the bottom
-		        function createPlayerElement() {
-		            playerElement = new WebImage(playerImage);
-		            playerElement.setSize(75, 75);
-		            playerElement.setPosition(screenTypes[2] - (playerElement.getWidth() / 2), screenTypes[1] - playerElement.getHeight());
-		            add(playerElement);
-		        }
+			function drawMenu() {
+				createText("Catch The Circles!", "30pt sans-serif", screenTypes[2], 0, false);
+				createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
 
-		        function createScoreAndLivesLabel() {
-		            // We wont be using CreateTextElement, since we need to perform more calculations on the text position
-		            scoreLabel = new Text("Score: " + score, "15pt sans-serif");
-		            scoreLabel.setPosition(5, 0 + scoreLabel.getHeight());
-		            scoreLabel.setColor(Color.black);
-		            add(scoreLabel);
-    
-		            livesLabel = new Text("Lives: " + lives, "15pt sans-serif");
-		            livesLabel.setPosition(screenTypes[0] - livesLabel.getWidth() - 5, 0 + livesLabel.getHeight());
-		            livesLabel.setColor(Color.black);
-		            add(livesLabel);
-		        }
+				mouseClickMethod(performAction_Click);
+			}
 
-		        // Creates a graphic text string
-		        function createText(text, font, cX, cY, messageBox = true) {
-		            var t = new Text(text, font);
-		            var c = new Rectangle(getWidth(), t.getHeight() + 50);
-    
-		            t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-		            t.setColor(shiftedBlack);
-    
-		            c.setPosition(cX - c.getWidth() / 2, cY);
-		            c.setColor(shiftedGray);
-    
-		            if (messageBox) {
-		                add(c);
-		            }
-		            add(t);
-		        }
+			function setHighScore() {
+				var Score = score;
+				var HighScore = sessionStorage.getItem("highScore");
 
-		            // Creates a smooth button, with text inside it, where c = container, and t = text
-		            function createButton(text, font, cWidth, cHeight, cX, cY) {
-		                var t = new Text(text, font);
-		                var c = new Rectangle(cWidth, cHeight);
-		                var c1 = new Circle(cHeight / 2);
-		                var c2 = new Circle(cHeight / 2);
-    
-		                t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-		                t.setColor(Color.black);
-    
-		                c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
-		                c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
-    
-		                c1.setColor(Color.gray);
-		                c2.setColor(Color.gray);
-    
-		                c.setPosition(cX - c.getWidth() / 2, cY);
-		                c.setColor(Color.gray);
-    
-		                add(c1);
-		                add(c2);
-		                add(c);
-		                add(t);
-		            }
+				if (HighScore !== null) {
+					if (Score > HighScore) {
+						sessionStorage.setItem("highScore", score);
+					}
+				}
+				else {
+					sessionStorage.setItem("highScore", score);
+				}
+			}
 
-		            function setup() {
-		                if (lives == 0) {
-		                    beginEndGame();
-		                }
-		                fallCircles();
-		            }
+			// Creates a graphic text string
+			function createText(text, font, cX, cY, messageBox = true) {
+				var t = new Text(text, font);
+				var c = new Rectangle(getWidth(), t.getHeight() + 50);
 
-		            function drawCircles() {
-		                var fallingRate = score != 0 ? (score / 18) : 1 / 16;
-    
-		                var circle = {
-		                    obj: new Circle(30),
-		                    speed: fallingRate + (Randomizer.nextInt(1, 3)),
-		                };
-    
-		                var randomX = Randomizer.nextInt(circle.obj.getRadius(),
-                        screenTypes[0] - circle.obj.getWidth());
-    
-    
-		                circle.obj.setPosition(randomX, 0);
-		                circle.obj.setColor(circleColors[Randomizer.nextInt(0, circleColors.length - 1)]);
-		                add(circle.obj);
-    
-		                theCircle.push(circle);
-		            }
+				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+				t.setColor(shiftedBlack);
 
-		            function setScoreAndLives(valueOfScore, valueOfLives) {
-		                // Event Handler for scoreValue changing, since onChange does not work correctly.
-		                var previousScore = score;
-		                var previousLives = lives;
-		                lives = valueOfLives;
-		                score = valueOfScore;
-		                updateScoreAndLives();
-		            }
+				c.setPosition(cX - c.getWidth() / 2, cY);
+				c.setColor(shiftedGray);
 
-		            function updateScoreAndLives() {
-		                if (score < 0) { score = 0; }
-		                if (lives < 0) { lives = 0; }
-    
-		                colorLabels();
-    
-		                scoreLabel.setText("Score: " + score);
-		                livesLabel.setText("Lives: " + lives);
-		            }
+				if (messageBox) {
+					add(c);
+				}
+				add(t);
+			}
 
-		            function colorLabels() {
-		                lives == 2 ? livesLabel.setColor(Color.orange) :
-                        lives == 1 ? livesLabel.setColor(Color.red) :
-                        lives == 0 ? livesLabel.setColor(Color.black) : null;
-    
-		                score <= 10 ? scoreLabel.setColor(Color.blue) :
-                        score >= 25 ? scoreLabel.setColor(Color.purple) : null;
-		            }
+			// Creates a smooth button, with text inside it, where c = container, and t = text
+			function createButton(text, font, cWidth, cHeight, cX, cY) {
+				var t = new Text(text, font);
+				var c = new Rectangle(cWidth, cHeight);
+				var c1 = new Circle(cHeight / 2);
+				var c2 = new Circle(cHeight / 2);
 
-		            function fallCircles() {
-		                for (var i = 0; i < theCircle.length; i++) {
-		                    theCircle[i].obj.move(0, theCircle[i].speed);
-		                    // If the object collides with the player
-		                    if (hasCollided(playerElement, theCircle[i].obj)) {
-		                        remove(theCircle[i].obj);
-		                        theCircle.remove(i);
-		                        if (lives != 0) {
-		                            setScoreAndLives(score + 1, lives);
-		                        }
-		                    }
-		                        // Offer the player some lenience, the object must sink halfway into the ground to lose a life
-		                    else if (theCircle[i].obj.getY() > screenTypes[1] - theCircle[i].obj.getRadius() / 2) {
-		                        remove(theCircle[i].obj);
-		                        theCircle.remove(i);
-		                        if (lives != 0) {
-		                            setScoreAndLives(score, lives - 1);
-		                        }
-		                        i--;
-		                    }
-		                }
-		            }
+				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+				t.setColor(Color.black);
 
-		            function startMovingPlayer(e) {
-		                if (e.keyCode == Keyboard.SHIFT) {
-		                    speedMove = true;
-		                }
-		                if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.letter('A')) {
-		                    playerDirection = "LEFT";
-		                }
-		                if (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.letter('D')) {
-		                    playerDirection = "RIGHT";
-		                }
-		            }
+				c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
+				c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
 
-		            function playerMove() {
-		                if (playerDirection == "LEFT" && playerElement.getX() > 0) {
-		                    if (speedMove) { playerElement.move(-60, 0); }
-		                    else { playerElement.move(-15, 0); }
-		                }
-		                if (playerDirection == "RIGHT" && (playerElement.getX() + playerElement.getWidth()) < getWidth()) {
-		                    if (speedMove) { playerElement.move(60, 0); }
-		                    else { playerElement.move(15, 0); }
-		                }
-		            }
+				c1.setColor(Color.gray);
+				c2.setColor(Color.gray);
 
-		            function stopMovingPlayer(e) {
-		                if (e.keyCode == Keyboard.SHIFT) {
-		                    speedMove = false;
-		                }
-		                // If the player was moving left and the internal direction was left "or" if the player was moving right and the internal direction was right
-		                if (((e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.letter('A')) && playerDirection == "LEFT") || (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.letter('D')) && playerDirection == "RIGHT") {
-		                    playerDirection = "";
-		                }
-		            }
+				c.setPosition(cX - c.getWidth() / 2, cY);
+				c.setColor(Color.gray);
 
-		            function performAction_Click(e) {
-		                var element = getElementAt(e.getX(), e.getY());
-    
-		                // Long and ugly condition
-		                if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
-		                    score = 0;
-		                    lives = 3;
-		                    beginGame();
-		                }
-		            }
+				add(c1);
+				add(c2);
+				add(c);
+				add(t);
+			}
 
-		            if (typeof start === 'function') {
-		                start();
-		            }
+			// Checks if the Player and the Circles have collided, that is, touched.
+			function hasCollided(playerObject, circleObject) {
+				// Get the exact position of the four corners of the object.
+				var playerX = {
+					topLeft: playerObject.getX(),
+					topRight: playerObject.getX() + playerObject.getWidth(),
+				};
+
+				var playerY = {
+					topLeft: playerObject.getY(),
+					topRight: playerObject.getY(),
+				};
+				// Find the four corners of a circle (assuming a square with the same diameter as lengths)
+				var circleX = {
+					topLeft: circleObject.getX() - circleObject.getRadius(),
+					topRight: circleObject.getX() + circleObject.getRadius(),
+				};
+
+				var circleY = {
+					topLeft: circleObject.getY() - circleObject.getRadius(),
+					topRight: circleObject.getY() - circleObject.getRadius(),
+				};
+				/// -- Code credited and attributed to Cohen, Jordan.
+
+				// Code recieved from SquaresCollisionCheck example, modified for personal game idea.
+				if (playerX.topRight > circleX.topLeft && playerX.topLeft < circleX.topRight
+					&& playerY.topLeft + playerObject.getWidth() > circleY.topLeft
+					&& playerY.topRight < circleObject.getY() + circleObject.getWidth()) {
+					return true;
+				}
+				/// -- End Code Crediting and Attributing.
+			}
+
+			// Creates a player image, right at the bottom
+			function createPlayerElement() {
+				playerElement = new WebImage(playerImage);
+				playerElement.setSize(playerDimensions, playerDimensions);
+				playerElement.setPosition(screenTypes[2] - (playerElement.getWidth() / 2), screenTypes[1] - playerElement.getHeight());
+				add(playerElement);
+			}
+
+			function createScoreAndLivesLabel() {
+				// We wont be using CreateTextElement, since we need to perform more calculations on the text position
+				scoreLabel = new Text("Score: " + score, "15pt sans-serif");
+				scoreLabel.setPosition(5, 0 + scoreLabel.getHeight());
+				scoreLabel.setColor(Color.black);
+				add(scoreLabel);
+
+				livesLabel = new Text("Lives: " + lives, "15pt sans-serif");
+				livesLabel.setPosition(screenTypes[0] - livesLabel.getWidth() - 5, 0 + livesLabel.getHeight());
+				livesLabel.setColor(Color.black);
+				add(livesLabel);
+			}
+
+			// Creates a graphic text string
+			function createText(text, font, cX, cY, messageBox = true) {
+				var t = new Text(text, font);
+				var c = new Rectangle(getWidth(), t.getHeight() + 50);
+
+				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+				t.setColor(shiftedBlack);
+
+				c.setPosition(cX - c.getWidth() / 2, cY);
+				c.setColor(shiftedGray);
+
+				if (messageBox) {
+					add(c);
+				}
+				add(t);
+			}
+
+			// Creates a smooth button, with text inside it, where c = container, and t = text
+			function createButton(text, font, cWidth, cHeight, cX, cY) {
+				var t = new Text(text, font);
+				var c = new Rectangle(cWidth, cHeight);
+				var c1 = new Circle(cHeight / 2);
+				var c2 = new Circle(cHeight / 2);
+
+				t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+				t.setColor(Color.black);
+
+				c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
+				c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
+
+				c1.setColor(Color.gray);
+				c2.setColor(Color.gray);
+
+				c.setPosition(cX - c.getWidth() / 2, cY);
+				c.setColor(Color.gray);
+
+				add(c1);
+				add(c2);
+				add(c);
+				add(t);
+			}
+
+			function setup() {
+				if (lives == 0) {
+					beginEndGame();
+				}
+				fallCircles();
+			}
+
+			function drawCircles() {
+				var fallingRate = score != 0 ? (score / 18) : 1 / 16;
+
+				var circle = {
+					obj: new Circle(30),
+					speed: fallingRate + (Randomizer.nextInt(1, 3)),
+				};
+
+				var randomX = Randomizer.nextInt(circle.obj.getRadius(),
+					screenTypes[0] - circle.obj.getWidth());
+
+				circle.obj.setPosition(randomX, 0);
+				circle.obj.setColor(circleColors[Randomizer.nextInt(0, circleColors.length - 1)]);
+				add(circle.obj);
+
+				theCircle.push(circle);
+			}
+
+			function setScoreAndLives(valueOfScore, valueOfLives) {
+				// Event Handler for scoreValue changing, since onChange does not work correctly.
+				var previousScore = score;
+				var previousLives = lives;
+				lives = valueOfLives;
+				score = valueOfScore;
+				updateScoreAndLives();
+			}
+
+			function updateScoreAndLives() {
+				if (score < 0) { score = 0; }
+				if (lives < 0) { lives = 0; }
+
+				colorLabels();
+
+				scoreLabel.setText("Score: " + score);
+				livesLabel.setText("Lives: " + lives);
+			}
+
+			function colorLabels() {
+				lives == 2 ? livesLabel.setColor(Color.orange) :
+					lives == 1 ? livesLabel.setColor(Color.red) :
+						lives == 0 ? livesLabel.setColor(Color.black) : null;
+
+				score <= 10 ? scoreLabel.setColor(Color.blue) :
+					score >= 25 ? scoreLabel.setColor(Color.purple) : null;
+			}
+
+			function fallCircles() {
+				for (var i = 0; i < theCircle.length; i++) {
+					theCircle[i].obj.move(0, theCircle[i].speed);
+					// If the object collides with the player
+					if (hasCollided(playerElement, theCircle[i].obj)) {
+						println("YEET");
+						remove(theCircle[i].obj);
+						theCircle.remove(i);
+						if (lives != 0) {
+							setScoreAndLives(score + 1, lives);
+						}
+					}
+					// Provide the player some lenience, the object must sink halfway into the ground to lose a life
+					else if (theCircle[i].obj.getY() > screenTypes[1] - theCircle[i].obj.getRadius() / 2) {
+						remove(theCircle[i].obj);
+						theCircle.remove(i);
+						if (lives != 0) {
+							setScoreAndLives(score, lives - 1);
+						}
+						i--;
+					}
+				}
+			}
+
+			function startMovingPlayer(e) {
+				if (e.keyCode == Keyboard.SHIFT) {
+					speedMove = true;
+				}
+				if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.letter('A')) {
+					playerDirection = "LEFT";
+				}
+				if (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.letter('D')) {
+					playerDirection = "RIGHT";
+				}
+			}
+
+			function playerMove() {
+				if (playerDirection == "LEFT" && playerElement.getX() > 0) {
+					if (speedMove) { playerElement.move(-45, 0); updatePlayerElementImage(playerImage_Flip); }
+					else { playerElement.move(-15, 0); updatePlayerElementImage(playerImage_Flip); }
+				}
+				if (playerDirection == "RIGHT" && (playerElement.getX() + playerElement.getWidth()) < getWidth()) {
+					if (speedMove) { playerElement.move(45, 0); updatePlayerElementImage(playerImage); }
+					else { playerElement.move(15, 0); updatePlayerElementImage(playerImage); }
+				}
+			}
+
+			function updatePlayerElementImage(imageURL) {
+				playerElement.setImage(imageURL);
+				playerElement.setSize(playerDimensions, playerDimensions); // This needs to be repeated, otherwise the image defaults to some huge size.
+			}
+
+			function stopMovingPlayer(e) {
+				if (e.keyCode == Keyboard.SHIFT) {
+					speedMove = false;
+				}
+				// If the player was moving left and the internal direction was left "or" if the player was moving right and the internal direction was right
+				if (((e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.letter('A')) && playerDirection == "LEFT") || (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.letter('D')) && playerDirection == "RIGHT") {
+					playerDirection = "";
+				}
+			}
+
+			function performAction_Click(e) {
+				var element = getElementAt(e.getX(), e.getY());
+
+				// Long and ugly condition
+				if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
+					score = 0;
+					lives = 3;
+					beginGame();
+				}
+			}
+
+			if (typeof start === 'function') {
+				start();
+			}
 		});
 	</script>
 </body>
