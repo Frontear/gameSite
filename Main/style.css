@@ -1,6 +1,5 @@
 ﻿* {
 	font-family: sans-serif;
-	transition: all 0.7s !important;
 }
 
 h1 {
@@ -85,6 +84,7 @@ footer {
 	outline: none;
 	box-shadow: 0 0 10px 0 #D3D3D3;
 	color: white;
+	transition: all 0.7s;
 }
 
 	.button:hover {
