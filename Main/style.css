@@ -1,5 +1,5 @@
-﻿/* I want to ignore <i> elements, since the GitHub icon is formed in such, and adding a transition to everything would cause the icon to transition after the button text has transitioned. More detail can be found at the link: https://stackoverflow.com/questions/48217859/button-css-inconsistencies-between-browsers */
-*:not(i) {
+﻿/* I want to ignore elements with class fa, since the GitHub icon is formed in such, and adding a transition to everything would cause the icon to transition after the button text has transitioned. More detail can be found at the link: https://stackoverflow.com/questions/48217859/button-css-inconsistencies-between-browsers */
+*:not(.fa) {
     transition: all 0.8s;
 }
 
