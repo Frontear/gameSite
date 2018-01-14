@@ -1,5 +1,10 @@
-﻿* {
-	font-family: sans-serif;
+﻿/* I want to ignore <i> elements, since the GitHub icon is formed in such, and adding a transition to everything would cause the icon to transition after the button text has transitioned. More detail can be found at the link: https://stackoverflow.com/questions/48217859/button-css-inconsistencies-between-browsers */
+*:not(i) {
+    transition: all 0.8s;
+}
+
+* {
+    font-family: sans-serif;
 }
 
 h1 {
@@ -84,7 +89,6 @@ footer {
 	outline: none;
 	box-shadow: 0 0 10px 0 #D3D3D3;
 	color: white;
-	transition: all 0.7s;
 }
 
 	.button:hover {
@@ -111,7 +115,10 @@ footer {
 }
 
 .fade-in {
-	animation: fade 1.2s
+    -webkit-animation: fade 1.2s;
+	-moz-animation: fade 1.2s;
+    -o-animation: fade 1.2s;
+	animation: fade 1.2s;
 }
 
 .license-text, .license-button {
@@ -122,68 +129,46 @@ footer {
 	margin: 12px;
 }
 
-@keyframes fade {
-	from {
-		opacity: 0
-	}
+@-webkit-keyframes fade {
+	from { opacity: 0; }
+    to { opacity: 1; }
+}
 
-	to {
-		opacity: 1
-	}
+@-moz-keyframes fade {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@-o-keyframes fade {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes fade {
+	from { opacity: 0; }
+	to { opacity: 1; }
 }
 
 @-webkit-keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-
-	50% {
-		background-position: 100% 50%;
-	}
-
-	100% {
-		background-position: 0% 50%;
-	}
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
 
 @-moz-keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-
-	50% {
-		background-position: 100% 50%;
-	}
-
-	100% {
-		background-position: 0% 50%;
-	}
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
 
 @-o-keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-
-	50% {
-		background-position: 100% 50%;
-	}
-
-	100% {
-		background-position: 0% 50%;
-	}
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
 
 @keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-
-	50% {
-		background-position: 100% 50%;
-	}
-
-	100% {
-		background-position: 0% 50%;
-	}
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
