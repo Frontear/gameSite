@@ -23,7 +23,7 @@
 				'<a id="time"></a>' +
 			'</li>' +
             '<li>' +
-                '<a href="faim.html">' +
+                '<a href="faim.html" onclick="return false;" style="color: lightgray;">' +
                     '<i class="fa fa-dot-circle-o" aria-hidden="true"></i>' +
                 '&nbsp;Fast Aim</a>' +
             '</li>' +
@@ -44,6 +44,7 @@
 		'</ul>';
 });
 
+// This function is necessary for buttons. All the buttons I use link to some url, and href isn't a property they have.
 function redirectToSite(urlOfSite) {
 	window.open(urlOfSite, "_blank"); // Open a new tab with the specified url
 }
