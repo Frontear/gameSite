@@ -146,7 +146,6 @@ footer {
 	border-radius: 5px;
 	border-color: white;
 	box-shadow: 0 0 10px 0 #D3D3D3;
-	text-decoration: underline;
 }
 
 	.sidenavBar a {
@@ -163,8 +162,6 @@ footer {
 		position: absolute;
 		top: 0;
 		right: 25px;
-		font-size: 36px;
-		margin-left: 50px;
 	}
 
 #mainContent {
