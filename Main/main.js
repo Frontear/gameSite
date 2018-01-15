@@ -22,11 +22,11 @@
 			'<li style="float: right;">' +
 				'<a id="time"></a>' +
 			'</li>' +
-            '<li>' +
-                '<a href="faim.html" onclick="return false;" style="color: lightgray;">' +
-                    '<i class="fa fa-dot-circle-o" aria-hidden="true"></i>' +
-                '&nbsp;Fast Aim</a>' +
-            '</li>' +
+			'<li>' +
+				'<a href="faim.html" onclick="return false;" style="color: lightgray;">' +
+					'<i class="fa fa-dot-circle-o" aria-hidden="true"></i>' +
+				'&nbsp;Fast Aim</a>' +
+			'</li>' +
 		'</ul>';
 
 	footer.innerHTML =
