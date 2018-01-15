@@ -1,7 +1,6 @@
 ﻿window.addEventListener("load", function () {
 	var header = document.getElementById("header");
 	var navSidebar = document.getElementById("mySidenav");
-	var footer = document.getElementById("footer");
 
 	header.innerHTML =
 		'<ul>' +
@@ -42,20 +41,6 @@
 		'<a href="troubleshoot.html">Troubleshoot</a>' +
 		'<a href="license.html">License</a>' +
 		'<a href="https://github.com/Frontear/gameSite" target="_blank">GitHub</a>';
-
-	footer.innerHTML =
-		'<ul>' +
-			'<li>' +
-				'<a href="troubleshoot.html">' +
-					'<i class="fa fa-question-circle-o" aria-hidden="true"></i>' +
-				'&nbsp;Troubleshoot</a>' +
-			'</li>' +
-			'<li style="float: right;">' +
-				'<a href="license.html">' +
-					'<i id="icon" class="fa fa-info-circle" aria-hidden="true"></i>' +
-				'&nbsp;License</a>' +
-			'</li>' +
-		'</ul>';
 });
 
 // This function is necessary for buttons. All the buttons I use link to some url, and href isn't a property they have.
