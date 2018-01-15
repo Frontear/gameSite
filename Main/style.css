@@ -1,9 +1,11 @@
-﻿/* I want to ignore elements with class fa, since the GitHub icon is formed in such, and adding a transition to everything would cause the icon to transition after the button text has transitioned. More detail can be found at the link: https://stackoverflow.com/questions/48217859/button-css-inconsistencies-between-browsers */
+/* I want to ignore elements with class fa, since the GitHub icon is formed in such,
+	and adding a transition to everything would cause the icon to transition after the button text has transitioned.
+	More detail can be found at the link https://goo.gl/wLpCv5 */
 li a, .button {
 	transition: all 0.8s;
 }
 
-p, a, h1, h3, button {
+p, a, h1, h3, .button{
 	font-family: sans-serif;
 }
 
@@ -16,7 +18,7 @@ a {
 	color: white;
 }
 
-a, .license-text, .license-button, .button {
+.license-text, .license-button, .button, ul a, a {
 	text-shadow: 0 0 4px #d3d3d3, 0 0 4px #d3d3d3;
 }
 
@@ -108,7 +110,6 @@ footer {
 	width: auto;
 	cursor: pointer;
 	margin: 5px;
-	outline: none;
 	box-shadow: 0 0 10px 0 #D3D3D3;
 	color: white;
 }
@@ -143,6 +144,7 @@ footer {
 	animation: fade 1.2s;
 }
 
+/* License */
 .license-text, .license-button {
 	float: left;
 }
@@ -151,6 +153,53 @@ footer {
 	margin: 12px;
 }
 
+/* Side Navigation Bar */
+.sidenavBar {
+	text-align: center;
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+	background-color: rgba(0, 0, 0, 0.9);
+}
+
+	.sidenavBar a {
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		font-size: 25px;
+		color: lightgray;
+		display: block;
+		transition: 0.3s;
+	}
+
+		.sidenavBar a:hover {
+			color: white;
+		}
+
+	.sidenavBar .sidenavBarClose {
+		position: absolute;
+		top: 0;
+		right: 25px;
+		font-size: 36px;
+		margin-left: 50px;
+	}
+
+@media screen and (max-height: 450px) {
+	.sidenavBar {
+		padding-top: 15px;
+	}
+
+		.sidenavBar a {
+			font-size: 18px;
+		}
+}
+
+/* Animations */
 @-webkit-keyframes fade {
 	from {
 		opacity: 0;
@@ -193,7 +242,7 @@ footer {
 
 @-webkit-keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 
 	50% {
@@ -201,13 +250,13 @@ footer {
 	}
 
 	100% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 }
 
 @-moz-keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 
 	50% {
@@ -215,13 +264,13 @@ footer {
 	}
 
 	100% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 }
 
 @-o-keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 
 	50% {
@@ -229,13 +278,13 @@ footer {
 	}
 
 	100% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 }
 
 @keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 
 	50% {
@@ -243,6 +292,6 @@ footer {
 	}
 
 	100% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 }
