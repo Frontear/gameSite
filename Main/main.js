@@ -14,23 +14,23 @@
 					'<i id="icon" class="fa fa-home" aria-hidden="true"></i>' +
 				'&nbsp;Home</a>' +
 			'</li>' +
-			'<li>' +
-				'<a href="hrt.html">' +
-					'<i id="icon" class="fa fa-user" aria-hidden="true"></i>' +
-				'&nbsp;Reaction Test</a>' +
-			'</li>' +
-			'<li>' +
-				'<a href="ctc.html">' +
-					'<i id="icon" class="fa fa-circle-o" aria-hidden="true"></i>' +
-				'&nbsp;Catch Circles</a>' +
-			'</li>' +
+			'<li class="dropdown">' +
+				'<a href="javascript:void(0)" class="dropbtn">' + 
+					'<i class="fa fa-gamepad" aria-hidden="true"></i>' +
+				'&nbsp;Games</a>' +
+					'<div class="dropdown-content">' +
+						'<a href="hrt.html">' +
+							'<i id="icon" class="fa fa-user" aria-hidden="true"></i>' +
+						'&nbsp;Reaction Test</a>' +
+						'<a href="ctc.html">' +
+							'<i id="icon" class="fa fa-circle-o" aria-hidden="true"></i>' +
+						'&nbsp;Catch Circles</a>' +
+						'<a href="faim.html" onclick="return false;" style="color: lightgray;">' +
+							'<i class="fa fa-bullseye" aria-hidden="true"></i>' +
+						'&nbsp;Fast Aim</a>' +
+					'</div>' +
 			'<li style="float: right;">' +
 				'<a id="time"></a>' +
-			'</li>' +
-			'<li>' +
-				'<a href="faim.html" onclick="return false;" style="color: lightgray;">' +
-					'<i class="fa fa-dot-circle-o" aria-hidden="true"></i>' +
-				'&nbsp;Fast Aim</a>' +
 			'</li>' +
 		'</ul>';
 
