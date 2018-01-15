@@ -16,7 +16,7 @@ a {
 	color: white;
 }
 
-a, .license-text, .license-button, .button {
+.license-text, .license-button, .button, ul a, a {
 	text-shadow: 0 0 4px #d3d3d3, 0 0 4px #d3d3d3;
 }
 
@@ -149,13 +149,14 @@ footer {
 }
 
 	.sidenavBar a {
+		color: lightgray;
 		padding: 8px 8px 8px 32px;
 		font-size: 25px;
 		display: block;
 	}
 
 		.sidenavBar a:hover {
-			background-color: darkgray;
+			color: white;
 		}
 
 	.sidenavBar .sidenavBarClose {
