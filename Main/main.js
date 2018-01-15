@@ -1,7 +1,13 @@
 ﻿window.addEventListener("load", function () {
+	var navSidebar = document.getElementById("mySidenav");
 	var header = document.getElementById("header");
 	var footer = document.getElementById("footer");
-	var navSidebar = document.getElementById("mySidenav");
+
+	navSidebar.innerHTML =
+		'<a href="javascript:void(0)" class="sidenavBarClose" onclick="closeNavigation()"><i class="fa fa-times"></i></a>' +
+		'<a href="troubleshoot.html">Troubleshoot</a>' +
+		'<a href="license.html">License</a>' +
+		'<a href="https://github.com/Frontear/gameSite" target="_blank">GitHub</a>';
 
 	header.innerHTML =
 		'<ul>' +
@@ -48,12 +54,6 @@
 				'&nbsp;License</a>' +
 			'</li>' +
 		'</ul>';
-
-	navSidebar.innerHTML =
-		'<a href="javascript:void(0)" class="sidenavBarClose" onclick="closeNavigation()"><i class="fa fa-times"></i></a>' +
-		'<a href="troubleshoot.html">Troubleshoot</a>' +
-		'<a href="license.html">License</a>' +
-		'<a href="https://github.com/Frontear/gameSite" target="_blank">GitHub</a>';
 });
 
 // This function is necessary for buttons. All the buttons I use link to some url, and href isn't a property they have.
@@ -64,10 +64,12 @@ function redirectToSite(urlOfSite) {
 // These two functions control the Navigation sidebar.
 function openNavigation() {
 	document.getElementById("mySidenav").style.width = "250px";
+	document.getElementById("mySidenav").style.border = "solid";
 	document.getElementById("mainContent").style.marginLeft = "250px";
 }
 
 function closeNavigation() {
 	document.getElementById("mySidenav").style.width = "0";
+	document.getElementById("mySidenav").style.border = "hidden";
 	document.getElementById("mainContent").style.marginLeft = "0";
 }

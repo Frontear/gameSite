@@ -16,167 +16,166 @@
 	<title>Fast Aim</title>
 </head>
 <body class="bg-gradient fg-white center-text">
-	<div class="fade-in">
+	<div id="mySidenav" class="sidenavBar"></div>
+	<div id="mainContent" class="fade-in">
 		<div id="header"></div>
 		<h1>Fast Aim</h1>
-		<canvas width="600"
-				height="600"
-				class="codehs-editor-canvas"></canvas>
+		<canvas width="600" height="600" class="codehs-editor-canvas"></canvas>
 		<p>Welcome to Fast Aim. You will attempt click circles as they appear on the screen. The game will get progressively faster as you keep playing. Good luck and have fun!</p>
-	</div>
-	<script>
-	    window.addEventListener("load", function () {
-	        // Global Variables
-	        var circle, circleArr, difficulty, title, score;
-
-	        // Text Variables
-	        var timeText;
-	        var scoreText;
-
-	        // Time Variables
-	        var gameTime;
-
-	        // Color Variables
-	        var shiftedGray = new Color(205, 205, 205);
-	        var shiftedBlack = new Color(1, 1, 1);
-
-	        // Gets the width and height of canvas, then find the center.
-	        var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
-
-	        function start() {
-	            circleArr = [];
-	            difficulty = 1000;
-	            score = 0;
-    
-	            drawMenu();
-	        }
-
-	        function startGame() {
-	            removeAll();
-	            renderText();
-	            Randomize();
-	        }
-
-	        function renderText() {
-	            scoreText = createText("Score: " + score, "14pt sans-serif", 0 + 42, 0 - 14, false);
-	            add(scoreText);
-	        }
-
-	        function Randomize() {
-	            stopTimer(drawRandomCircles);
-	            setTimer(drawRandomCircles, difficulty);
-	        }
-
-	        function step() {
-	            circleHandle();
-	            Randomize();
-	        }
-
-	        function drawRandomCircles() {
-	            var circleNum = circleArr.length; /* Array.length will not count from 0.
-    This allows us to use the length of the array to add new objects. Example:
-    Length at initial is 0, so name object 0. Add it. New object is named 1. This continues.*/
-	            var circleSize = 25;
-	            circle = {
-	                _self: new Circle(circleSize),
-	                _text: new Text(circleNum, "24pt sans-serif"),
-	                birth: currentTime(),
-	            };
-	            circle._self.setPosition(Randomizer.nextInt(0 + circle._self.getWidth(), getWidth() - circle._self.getRadius()), Randomizer.nextInt(0 + circle._self.getRadius(), getHeight() - circle._self.getRadius()));
-	            circle._self.setColor(Randomizer.nextColor());
-    
-	            circle._text.setPosition(circle._self.getX() - (circle._text.getWidth() / 2), circle._self.getY() + (circle._text.getHeight() / 3));
-	            circle._text.setColor(shiftedBlack);
-    
-	            circleArr.push(circle);
-	            add(circle._self);
-	            add(circle._text);
-	        }
-
-	        function circleHandle() {
-	            for (var i = 0; i < circleArr.length; i++) {
-	            }
-	        }
-
-	        function drawMenu() {
-	            add(createText("FastAim!", "30pt sans-serif", screen[2], 0, false));
-	            createButton("Start", "24pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
-    
-	            mouseClickMethod(performAction_Click);
-	        }
-
-	        function points(e) {
-	            if (e == circleArr[0]._self || e == circleArr[0]._text) {
-	                println("Yahoo, this is guaranteed the first element!");
-	            }
-	            score++;
-	            scoreText.setText("Score: " + score);
-	        }
-
-	        /// Helper Functions
-
-	        function currentTime() {
-	            return new Date() .getTime() / 1000;
-	        }
-
-	        // Creates a graphic text string
-	        function createText(text, font, cX, cY, messageBox = true) {
-	            var textVar = new Text(text, font);
-	            var c = new Rectangle(getWidth(), textVar.getHeight() + 50);
-    
-	            textVar.setPosition(cX - textVar.getWidth() / 2, cY + c.getHeight() / 2 + (textVar.getHeight() / 3));
-	            textVar.setColor(shiftedBlack);
-    
-	            c.setPosition(cX - c.getWidth() / 2, cY);
-	            c.setColor(shiftedGray);
-    
-	            if (messageBox) {
-	                add(c);
-	            }
-	            return textVar;
-	        }
-
-	            // Creates a smooth button, with text inside it, where c = container, and t = text
-	            function createButton(text, font, cWidth, cHeight, cX, cY) {
-	                var t = new Text(text, font);
-	                var c = new Rectangle(cWidth, cHeight);
-	                var c1 = new Circle(cHeight / 2);
-	                var c2 = new Circle(cHeight / 2);
-    
-	                t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-	                t.setColor(Color.black);
-    
-	                c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
-	                c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
-    
-	                c1.setColor(Color.gray);
-	                c2.setColor(Color.gray);
-    
-	                c.setPosition(cX - c.getWidth() / 2, cY);
-	                c.setColor(Color.gray);
-    
-	                add(c1);
-	                add(c2);
-	                add(c);
-	                add(t);
-	            }
-
-	            function performAction_Click(e) {
-	                var element = getElementAt(e.getX(), e.getY());
-	                if (element != null && element.type == "Circle") {
-	                    points(element);
-	                }
-    
-	                // Long and ugly condition
-	                if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
-	                    startGame();
-	                }
-	            }
-
-	            if (typeof start === 'function') {
-	                start();
-	            }
-		});
-	</script>
+		</div>
 </body>
 </html>
+<script>
+			window.addEventListener("load", function () {
+				// Global Variables
+				var circle, circleArr, difficulty, title, score;
+
+				// Text Variables
+				var timeText;
+				var scoreText;
+
+				// Time Variables
+				var gameTime;
+
+				// Color Variables
+				var shiftedGray = new Color(205, 205, 205);
+				var shiftedBlack = new Color(1, 1, 1);
+
+				// Gets the width and height of canvas, then find the center.
+				var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+
+				function start() {
+					circleArr = [];
+					difficulty = 1000;
+					score = 0;
+
+					drawMenu();
+				}
+
+				function startGame() {
+					removeAll();
+					renderText();
+					Randomize();
+				}
+
+				function renderText() {
+					scoreText = createText("Score: " + score, "14pt sans-serif", 0 + 42, 0 - 14, false);
+					add(scoreText);
+				}
+
+				function Randomize() {
+					stopTimer(drawRandomCircles);
+					setTimer(drawRandomCircles, difficulty);
+				}
+
+				function step() {
+					circleHandle();
+					Randomize();
+				}
+
+				function drawRandomCircles() {
+					var circleNum = circleArr.length; /* Array.length will not count from 0.
+			This allows us to use the length of the array to add new objects. Example:
+			Length at initial is 0, so name object 0. Add it. New object is named 1. This continues.*/
+					var circleSize = 25;
+					circle = {
+						_self: new Circle(circleSize),
+						_text: new Text(circleNum, "24pt sans-serif"),
+						birth: currentTime(),
+					};
+					circle._self.setPosition(Randomizer.nextInt(0 + circle._self.getWidth(), getWidth() - circle._self.getRadius()), Randomizer.nextInt(0 + circle._self.getRadius(), getHeight() - circle._self.getRadius()));
+					circle._self.setColor(Randomizer.nextColor());
+
+					circle._text.setPosition(circle._self.getX() - (circle._text.getWidth() / 2), circle._self.getY() + (circle._text.getHeight() / 3));
+					circle._text.setColor(shiftedBlack);
+
+					circleArr.push(circle);
+					add(circle._self);
+					add(circle._text);
+				}
+
+				function circleHandle() {
+					for (var i = 0; i < circleArr.length; i++) {
+					}
+				}
+
+				function drawMenu() {
+					add(createText("FastAim!", "30pt sans-serif", screen[2], 0, false));
+					createButton("Start", "24pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
+
+					mouseClickMethod(performAction_Click);
+				}
+
+				function points(e) {
+					if (e == circleArr[0]._self || e == circleArr[0]._text) {
+						println("Yahoo, this is guaranteed the first element!");
+					}
+					score++;
+					scoreText.setText("Score: " + score);
+				}
+
+				/// Helper Functions
+
+				function currentTime() {
+					return new Date().getTime() / 1000;
+				}
+
+				// Creates a graphic text string
+				function createText(text, font, cX, cY, messageBox = true) {
+					var textVar = new Text(text, font);
+					var c = new Rectangle(getWidth(), textVar.getHeight() + 50);
+
+					textVar.setPosition(cX - textVar.getWidth() / 2, cY + c.getHeight() / 2 + (textVar.getHeight() / 3));
+					textVar.setColor(shiftedBlack);
+
+					c.setPosition(cX - c.getWidth() / 2, cY);
+					c.setColor(shiftedGray);
+
+					if (messageBox) {
+						add(c);
+					}
+					return textVar;
+				}
+
+				// Creates a smooth button, with text inside it, where c = container, and t = text
+				function createButton(text, font, cWidth, cHeight, cX, cY) {
+					var t = new Text(text, font);
+					var c = new Rectangle(cWidth, cHeight);
+					var c1 = new Circle(cHeight / 2);
+					var c2 = new Circle(cHeight / 2);
+
+					t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
+					t.setColor(Color.black);
+
+					c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
+					c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
+
+					c1.setColor(Color.gray);
+					c2.setColor(Color.gray);
+
+					c.setPosition(cX - c.getWidth() / 2, cY);
+					c.setColor(Color.gray);
+
+					add(c1);
+					add(c2);
+					add(c);
+					add(t);
+				}
+
+				function performAction_Click(e) {
+					var element = getElementAt(e.getX(), e.getY());
+					if (element != null && element.type == "Circle") {
+						points(element);
+					}
+
+					// Long and ugly condition
+					if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
+						startGame();
+					}
+				}
+
+				if (typeof start === 'function') {
+					start();
+				}
+			});
+		</script>

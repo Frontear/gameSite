@@ -131,11 +131,8 @@ footer {
 }
 
 /* Side Navigation Bar */
-body {
-	transition: background-color .5s;
-}
-
 .sidenavBar {
+	text-align: left;
 	height: 100%;
 	width: 0;
 	position: fixed;
@@ -146,19 +143,21 @@ body {
 	overflow-x: hidden;
 	transition: 0.5s;
 	padding-top: 60px;
+	border-radius: 5px;
+	border-color: white;
+	box-shadow: 0 0 10px 0 #D3D3D3;
+	text-decoration: underline;
 }
 
-.sidenavBar a {
-	padding: 8px 8px 8px 32px;
-	text-decoration: none;
-	font-size: 25px;
-	display: block;
-	transition: 0.3s;
-}
+	.sidenavBar a {
+		padding: 8px 8px 8px 32px;
+		font-size: 25px;
+		display: block;
+	}
 
-.sidenavBar a:hover {
-	color: #f1f1f1;
-}
+		.sidenavBar a:hover {
+			background-color: darkgray;
+		}
 
 	.sidenavBar .sidenavBarClose {
 		position: absolute;
