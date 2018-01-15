@@ -50,13 +50,9 @@ function redirectToSite(urlOfSite) {
 
 // These two functions control the Navigation sidebar.
 function openNavigation() {
-	document.getElementById("mySidenav").style.width = "250px";
-	document.getElementById("mySidenav").style.border = "solid";
-	document.getElementById("mainContent").style.marginLeft = "250px";
+	document.getElementById("mySidenav").style.width = "100%";
 }
 
 function closeNavigation() {
 	document.getElementById("mySidenav").style.width = "0";
-	document.getElementById("mySidenav").style.border = "hidden";
-	document.getElementById("mainContent").style.marginLeft = "0";
 }
