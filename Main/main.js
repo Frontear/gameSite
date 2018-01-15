@@ -1,13 +1,7 @@
 ﻿window.addEventListener("load", function () {
-	var navSidebar = document.getElementById("mySidenav");
 	var header = document.getElementById("header");
+	var navSidebar = document.getElementById("mySidenav");
 	var footer = document.getElementById("footer");
-
-	navSidebar.innerHTML =
-		'<a href="javascript:void(0)" class="sidenavBarClose" onclick="closeNavigation()"><i class="fa fa-times"></i></a>' +
-		'<a href="troubleshoot.html">Troubleshoot</a>' +
-		'<a href="license.html">License</a>' +
-		'<a href="https://github.com/Frontear/gameSite" target="_blank">GitHub</a>';
 
 	header.innerHTML =
 		'<ul>' +
@@ -40,6 +34,14 @@
                 '&nbsp;Fast Aim</a>' +
             '</li>' +
 		'</ul>';
+
+	navSidebar.innerHTML =
+		'<a href="javascript:void(0)" class="sidenavBarClose" style="padding: 8px 12px;" onclick="closeNavigation()">' +
+			'<i class="fa fa-times"></i>' +
+		'</a>' +
+		'<a href="troubleshoot.html">Troubleshoot</a>' +
+		'<a href="license.html">License</a>' +
+		'<a href="https://github.com/Frontear/gameSite" target="_blank">GitHub</a>';
 
 	footer.innerHTML =
 		'<ul>' +
