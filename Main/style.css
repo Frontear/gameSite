@@ -1,6 +1,6 @@
 ﻿/* I want to ignore elements with class fa, since the GitHub icon is formed in such,
 	and adding a transition to everything would cause the icon to transition after the button text has transitioned.
-	More detail can be found at the link https://goo.gl/wLpCv5 */
+	More detail can be found at the link https://goo.gl/wLpCv5 to stack overflow */
 li a, .button {
 	transition: all 0.8s;
 }
