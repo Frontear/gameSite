@@ -132,27 +132,27 @@ footer {
 
 /* Side Navigation Bar */
 .sidenavBar {
-	text-align: left;
+	text-align: center;
 	height: 100%;
 	width: 0;
 	position: fixed;
 	z-index: 1;
 	top: 0;
 	left: 0;
-	background-color: rgba(0, 0, 0, 0.9);
+	background-color: #111;
 	overflow-x: hidden;
 	transition: 0.5s;
 	padding-top: 60px;
-	border-radius: 5px;
-	border-color: white;
-	box-shadow: 0 0 10px 0 #D3D3D3;
+	background-color: rgba(0, 0, 0, 0.9);
 }
 
 	.sidenavBar a {
-		color: lightgray;
 		padding: 8px 8px 8px 32px;
+		text-decoration: none;
 		font-size: 25px;
+		color: lightgray;
 		display: block;
+		transition: 0.3s;
 	}
 
 		.sidenavBar a:hover {
@@ -163,11 +163,9 @@ footer {
 		position: absolute;
 		top: 0;
 		right: 25px;
+		font-size: 36px;
+		margin-left: 50px;
 	}
-
-#mainContent {
-	transition: margin-left .5s;
-}
 
 @media screen and (max-height: 450px) {
 	.sidenavBar {
