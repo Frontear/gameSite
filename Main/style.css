@@ -1,9 +1,11 @@
-﻿/* I want to ignore elements with class fa, since the GitHub icon is formed in such, and adding a transition to everything would cause the icon to transition after the button text has transitioned. More detail can be found at the link: https://stackoverflow.com/questions/48217859/button-css-inconsistencies-between-browsers */
-*:not(.fa) {
+﻿/* I want to ignore elements with class fa, since the GitHub icon is formed in such,
+	and adding a transition to everything would cause the icon to transition after the button text has transitioned.
+	More detail can be found at the link https://goo.gl/wLpCv5 */
+li a, .button {
 	transition: all 0.8s;
 }
 
-* {
+p, a, h1, h3, .button{
 	font-family: sans-serif;
 }
 
@@ -86,7 +88,6 @@ footer {
 	width: auto;
 	cursor: pointer;
 	margin: 5px;
-	outline: none;
 	box-shadow: 0 0 10px 0 #D3D3D3;
 	color: white;
 }
@@ -219,7 +220,7 @@ footer {
 
 @-webkit-keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 
 	50% {
@@ -227,13 +228,13 @@ footer {
 	}
 
 	100% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 }
 
 @-moz-keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 
 	50% {
@@ -241,13 +242,13 @@ footer {
 	}
 
 	100% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 }
 
 @-o-keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 
 	50% {
@@ -255,13 +256,13 @@ footer {
 	}
 
 	100% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 }
 
 @keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 
 	50% {
@@ -269,6 +270,6 @@ footer {
 	}
 
 	100% {
-		background-position: 0% 50%;
+		background-position: 0 50%;
 	}
 }
