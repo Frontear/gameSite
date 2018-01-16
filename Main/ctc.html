@@ -63,7 +63,7 @@
 		function beginEndGame() {
 			stopTimer(playerMove);
 			stopTimer(drawCircles);
-			if (theCircle.length == 0) {
+			if (theCircle.length === 0) {
 				stopTimer(setup);
 				endGame();
 			}
@@ -239,14 +239,14 @@
 		}
 
 		function setup() {
-			if (lives == 0) {
+			if (lives === 0) {
 				beginEndGame();
 			}
 			fallCircles();
 		}
 
 		function drawCircles() {
-			var fallingRate = score != 0 ? (score / 18) : 1 / 16;
+			var fallingRate = score !== 0 ? (score / 18) : 1 / 16;
 
 			var circle = {
 				obj: new Circle(30),
@@ -285,7 +285,7 @@
 		function colorLabels() {
 			lives == 2 ? livesLabel.setColor(Color.orange) :
 				lives == 1 ? livesLabel.setColor(Color.red) :
-					lives == 0 ? livesLabel.setColor(Color.black) : null;
+					lives === 0 ? livesLabel.setColor(Color.black) : null;
 
 			score <= 10 ? scoreLabel.setColor(Color.blue) :
 				score >= 25 ? scoreLabel.setColor(Color.purple) : null;
@@ -298,7 +298,7 @@
 				if (hasCollided(playerElement, theCircle[i].obj)) {
 					remove(theCircle[i].obj);
 					theCircle.remove(i);
-					if (lives != 0) {
+					if (lives !== 0) {
 						setScoreAndLives(score + 1, lives);
 					}
 				}
@@ -306,7 +306,7 @@
 				else if (theCircle[i].obj.getY() > screenTypes[1] - theCircle[i].obj.getRadius() / 2) {
 					remove(theCircle[i].obj);
 					theCircle.remove(i);
-					if (lives != 0) {
+					if (lives !== 0) {
 						setScoreAndLives(score, lives - 1);
 					}
 					i--;
@@ -316,7 +316,7 @@
 
 		function performAction_keyDown(e) {
 			if (e.keyCode == 27) { // ESCAPE key is being pressed
-				if (isPaused == true) {
+				if (isPaused === true) {
 					unpauseGame();
 					isPaused = false;
 				}
@@ -366,7 +366,7 @@
 			var element = getElementAt(e.getX(), e.getY());
 
 			// Long and ugly condition
-			if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
+			if (element !== null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
 				score = 0;
 				lives = 3;
 				beginGame();
