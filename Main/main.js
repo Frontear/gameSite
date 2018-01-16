@@ -15,7 +15,7 @@
 				'&nbsp;Home</a>' +
 			'</li>' +
 			'<li class="dropdown">' +
-				'<a href="javascript:void(0)" class="dropbtn">' + 
+				'<a href="javascript:void(0)" class="dropbtn">' +
 					'<i class="fa fa-gamepad" aria-hidden="true"></i>' +
 				'&nbsp;Games</a>' +
 					'<div class="dropdown-content">' +
