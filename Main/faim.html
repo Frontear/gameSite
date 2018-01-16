@@ -28,12 +28,15 @@
 <script>
 	window.addEventListener("load", function () {
 		// Global Variables
-		var circle, circleArr, circleNum, difficulty, title, score;
+		var theTarget, difficulty, title, score, lives;
+		var clickedCircle, circleNumber, targetText;
 		var isPaused, pauseText;
+		var initialRun;
 
 		// Text Variables
 		var timeText;
 		var scoreText;
+		var livesText;
 
 		// Time Variables
 		var gameTime;
@@ -43,30 +46,31 @@
 		var shiftedBlack = new Color(1, 1, 1);
 
 		// Gets the width and height of canvas, then find the center.
-		var screen = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+		var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
 
 		function start() {
-			circleArr = [];
-			circleNum = 0;
 			difficulty = 1000;
 			score = 0;
+			lives = 3;
 			isPaused = false;
+			circleNumber = 0;
+			initialRun = true; // The initial loop in timers, must be disabled permanently after first loop.
 
 			drawMenu();
 		}
 
 		function startGame() {
-			keyDownMethod(performAction_keyDown);
 			removeAll();
-			renderText();
+			setTimer(step, 33);
+			renderFirstElements();
 			Randomize();
 		}
 
 		function pauseGame() {
-			stopTimer(drawRandomCircles);
 			// Since pauseText is handled differently from the normal createText functions, it is redefined here
+			stopTimer(drawRandomCircles);
 			pauseText = new Text("Game Paused", "24pt sans-serif");
-			pauseText.setPosition(screen[2] - (pauseText.getWidth() / 2), screen[3]);
+			pauseText.setPosition(screenTypes[2] - (pauseText.getWidth() / 2), screenTypes[3]);
 			pauseText.setColor(shiftedBlack);
 			add(pauseText);
 		}
@@ -76,9 +80,24 @@
 			Randomize();
 		}
 
-		function renderText() {
-			scoreText = createText("Score: " + score, "14pt sans-serif", 0 + 42, 0 - 14, false);
+		function endGame() {
+			stopTimer(step);
+			stopTimer(drawRandomCircles);
+			removeAll();
+		}
+
+		function step() {
+			if (lives == 0) {
+				endGame();
+			}
+		}
+
+		function renderFirstElements() {
+			scoreText = createText("Score: " + score, "16pt sans-serif", 0 + 48, -16, false);
 			add(scoreText);
+
+			livesText = createText("Lives: " + lives, "16pt sans-serif", screenTypes[0] - 48, -16, false);
+			add(livesText);
 		}
 
 		function Randomize() {
@@ -86,57 +105,56 @@
 			setTimer(drawRandomCircles, difficulty);
 		}
 
-		function step() {
-			circleHandle();
-			Randomize();
-		}
-
 		function drawRandomCircles() {
-			var circleSize = 25;
-			circle = {
-				_self: new Circle(circleSize),
-				_text: new Text(circleNum, "24pt sans-serif"),
-				birth: currentTime(),
-			};
-			circle._self.setPosition(Randomizer.nextInt(0 + circle._self.getWidth(), getWidth() - circle._self.getRadius()), Randomizer.nextInt(0 + circle._self.getRadius(), getHeight() - circle._self.getRadius()));
-			circle._self.setColor(Randomizer.nextColor());
+			if (!clickedCircle && !initialRun) {
+				penalizeThePlayer();
+			}
+			if (initialRun == true) { initialRun = false; }
+			theTarget = new Circle(32);
+			theTarget.setPosition(Randomizer.nextInt(0 + theTarget.getWidth(), getWidth() - theTarget.getRadius()), Randomizer.nextInt(0 + theTarget.getRadius(), getHeight() - theTarget.getRadius()));
+			theTarget.setColor(Randomizer.nextColor());
 
-			circle._text.setPosition(circle._self.getX() - (circle._text.getWidth() / 2), circle._self.getY() + (circle._text.getHeight() / 3));
-			circle._text.setColor(shiftedBlack);
+			targetText = new Text(circleNumber, "24pt sans-serif");
+			targetText.setPosition(theTarget.getX() - (targetText.getWidth() / 2), theTarget.getY() + (targetText.getHeight() / 3));
+			targetText.setColor(Color.black);
 
-			circleArr.push(circle);
-			add(circle._self);
-			add(circle._text);
-			circleNum++;
-			circleArr.remove(callLastElementOfArray(circleArr));
+			add(theTarget);
+			add(targetText);
+
+			circleNumber++;
+			clickedCircle = false;
 		}
 
-		function circleHandle() {
-			for (var i = 0; i < circleArr.length; i++) {
+		function penalizeThePlayer() {
+			remove(theTarget); // Remove the circle he couldn't click
+			remove(targetText); // Remove the text which is binded to the player
+			if (lives >= 1) {
+				lives--;
+				updateElementText(livesText, "Lives: " + lives);
 			}
 		}
 
 		function drawMenu() {
-			add(createText("FastAim!", "30pt sans-serif", screen[2], 0, false));
-			createButton("Start", "24pt sans-serif", 100, 50, screen[2], screen[3] + getHeight() / 4);
+			add(createText("FastAim!", "30pt sans-serif", screenTypes[2], 0, false));
+			createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
 
 			mouseClickMethod(performAction_Click);
 		}
 
-		function points(e) {
-			if (e == circleArr[callLastElementOfArray(circleArr)]._self || e == circleArr[callLastElementOfArray(circleArr)]._text) {
-				println("This is the first element of the array. This should be the lowest number visible");
-				remove(circleArr[callLastElementOfArray(circleArr)]._self);
-				remove(circleArr[callLastElementOfArray(circleArr)]._text);
-			}
+		function points() {
+			remove(theTarget);
+			remove(targetText);
+			difficulty -= 10; // Make the game slightly more difficult, you should only be able to click 100 circles, since it gets crazy fast any further.
+			clickedCircle = true;
 			score++;
-			scoreText.setText("Score: " + score);
+			updateElementText(scoreText, "Score: " + score);
+			Randomize(); // Restart drawCircle with new Time. Circles get drawn only after user can actually click one.
 		}
 
 		/// Helper Functions
 
-		function currentTime() {
-			return new Date().getTime() / 1000;
+		function updateElementText(textElem, stringText) {
+			textElem.setText(stringText);
 		}
 
 		// Creates a graphic text string
@@ -187,8 +205,8 @@
 			if (element != null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
 				startGame();
 			}
-			if (element != null && (element.type == "Circle" || element.type == "Text")) {
-				//points(element);
+			if (element == theTarget || element == targetText) {
+				points();
 			}
 		}
 
@@ -203,10 +221,6 @@
 					isPaused = true;
 				}
 			}
-		}
-
-		function callLastElementOfArray(type) {
-			return (type.length !== 0 ? (type.length - 1) : 0);
 		}
 
 		if (typeof start === 'function') {

@@ -25,7 +25,7 @@
 						'<a href="ctc.html">' +
 							'<i id="icon" class="fa fa-circle-o" aria-hidden="true"></i>' +
 						'&nbsp;Catch Circles</a>' +
-						'<a href="faim.html" onclick="return false;" style="color: lightgray;">' +
+						'<a href="faim.html">' +
 							'<i class="fa fa-bullseye" aria-hidden="true"></i>' +
 						'&nbsp;Fast Aim</a>' +
 					'</div>' +
