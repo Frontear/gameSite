@@ -2,296 +2,291 @@
 	and adding a transition to everything would cause the icon to transition after the button text has transitioned.
 	More detail can be found at the link https://goo.gl/wLpCv5 */
 li a, .button {
-	transition: all 0.8s;
+	transition: all .8s
 }
 
-p, a, h1, h3, .button{
-	font-family: sans-serif;
+p, a, h1, h3, .button {
+	font-family: sans-serif
 }
 
 h1 {
-	font-size: 42px;
+	font-size: 42px
 }
 
 a {
-	text-decoration: none;
-	color: white;
+	color: #fff;
+	text-decoration: none
 }
 
 .license-text, .license-button, .button, ul a, a {
-	text-shadow: 0 0 4px #d3d3d3, 0 0 4px #d3d3d3;
+	text-shadow: 0 0 4px #d3d3d3,0 0 4px #d3d3d3
 }
 
 p {
-	font-size: 22px;
+	font-size: 22px
 }
 
 canvas {
-	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
-}
-
-canvas {
-	border: 1px solid black;
-	background-color: white;
+	background-color: #fff;
+	border: 1px solid #000;
+	box-shadow: 0 0 10px 0 rgba(0,0,0,0.4);
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: top
 }
 
 ul {
+	border: solid;
+	border-color: #fff;
+	border-radius: 5px;
 	list-style-type: none;
 	margin: 0;
-	padding: 0;
 	overflow: hidden;
-	border: solid;
-	border-radius: 5px;
-	border-color: white;
+	padding: 0
 }
 
 ul, .dropdown-content {
-	box-shadow: 0 0 10px 0 #D3D3D3;
+	box-shadow: 0 0 10px 0 #D3D3D3
 }
 
 li {
-	float: left;
+	float: left
 }
 
 	li a, .dropbtn {
+		color: #fff;
 		display: inline-block;
-		color: white;
-		text-align: center;
 		padding: 8px 10px;
-		text-decoration: none;
+		text-align: center;
+		text-decoration: none
 	}
 
 	li.dropdown {
-		display: inline-block;
+		display: inline-block
 	}
 
 .dropdown-content {
 	border: solid;
-	display: none;
-	position: absolute;
 	border-radius: 4px;
+	display: none;
 	min-width: 160px;
-	z-index: 1;
+	position: absolute;
+	z-index: 1
 }
 
 	.dropdown-content a {
-		padding: 12px 16px;
-		text-decoration: none;
 		display: block;
+		padding: 12px 16px;
 		text-align: left;
+		text-decoration: none
 	}
 
 .dropdown:hover .dropdown-content {
-	display: block;
+	display: block
 }
+
 ul, button, .dropdown-content {
-	background-color: rgba(0, 0, 0, 0.3);
+	background-color: rgba(0,0,0,0.3)
 }
 
 li a:hover {
-	background-color: darkgray;
+	background-color: #a9a9a9
 }
 
 footer {
 	bottom: 5px;
 	position: absolute;
-	width: 98.8%;
+	width: 98.8%
 }
 
 .button {
-	border-radius: 40px;
 	border: solid 2px;
-	text-align: center;
-	font-size: 18px;
-	border-color: antiquewhite;
-	padding: 8px;
-	width: auto;
-	cursor: pointer;
-	margin: 5px;
+	border-color: #faebd7;
+	border-radius: 40px;
 	box-shadow: 0 0 10px 0 #D3D3D3;
-	color: white;
+	color: #fff;
+	cursor: pointer;
+	font-size: 18px;
+	margin: 5px;
+	padding: 8px;
+	text-align: center;
+	width: auto
 }
 
 	.button:hover {
-		box-shadow: 0 0 16px 0 #051428;
 		background-color: #faebd7;
-		color: #051428;
+		box-shadow: 0 0 16px 0 #051428;
+		color: #051428
 	}
 
 .bg-gradient {
-	background: linear-gradient(225deg, #4467ae, #449fae, #44ae8e, #9eae44, #ae7844, #ae4444, #ae4497, #7544ae);
-	background-size: 1600% 1600%;
-	-webkit-animation: gradient 45s ease infinite;
 	-moz-animation: gradient 45s ease infinite;
 	-o-animation: gradient 45s ease infinite;
+	-webkit-animation: gradient 45s ease infinite;
 	animation: gradient 45s ease infinite;
+	background: linear-gradient(225deg,#4467ae,#449fae,#44ae8e,#9eae44,#ae7844,#ae4444,#ae4497,#7544ae);
+	background-size: 1600% 1600%
 }
 
 .fg-white {
-	color: #ffffff;
+	color: #fff
 }
 
 .center-text {
-	text-align: center;
+	text-align: center
 }
 
 .fade-in {
-	-webkit-animation: fade 1.2s;
 	-moz-animation: fade 1.2s;
 	-o-animation: fade 1.2s;
-	animation: fade 1.2s;
+	-webkit-animation: fade 1.2s;
+	animation: fade 1.2s
 }
 
-/* License */
 .license-text, .license-button {
-	float: left;
+	float: left
 }
 
 .license-text {
-	margin: 12px;
+	margin: 12px
 }
 
-/* Side Navigation Bar */
 .sidenavBar {
-	text-align: center;
+	background-color: rgba(0,0,0,0.9);
 	height: 100%;
-	width: 0;
-	position: fixed;
-	z-index: 1;
-	top: 0;
 	left: 0;
 	overflow-x: hidden;
-	transition: 0.5s;
 	padding-top: 60px;
-	background-color: rgba(0, 0, 0, 0.9);
+	position: fixed;
+	text-align: center;
+	top: 0;
+	transition: .5s;
+	width: 0;
+	z-index: 1
 }
 
 	.sidenavBar a {
-		padding: 8px 8px 8px 32px;
-		text-decoration: none;
-		font-size: 25px;
 		color: lightgray;
 		display: block;
-		transition: 0.3s;
+		font-size: 25px;
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		transition: .3s
 	}
 
 		.sidenavBar a:hover {
-			color: white;
+			color: #fff
 		}
 
 	.sidenavBar .sidenavBarClose {
-		position: absolute;
-		top: 0;
-		right: 25px;
 		font-size: 36px;
 		margin-left: 50px;
+		position: absolute;
+		right: 25px;
+		top: 0
 	}
 
 @media screen and (max-height: 450px) {
 	.sidenavBar {
-		padding-top: 15px;
+		padding-top: 15px
 	}
 
 		.sidenavBar a {
-			font-size: 18px;
+			font-size: 18px
 		}
 }
 
-/* Animations */
 @-webkit-keyframes fade {
 	from {
-		opacity: 0;
+		opacity: 0
 	}
 
 	to {
-		opacity: 1;
+		opacity: 1
 	}
 }
 
 @-moz-keyframes fade {
 	from {
-		opacity: 0;
+		opacity: 0
 	}
 
 	to {
-		opacity: 1;
+		opacity: 1
 	}
 }
 
 @-o-keyframes fade {
 	from {
-		opacity: 0;
+		opacity: 0
 	}
 
 	to {
-		opacity: 1;
+		opacity: 1
 	}
 }
 
 @keyframes fade {
 	from {
-		opacity: 0;
+		opacity: 0
 	}
 
 	to {
-		opacity: 1;
+		opacity: 1
 	}
 }
 
 @-webkit-keyframes gradient {
 	0% {
-		background-position: 0 50%;
+		background-position: 0 50%
 	}
 
 	50% {
-		background-position: 100% 50%;
+		background-position: 100% 50%
 	}
 
 	100% {
-		background-position: 0 50%;
+		background-position: 0 50%
 	}
 }
 
 @-moz-keyframes gradient {
 	0% {
-		background-position: 0 50%;
+		background-position: 0 50%
 	}
 
 	50% {
-		background-position: 100% 50%;
+		background-position: 100% 50%
 	}
 
 	100% {
-		background-position: 0 50%;
+		background-position: 0 50%
 	}
 }
 
 @-o-keyframes gradient {
 	0% {
-		background-position: 0 50%;
+		background-position: 0 50%
 	}
 
 	50% {
-		background-position: 100% 50%;
+		background-position: 100% 50%
 	}
 
 	100% {
-		background-position: 0 50%;
+		background-position: 0 50%
 	}
 }
 
 @keyframes gradient {
 	0% {
-		background-position: 0 50%;
+		background-position: 0 50%
 	}
 
 	50% {
-		background-position: 100% 50%;
+		background-position: 100% 50%
 	}
 
 	100% {
-		background-position: 0 50%;
+		background-position: 0 50%
 	}
 }
