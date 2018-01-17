@@ -61,8 +61,8 @@
 
 		/// Main function to draw the main Menu
 		function drawMenu() {
-			createText("Reaction Test!", "30pt sans-serif", screenTypes[2], 0, false);
-			createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
+			createText("Reaction Test!", "30pt sans-serif", screenTypes[2], 0, false, null);
+			createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4, null);
 			mouseClickMethod(performAction_Click);
 		}
 
@@ -131,52 +131,64 @@
 		}
 
 		// Creates a graphic text string
-		function createText(text, font, cX, cY, messageBox = true) {
-			var t = new Text(text, font);
-			var c = new Rectangle(getWidth(), t.getHeight() + 50);
+		function createText(text, font, cX, cY, messageBox, array) {
+			var pText = {
+				t: new Text(text, font),
+				c: new Rectangle(getWidth(), new Text(text, font).getHeight() + 50), // I dont like this method, but I could not get 'this' property to work.
+			};
 
-			t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-			t.setColor(shiftedBlack);
+			pText.t.setPosition(cX - pText.t.getWidth() / 2, cY + pText.c.getHeight() / 2 + (pText.t.getHeight() / 3));
+			pText.t.setColor(shiftedBlack);
 
-			c.setPosition(cX - c.getWidth() / 2, cY);
-			c.setColor(shiftedGray);
+			pText.c.setPosition(cX - pText.c.getWidth() / 2, cY);
+			pText.c.setColor(shiftedGray);
+
+			if (array !== null) {
+				array.push(pText);
+			}
 
 			if (messageBox) {
-				add(c);
+				add(pText.c);
 			}
-			add(t);
+			add(pText.t);
 		}
 
 		// Creates a smooth button, with text inside it, where c = container, and t = text
-		function createButton(text, font, cWidth, cHeight, cX, cY) {
-			var t = new Text(text, font);
-			var c = new Rectangle(cWidth, cHeight);
-			var c1 = new Circle(cHeight / 2);
-			var c2 = new Circle(cHeight / 2);
+		function createButton(text, font, cWidth, cHeight, cX, cY, array) {
+			var pButton = {
+				t: new Text(text, font),
+				c: new Rectangle(cWidth, cHeight),
+				c1: new Circle(cHeight / 2),
+				c2: new Circle(cHeight / 2),
+			};
 
-			t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-			t.setColor(Color.black);
+			pButton.t.setPosition(cX - pButton.t.getWidth() / 2, cY + pButton.c.getHeight() / 2 + (pButton.t.getHeight() / 3));
+			pButton.t.setColor(Color.black);
 
-			c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
-			c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
+			pButton.c1.setPosition(cX - pButton.c.getWidth() / 2, cY + pButton.c.getHeight() / 2);
+			pButton.c2.setPosition(cX + pButton.c.getWidth() / 2, cY + pButton.c.getHeight() / 2);
 
-			c1.setColor(Color.gray);
-			c2.setColor(Color.gray);
+			pButton.c1.setColor(Color.gray);
+			pButton.c2.setColor(Color.gray);
 
-			c.setPosition(cX - c.getWidth() / 2, cY);
-			c.setColor(Color.gray);
+			pButton.c.setPosition(cX - pButton.c.getWidth() / 2, cY);
+			pButton.c.setColor(Color.gray);
 
-			add(c1);
-			add(c2);
-			add(c);
-			add(t);
+			if (array !== null) {
+				array.push(pButton);
+			}
+
+			add(pButton.c1);
+			add(pButton.c2);
+			add(pButton.c);
+			add(pButton.t);
 		}
 
 		/// Main function to end game
 		function endGame() {
 			stopTimer(step);
-			createText("Reaction Time: " + calculateAverage() + "ms", "22pt sans-serif", screenTypes[2], 200);
-			createButton("Retry", "22pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
+			createText("Reaction Time: " + calculateAverage() + "ms", "22pt sans-serif", screenTypes[2], 200, false, null);
+			createButton("Retry", "22pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4, null);
 		}
 
 		function calculateAverage() {
