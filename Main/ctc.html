@@ -31,6 +31,13 @@
 		var theCircle, speedMove;
 		var isPaused, pauseText;
 
+		// Text Variables
+		var pauseText;
+
+		// Button Variables
+		var startButton;
+		var retryButton;
+
 		var scoreLabel, livesLabel, buttonElement, playerElement, playerDirection;
 
 		var playerImage = "https://puu.sh/yZmDf/c11c111ae2.png";
@@ -44,6 +51,8 @@
 
 		function beginGame() {
 			removeAll();
+			score = 0;
+			lives = 3;
 			createPlayerElement();
 			createScoreAndLivesLabel();
 			setTimer(playerMove, 16);
@@ -61,43 +70,45 @@
 		}
 
 		function beginEndGame() {
-			stopTimer(playerMove);
 			stopTimer(drawCircles);
 			if (theCircle.length === 0) {
-				stopTimer(setup);
-				endGame();
+				stopAllTimers();
 			}
 		}
 
 		function endGame() {
 			setHighScore();
-			createText("Highscore: " + sessionStorage.getItem("highScore"), "24pt sans-serif", screenTypes[2], 200);
-			createButton("Retry", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
+			createText("Highscore: " + sessionStorage.getItem("highScore"), "24pt sans-serif", screenTypes[2], 200, false, null);
+			createButton("Retry", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4, retryButton);
 		}
 
 		function pauseGame() {
-			stopTimer(playerMove);
-			stopTimer(drawCircles);
-			stopTimer(setup);
-			// Since pauseText is handled differently from the normal createText functions, it is redefined here
-			pauseText = new Text("Game Paused", "24pt sans-serif");
-			pauseText.setPosition(screenTypes[2] - (pauseText.getWidth() / 2), screenTypes[3]);
-			pauseText.setColor(shiftedBlack);
-			add(pauseText);
+			isPaused = true;
+			stopAllTimers();
+
+			createText("Game Paused", "24pt sans-serif", screenTypes[2], 24, false, pauseText);
 		}
 
 		function unpauseGame() {
-			remove(pauseText);
+			remove(pauseText[0].t);
+			pauseText.pop(); // This is done so that pauseText can be removed easily.
+			isPaused = false;
 			setTimer(playerMove, 16);
 			setTimer(drawCircles, 400);
 			setTimer(setup, 8);
 		}
 
+		function quitGame() {
+			removeAll();
+			stopAllTimers();
+		}
+
 		function start() {
 			// Assign global values
-			score = 0;
-			lives = 3;
 			theCircle = [];
+			pauseText = [];
+			startButton = [];
+			retryButton = [];
 			speedMove = false;
 			isPaused = false;
 
@@ -105,8 +116,8 @@
 		}
 
 		function drawMenu() {
-			createText("Catch The Circles!", "30pt sans-serif", screenTypes[2], 0, false);
-			createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4);
+			createText("Catch The Circles!", "30pt sans-serif", screenTypes[2], 0, false, null);
+			createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4, startButton);
 
 			mouseClickMethod(performAction_Click);
 		}
@@ -123,23 +134,6 @@
 			else {
 				sessionStorage.setItem("highScore", score);
 			}
-		}
-
-		// Creates a graphic text string
-		function createText(text, font, cX, cY, messageBox = true) {
-			var t = new Text(text, font);
-			var c = new Rectangle(getWidth(), t.getHeight() + 50);
-
-			t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-			t.setColor(shiftedBlack);
-
-			c.setPosition(cX - c.getWidth() / 2, cY);
-			c.setColor(shiftedGray);
-
-			if (messageBox) {
-				add(c);
-			}
-			add(t);
 		}
 
 		// Checks if the Player and the Circles have collided, that is, touched.
@@ -184,7 +178,7 @@
 		}
 
 		function createScoreAndLivesLabel() {
-			// We wont be using CreateTextElement, since we need to perform more calculations on the text position
+			// We wont be using createText, since we need to perform more calculations on the text position
 			scoreLabel = new Text("Score: " + score, "15pt sans-serif");
 			scoreLabel.setPosition(5, 0 + scoreLabel.getHeight());
 			scoreLabel.setColor(Color.black);
@@ -197,45 +191,57 @@
 		}
 
 		// Creates a graphic text string
-		function createText(text, font, cX, cY, messageBox = true) {
-			var t = new Text(text, font);
-			var c = new Rectangle(getWidth(), t.getHeight() + 50);
+		function createText(text, font, cX, cY, messageBox, array) {
+			var pText = {
+				t: new Text(text, font),
+				c: new Rectangle(getWidth(), new Text(text, font).getHeight() + 50), // I dont like this method, but I could not get 'this' property to work.
+			};
 
-			t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-			t.setColor(shiftedBlack);
+			pText.t.setPosition(cX - pText.t.getWidth() / 2, cY + pText.c.getHeight() / 2 + (pText.t.getHeight() / 3));
+			pText.t.setColor(shiftedBlack);
 
-			c.setPosition(cX - c.getWidth() / 2, cY);
-			c.setColor(shiftedGray);
+			pText.c.setPosition(cX - pText.c.getWidth() / 2, cY);
+			pText.c.setColor(shiftedGray);
+
+			if (array !== null) {
+				array.push(pText);
+			}
 
 			if (messageBox) {
-				add(c);
+				add(pText.c);
 			}
-			add(t);
+			add(pText.t);
 		}
 
 		// Creates a smooth button, with text inside it, where c = container, and t = text
-		function createButton(text, font, cWidth, cHeight, cX, cY) {
-			var t = new Text(text, font);
-			var c = new Rectangle(cWidth, cHeight);
-			var c1 = new Circle(cHeight / 2);
-			var c2 = new Circle(cHeight / 2);
+		function createButton(text, font, cWidth, cHeight, cX, cY, array) {
+			var pButton = {
+				t: new Text(text, font),
+				c: new Rectangle(cWidth, cHeight),
+				c1: new Circle(cHeight / 2),
+				c2: new Circle(cHeight / 2),
+			};
 
-			t.setPosition(cX - t.getWidth() / 2, cY + c.getHeight() / 2 + (t.getHeight() / 3));
-			t.setColor(Color.black);
+			pButton.t.setPosition(cX - pButton.t.getWidth() / 2, cY + pButton.c.getHeight() / 2 + (pButton.t.getHeight() / 3));
+			pButton.t.setColor(Color.black);
 
-			c1.setPosition(cX - c.getWidth() / 2, cY + c.getHeight() / 2);
-			c2.setPosition(cX + c.getWidth() / 2, cY + c.getHeight() / 2);
+			pButton.c1.setPosition(cX - pButton.c.getWidth() / 2, cY + pButton.c.getHeight() / 2);
+			pButton.c2.setPosition(cX + pButton.c.getWidth() / 2, cY + pButton.c.getHeight() / 2);
 
-			c1.setColor(Color.gray);
-			c2.setColor(Color.gray);
+			pButton.c1.setColor(Color.gray);
+			pButton.c2.setColor(Color.gray);
 
-			c.setPosition(cX - c.getWidth() / 2, cY);
-			c.setColor(Color.gray);
+			pButton.c.setPosition(cX - pButton.c.getWidth() / 2, cY);
+			pButton.c.setColor(Color.gray);
 
-			add(c1);
-			add(c2);
-			add(c);
-			add(t);
+			if (array !== null) {
+				array.push(pButton);
+			}
+
+			add(pButton.c1);
+			add(pButton.c2);
+			add(pButton.c);
+			add(pButton.t);
 		}
 
 		function setup() {
@@ -318,11 +324,9 @@
 			if (e.keyCode == 27) { // ESCAPE key is being pressed
 				if (isPaused === true) {
 					unpauseGame();
-					isPaused = false;
 				}
 				else {
 					pauseGame();
-					isPaused = true;
 				}
 			}
 			if (e.keyCode == Keyboard.SHIFT) {
@@ -364,13 +368,29 @@
 
 		function performAction_Click(e) {
 			var element = getElementAt(e.getX(), e.getY());
-
-			// Long and ugly condition
-			if (element !== null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
-				score = 0;
-				lives = 3;
-				beginGame();
+			try {
+				// -1 represents whether all conditions are met, i.e are true.
+				if (buttonIndex(startButton[0], element) > -1) {
+					stopAllTimers();
+					beginGame();
+				}
+				if (buttonIndex(retryButton[0], element) > -1) {
+					stopAllTimers();
+					beginGame();
+				}
 			}
+			catch (err) { }
+		}
+
+		function buttonIndex(array, compare) {
+			// Derived from https://stackoverflow.com/questions/13737091/concise-way-to-compare-against-multiple-values
+			return [array.t, array.c, array.c1, array.c2].indexOf(compare);
+		}
+
+		function stopAllTimers() {
+			stopTimer(playerMove);
+			stopTimer(drawCircles);
+			stopTimer(setup);
 		}
 
 		if (typeof start === 'function') {
