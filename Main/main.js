@@ -30,7 +30,7 @@
 						'&nbsp;Fast Aim</a>' +
 					'</div>' +
 			'<li style="float: right;">' +
-				'<a id="time"></a>' +
+				'<a id="time" style="cursor: default;"></a>' +
 			'</li>' +
 		'</ul>';
 
