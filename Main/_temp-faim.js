@@ -1,6 +1,6 @@
 ﻿// Global Variables
-var theTarget, difficulty, title, score, lives;
-var clickedCircle, targetText, radius;
+var theTarget, difficulty, score, lives;
+var clickedCircle, radius;
 var isPaused, pauseText;
 var gameRunning;
 
@@ -16,9 +16,6 @@ var instructionsOnClick = new Event("instructionsOnClick"); // Derived from http
 var scoreText;
 var livesText;
 var pauseText;
-
-// Time Variables
-var gameTime;
 
 // Gets the width and height of canvas, then find the center.
 var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];

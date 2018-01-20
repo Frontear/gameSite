@@ -77,7 +77,7 @@ function beginDrawingCircles() {
 }
 
 // Main function to set internal reaction time, and allow for circle generation.
-function setReaction(e) {
+function setReaction() {
 	remove(theTarget);
 	var reactionTime = getTime() - secondsBeforeClicked;
 	reactionAverage.push(reactionTime);
@@ -177,7 +177,7 @@ function performAction_Click(e) {
 	if (element !== null) { // This is to prevent any undefined element errors
 		if (gameRunning == true) { // Reduce the amount of checks if game is running, since menu elements are no longer displayed
 			if (element == theTarget) {
-				setReaction(e);
+				setReaction();
 			}
 		}
 		else {
