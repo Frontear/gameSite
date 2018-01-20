@@ -1,4 +1,4 @@
-﻿var score, highscore, lives;
+﻿var score, lives;
 var theCircle, speedMove;
 var isPaused, pauseText;
 var gameRunning;
@@ -16,7 +16,7 @@ var startButton;
 var instructionButton;
 var retryButton;
 
-var buttonElement, playerElement, playerDirection;
+var playerElement, playerDirection;
 
 var playerImage = "https://puu.sh/yZmDf/c11c111ae2.png";
 var playerImage_Flip = "https://puu.sh/yZmCU/45c66b28d8.png";
@@ -76,11 +76,6 @@ function unpauseGame() {
 	setTimer(playerMove, 16);
 	setTimer(drawCircles, 400);
 	setTimer(setup, 8);
-}
-
-function quitGame() {
-	removeAll();
-	stopAllTimers();
 }
 
 function start() {
