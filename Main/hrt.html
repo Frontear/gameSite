@@ -21,187 +21,161 @@
 		<div id="header"></div>
 		<h1>Reaction Speed Test</h1>
 		<canvas width="400" height="500" class="codehs-editor-canvas"></canvas>
-		<p>Welcome to the Reaction Speed Test. You will attempt to press a green circle as fast as you can when it appears. You will get five tries, and the site will average all scores into your reaction time. Remember, lower is better!</p>
+		<p id="instructions"></p>
 	</div>
+	<script>
+		document.addEventListener("instructionsOnClick", function () {
+			var instructions = document.getElementById("instructions");
+			instructions.className = "fade-in";
+			instructions.innerHTML = "Click the green circle as it appears. You must press it as fast as you can five times, and your reaction time will be averaged and displayed afterwards.";
+		});
+		window.addEventListener("load", function () {
+			// Global Variables
+			var loops;
+			var doesCircleExist;
+			var secondsBeforeClicked;
+			var reactionAverage;
+			var theTarget;
+			var gameRunning;
+
+			// Event Listener
+			var instructionsOnClick = new Event("instructionsOnClick"); // Derived from https://stackoverflow.com/a/31222710/9091276
+
+			// Button Variables
+			var startButton;
+			var instructionButton;
+			var retryButton;
+
+			// Gets the width and height of canvas, then find the center.
+			var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+			var fontConst = " sans-serif";
+
+			/// Main entry point for javascript
+			function start() {
+				// Assign values to variables
+				doesCircleExist = false;
+				secondsBeforeClicked = 0;
+				reactionAverage = []; // Array for reaction times
+				// Empty arrays for pButton
+				startButton = [];
+				instructionButton = [];
+				retryButton = [];
+
+				// Render the main menu
+				drawMenu();
+			}
+
+			/// Main function to draw the main Menu
+			function drawMenu() {
+				createText("Reaction Test!", "30pt" + fontConst, screenTypes[2], 0, null);
+				createButton("Start", "24pt" + fontConst, 100, 50, screenTypes[2] - screenTypes[0] / 4, screenTypes[3] + screenTypes[1] / 4, startButton);
+				createButton("Instructions", "16pt" + fontConst, 80, 50, screenTypes[2] + screenTypes[0] / 4, screenTypes[3] + screenTypes[1] / 4, instructionButton);
+
+				mouseClickMethod(performAction_Click);
+			}
+
+			/// Main function to get time
+			function getTime() {
+				return new Date().getTime(); // Get seconds since Epoch Time (1/1/1970)
+			}
+
+			/// Main function to control game, treat as the true start function
+			function startGame() {
+				gameRunning = true;
+				loops = 0; // This is defined here rather than start(), since the restart button calls here, and code will operate improperly if loops isn't defaulted.
+				removeAll(); // Remove all active elements from the canvas.
+				randomize(); // This function was needed to randomize the calling of step
+			}
+
+			// Helper function to randomize spawn rate
+			function randomize() {
+				stopTimer(step);
+				setTimer(step, Randomizer.nextInt(2000, 10000));
+			}
+
+			function step() {
+				beginDrawingCircles();
+				randomize();
+			}
+
+			// Main function to control circle generation
+			function beginDrawingCircles() {
+				theTarget = drawCircle();
+				if (doesCircleExist === false) {
+					add(theTarget);
+					secondsBeforeClicked = getTime();
+					doesCircleExist = true;
+				}
+			}
+
+			// Main function to set internal reaction time, and allow for circle generation.
+			function setReaction() {
+				remove(theTarget);
+				var reactionTime = getTime() - secondsBeforeClicked;
+				reactionAverage.push(reactionTime);
+				loops++;
+				doesCircleExist = false;
+				if (loops == 5) { // This is done to show the reaction time instantly, when loops are 5.
+					endGame();
+				}
+			}
+
+			/// Helper Functions, mostly reusable/modular
+			function drawCircle() {
+				var c = new Circle(100);
+				c.setPosition(screenTypes[2], screenTypes[3]);
+				c.setColor(Color.green);
+				return c;
+			}
+
+			/// Main function to end game
+			function endGame() {
+				gameRunning = false;
+				stopTimer(step);
+				createText("Reaction Time: " + calculateAverage() + "ms", "22pt" + fontConst, screenTypes[2], 200, null);
+				createButton("Retry", "22pt" + fontConst, 100, 50, screenTypes[2], screenTypes[3] + screenTypes[1] / 4, retryButton);
+			}
+
+			function calculateAverage() {
+				var arrAverage = 0;
+				var arrLength = reactionAverage.length; // Array length should be 5, since only 5 loops occured
+				for (var i = 0; i < arrLength; i++) { // Loop five times
+					arrAverage += reactionAverage[i]; // Add the reaction times together, this is a simple mean calculation
+				}
+				return Math.round(arrAverage / arrLength); // Actual mean calculation
+			}
+
+			function performAction_Click(e) {
+				var element = getElementAt(e.getX(), e.getY());
+				if (element !== null) { // This is to prevent any undefined element errors
+					if (gameRunning == true) { // Reduce the amount of checks if game is running, since menu elements are no longer displayed
+						if (element == theTarget) {
+							setReaction();
+						}
+					}
+					else {
+						if (buttonIndex(instructionButton[0], element) > -1) {
+							document.dispatchEvent(instructionsOnClick);
+						}
+						else if (buttonIndex(startButton[0], element) > -1 || buttonIndex(retryButton[0], element) > -1) {
+							startGame();
+						}
+					}
+				}
+			}
+
+			function buttonIndex(array, compare) {
+				// Derived from https://stackoverflow.com/a/13737101
+				try {
+					return ([array.t, array.c, array.c1, array.c2].indexOf(compare));
+				}
+				catch (err) { console.log(err); } // This is done if you press something that isn't within an array (pText).
+			}
+
+			if (typeof start === 'function') {
+				start();
+			}
+		});
+	</script>
 </body>
 </html>
-<script>
-	window.addEventListener("load", function () {
-		// Global Variables
-		var loops;
-		var playedBefore;
-		var beginPlaying;
-		var doesCircleExist;
-		var playerLost;
-		var secondsBeforeClicked;
-		var reactionAverage;
-		var shouldQuit;
-		var reactionText;
-		var reactionTime;
-
-		var shiftedGray = new Color(205, 205, 205);
-		var shiftedBlack = new Color(1, 1, 1);
-
-		// Gets the width and height of canvas, then find the center.
-		var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
-
-		/// Main entry point for javascript
-		function start() {
-			// Assign values to variables
-			playedBefore = false;
-			beginPlaying = false;
-			doesCircleExist = false;
-			playerLost = false;
-			secondsBeforeClicked = 0;
-			reactionAverage = [];
-			shouldQuit = false;
-
-			drawMenu();
-		}
-
-		/// Main function to draw the main Menu
-		function drawMenu() {
-			createText("Reaction Test!", "30pt sans-serif", screenTypes[2], 0, false, null);
-			createButton("Start", "24pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4, null);
-			mouseClickMethod(performAction_Click);
-		}
-
-		/// Main function to get time
-		function setTime() {
-			return new Date().getTime(); // Get seconds since Epoch Time (1/1/1970)
-		}
-
-		/// Main function to control game, treat as the true start function
-		function startGame() {
-			removeAll();
-			randomize();
-		}
-
-		// Helper function to randomize spawn rate
-		function randomize() {
-			stopTimer(step);
-			setTimer(step, Randomizer.nextInt(2000, 10000));
-		}
-
-		function performAction_Click(e) {
-			var element = getElementAt(e.getX(), e.getY());
-			if (element !== null && element.color == Color.green && element.type == "Circle") {
-				setReaction(e);
-			}
-
-			// Long and ugly condition
-			if (element !== null && (element.type == "Rectangle" || element.type == "Circle" || element.type == "Text") && (element.color == Color.gray || element.color == Color.black)) {
-				loops = 0;
-				startGame();
-			}
-		}
-
-		function step() {
-			beginDrawingCircles();
-			randomize();
-		}
-
-		// Main function to control circle generation
-		function beginDrawingCircles() {
-			var circle = drawCircle();
-			if (doesCircleExist === false) {
-				add(circle);
-				secondsBeforeClicked = setTime();
-				doesCircleExist = true;
-			}
-		}
-
-		function setReaction(e) {
-			remove(getElementAt(e.getX(), e.getY()));
-			var reactionTime = setTime() - secondsBeforeClicked;
-			reactionAverage.push(reactionTime);
-			loops++;
-			doesCircleExist = false;
-			if (loops == 5) {
-				endGame();
-			}
-		}
-
-		/// Helper Functions, mostly reusable/modular
-		function drawCircle() {
-			var c = new Circle(100);
-			c.setPosition(screenTypes[2], screenTypes[3]);
-			c.setColor(Color.green);
-			return c;
-		}
-
-		// Creates a graphic text string
-		function createText(text, font, cX, cY, messageBox, array) {
-			var pText = {
-				t: new Text(text, font),
-				c: new Rectangle(getWidth(), new Text(text, font).getHeight() + 50), // I dont like this method, but I could not get 'this' property to work.
-			};
-
-			pText.t.setPosition(cX - pText.t.getWidth() / 2, cY + pText.c.getHeight() / 2 + (pText.t.getHeight() / 3));
-			pText.t.setColor(shiftedBlack);
-
-			pText.c.setPosition(cX - pText.c.getWidth() / 2, cY);
-			pText.c.setColor(shiftedGray);
-
-			if (array !== null) {
-				array.push(pText);
-			}
-
-			if (messageBox) {
-				add(pText.c);
-			}
-			add(pText.t);
-		}
-
-		// Creates a smooth button, with text inside it, where c = container, and t = text
-		function createButton(text, font, cWidth, cHeight, cX, cY, array) {
-			var pButton = {
-				t: new Text(text, font),
-				c: new Rectangle(cWidth, cHeight),
-				c1: new Circle(cHeight / 2),
-				c2: new Circle(cHeight / 2),
-			};
-
-			pButton.t.setPosition(cX - pButton.t.getWidth() / 2, cY + pButton.c.getHeight() / 2 + (pButton.t.getHeight() / 3));
-			pButton.t.setColor(Color.black);
-
-			pButton.c1.setPosition(cX - pButton.c.getWidth() / 2, cY + pButton.c.getHeight() / 2);
-			pButton.c2.setPosition(cX + pButton.c.getWidth() / 2, cY + pButton.c.getHeight() / 2);
-
-			pButton.c1.setColor(Color.gray);
-			pButton.c2.setColor(Color.gray);
-
-			pButton.c.setPosition(cX - pButton.c.getWidth() / 2, cY);
-			pButton.c.setColor(Color.gray);
-
-			if (array !== null) {
-				array.push(pButton);
-			}
-
-			add(pButton.c1);
-			add(pButton.c2);
-			add(pButton.c);
-			add(pButton.t);
-		}
-
-		/// Main function to end game
-		function endGame() {
-			stopTimer(step);
-			createText("Reaction Time: " + calculateAverage() + "ms", "22pt sans-serif", screenTypes[2], 200, false, null);
-			createButton("Retry", "22pt sans-serif", 100, 50, screenTypes[2], screenTypes[3] + getHeight() / 4, null);
-		}
-
-		function calculateAverage() {
-			var arrAverage = 0;
-			var arrLength = reactionAverage.length;
-			for (var i = 0; i < arrLength; i++) {
-				arrAverage += reactionAverage[i];
-			}
-			return Math.round(arrAverage / arrLength);
-		}
-
-		if (typeof start === 'function') {
-			start();
-		}
-	});
-</script>
