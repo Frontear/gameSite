@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<!-- Import StyleSheet, Icon, and FontAwesome -->
+	<link rel="icon" href="https://puu.sh/z5oo3/37048cb6f7.png">
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- Import CodeHS dependancies-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://static.codehs.com/gulp/3ee6f1489a3909a788e32cbc39525a167dc5988d/chs-js-lib/chs.js"></script>
+
+	<!-- Import JavaScripts -->
+	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="time.js"></script>
+	<title>Breakout</title>
+</head>
+<body class="bg-gradient fg-white center-text">
+	<div id="mySidenav" class="sidenavBar"></div>
+	<div class="fade-in">
+		<div id="header"></div>
+		<h1>Breakout</h1>
+		<canvas width="400" height="500" class="codehs-editor-canvas"></canvas>
+		<p id="instructions"></p>
+	</div>
+	<script>
+	    document.addEventListener("instructionsOnClick", function () {
+	        var instructions = document.getElementById("instructions");
+	        instructions.className = "fade-in";
+	        instructions.innerHTML = "Move your paddle to hit the ball. Destroy all the bricks!";
+	    });
+	    window.addEventListener("load", function () {
+	        /* Constants for bricks */
+	        var NUM_ROWS = 8;
+	        var BRICK_TOP_OFFSET = 10;
+	        var BRICK_SPACING = 2;
+	        var NUM_BRICKS_PER_ROW = 10;
+	        var BRICK_HEIGHT = 10;
+	        var SPACE_FOR_BRICKS = getWidth() - (NUM_BRICKS_PER_ROW + 1) * BRICK_SPACING;
+	        var BRICK_WIDTH = SPACE_FOR_BRICKS / NUM_BRICKS_PER_ROW;
+	        var ROW_COLOR = [Color.RED, Color.RED, Color.ORANGE, Color.ORANGE,
+                            Color.GREEN, Color.GREEN, Color.BLUE, Color.BLUE];
+
+	        /* Constants for ball and paddle */
+	        var PADDLE_WIDTH = 80;
+	        var PADDLE_HEIGHT = 15;
+	        var PADDLE_OFFSET = 10;
+
+	        var BALL_RADIUS = 15;
+
+	        // Event Listener
+	        var instructionsOnClick = new Event("instructionsOnClick"); // Derived from https://stackoverflow.com/a/31222710/9091276
+
+	        /* Variables for default values */
+	        var score, lives;
+
+	        /* Constants for flags */
+	        var gameRunning;
+	        var gameIsEnding;
+	        var canRestart;
+
+	        /* Ball bouncing constants */
+	        var dx = -4;
+	        var dy = 4;
+
+	        /* Button and Text constants */
+	        var startButton, instructionButton;
+
+	        /* OBJECT Constants */
+	        var paddle;
+	        var ball;
+
+	        var fontConst = " sans-serif"; // This font is used everywhere, so just define it here.
+	        var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+
+	        function start() {
+	            gameIsEnding = false;
+	            score = 0;
+	            lives = 3;
+	            dx = -4;
+	            dy = 4;
+	            startButton = [];
+	            instructionButton = [];
+
+	            drawMenu();
+	        }
+
+	        function beginGame() {
+	            gameRunning = true;
+	            drawBricks();
+	            drawPaddleAndBall();
+	            setTimer(bounceBall, 20);
+	            mouseMoveMethod(movePaddle);
+	        }
+
+	        function endGame() {
+	            gameIsEnding = true;
+	            stopTimer(bounceBall);
+	            remove(ball);
+	            createText("Game over", "14pt" + fontConst, screenTypes[2], screenTypes[3], null);
+	        }
+
+	        function drawMenu() {
+	            createText("Breakout!", "30pt" + fontConst, screenTypes[2], 0, null);
+	            createButton("Start", "24pt" + fontConst, 100, 50, screenTypes[2] - screenTypes[0] / 4, screenTypes[3] + screenTypes[1] / 4, startButton);
+	            createButton("Instructions", "16pt" + fontConst, 80, 50, screenTypes[2] + screenTypes[0] / 4, screenTypes[3] + screenTypes[1] / 4, instructionButton);
+
+	            mouseClickMethod(performAction_Click);
+	        }
+
+	        function drawBricks() {
+	            for (var row = 0; row < NUM_ROWS; row++) {
+	                for (var brick = 0; brick < NUM_BRICKS_PER_ROW; brick++) {
+	                    var obj = new Rectangle(BRICK_WIDTH, BRICK_HEIGHT);
+	                    obj.setPosition(BRICK_SPACING + (brick * BRICK_WIDTH) + (brick * BRICK_SPACING), BRICK_TOP_OFFSET + (row * BRICK_HEIGHT) + (row * BRICK_SPACING));
+	                    obj.setColor(ROW_COLOR[row]);
+	                    add(obj);
+	                }
+	            }
+	        }
+
+	        function drawPaddleAndBall() {
+	            paddle = new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT);
+	            paddle.setPosition(0 + PADDLE_OFFSET, (getHeight() - PADDLE_HEIGHT) - PADDLE_OFFSET);
+	            add(paddle);
+
+	            ball = new Circle(BALL_RADIUS);
+	            ball.setPosition(screenTypes[2], screenTypes[3]);
+	            add(ball);
+	        }
+
+	        function bounceBall() {
+	            var element = getElementAt(ball.getX(), ball.getY());
+	            // Ball has touched ground, penalize
+	            if (ball.getY() + ball.getRadius() > screenTypes[1]) {
+	                resetBallPosition();
+	            }
+
+	            // Bounce off right wall or left wall
+	            if ((ball.getX() + ball.getRadius() > screenTypes[0]) || (ball.getX() - ball.getRadius() < 0)) {
+	                dx = -dx;
+	            }
+
+	            // Bounce off bottom wall
+	            if (ball.getY() - ball.getRadius() < 0) {
+	                dy = -dy;
+	            }
+
+	            ball.move(dx, dy);
+	        }
+
+	        function movePaddle(e) {
+	            if (e.getX() - paddle.getWidth() / 2 > 0 && e.getX() + paddle.getWidth() / 2 < getWidth()) {
+	                paddle.setPosition(e.getX() - paddle.getWidth() / 2, paddle.getY());
+	            }
+	        }
+
+	        function performAction_Click(e) {
+	            var element = getElementAt(e.getX(), e.getY());
+	            if (gameRunning == true) { // Reduce the amount of checks if game is running, since menu elements are no longer displayed
+	                if (canRestart == true && gameIsEnding == false) {
+	                    setTimer(bounceBall, 20);
+	                }
+	            }
+	            else if (element !== null) { // This is to prevent any undefined element errors
+	                if (buttonIndex(instructionButton[0], element) > -1) {
+	                    document.dispatchEvent(instructionsOnClick);
+	                }
+	                else if ((buttonIndex(startButton[0], element) > -1) || (buttonIndex(retryButton[0], element) > -1)) {
+	                    stopAllTimers();
+	                    beginGame();
+	                }
+	            }
+	        }
+
+	        function resetBallPosition() {
+	            stopTimer(bounceBall);
+	            ball.setPosition(screenTypes[2], screenTypes[3]);
+	            reduceLives();
+	            canRestart = true;
+	        }
+
+	        function reduceLives() {
+	            checkForEndGame();
+	        }
+
+	        function checkForEndGame() {
+	            if (lives == 1) {
+	                endGame();
+	            }
+	            else {
+	                lives--;
+	            }
+	        }
+
+	        if (typeof start === 'function') {
+	            start();
+	        }
+	    });
+	</script>
+</body>
+</html>

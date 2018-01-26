@@ -28,6 +28,9 @@
 				'<a href="faim.html">' +
 					'<i class="fa fa-bullseye" aria-hidden="true"></i>' +
 				'&nbsp;Fast Aim</a>' +
+                '<a href="breakout.html">' +
+                    '<i class="fa fa-window-minimize" aria-hidden="true"></i>' +
+                '&nbsp;Breakout</a>' +
 			'</div>' +
 			'<li style="float: right;">' +
 				'<a id="time" style="cursor: default;"></a>' +
