@@ -5,34 +5,43 @@
 	header.innerHTML =
 		'<ul>' +
 			'<li>' +
+				// Navigation button
 				'<a href="javascript:void(0)" onclick="openNavigation()">' +
 					'<i class="fa fa-align-justify" aria-hidden="true"></i>' +
 				'</a> ' +
 			'</li>' +
 			'<li>' +
+				// Home button
 				'<a href="index.html">' +
 					'<i id="icon" class="fa fa-home" aria-hidden="true"></i>' +
 				'&nbsp;Home</a>' +
 			'</li>' +
+			// Creation of Dropdown
 			'<li class="dropdown">' +
 				'<a href="javascript:void(0)" class="dropbtn">' +
 					'<i class="fa fa-gamepad" aria-hidden="true"></i>' +
 				'&nbsp;Games</a>' +
+			// Content within dropdown
 			'<div class="dropdown-content">' +
+				// Reaction Time
 				'<a href="hrt.html">' +
 					'<i id="icon" class="fa fa-user" aria-hidden="true"></i>' +
 				'&nbsp;Reaction Test</a>' +
+				// Catch the Circles
 				'<a href="ctc.html">' +
 					'<i id="icon" class="fa fa-circle-o" aria-hidden="true"></i>' +
 				'&nbsp;Catch Circles</a>' +
+				// Fast Aim
 				'<a href="faim.html">' +
 					'<i class="fa fa-bullseye" aria-hidden="true"></i>' +
 				'&nbsp;Fast Aim</a>' +
+				// Breakout
                 '<a href="breakout.html">' +
                     '<i class="fa fa-window-minimize" aria-hidden="true"></i>' +
                 '&nbsp;Breakout</a>' +
 			'</div>' +
 			'<li style="float: right;">' +
+				// The Time
 				'<a id="time" style="cursor: default;"></a>' +
 			'</li>' +
 		'</ul>';
@@ -53,11 +62,11 @@ function redirectToSite(urlOfSite) {
 
 // These two functions control the Navigation sidebar.
 function openNavigation() {
-	document.getElementById("mySidenav").style.width = "100%";
+	document.getElementById("mySidenav").style.width = "100%"; // Fully cover the screen
 }
 
 function closeNavigation() {
-	document.getElementById("mySidenav").style.width = "0";
+	document.getElementById("mySidenav").style.width = "0"; // Go back to nothing
 }
 
 /// - CodeHS Functions

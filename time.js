@@ -1,5 +1,6 @@
-﻿window.addEventListener("load", function () {
-	setTime(); // Initial call to show time immediatly onload
+﻿// Todo: Use Moment.js
+window.addEventListener("load", function () {
+	setTime(); // Initial call to show time immediatly onload of webpage
 	setInterval(setTime, 1000); // Set a timer to call function setTime every 1000ms, or 1 second.
 });
 
