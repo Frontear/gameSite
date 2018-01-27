@@ -30,173 +30,239 @@
 	        instructions.innerHTML = "Move your paddle to hit the ball. Destroy all the bricks!";
 	    });
 	    window.addEventListener("load", function () {
-	        /* Constants for bricks */
-	        var NUM_ROWS = 8;
-	        var BRICK_TOP_OFFSET = 10;
-	        var BRICK_SPACING = 2;
-	        var NUM_BRICKS_PER_ROW = 10;
-	        var BRICK_HEIGHT = 10;
-	        var SPACE_FOR_BRICKS = getWidth() - (NUM_BRICKS_PER_ROW + 1) * BRICK_SPACING;
-	        var BRICK_WIDTH = SPACE_FOR_BRICKS / NUM_BRICKS_PER_ROW;
-	        var ROW_COLOR = [Color.RED, Color.RED, Color.ORANGE, Color.ORANGE,
-                            Color.GREEN, Color.GREEN, Color.BLUE, Color.BLUE];
+			/* Constants for bricks */
+			var NUM_ROWS = 8;
+			var BRICK_TOP_OFFSET = 10;
+			var BRICK_SPACING = 2;
+			var NUM_BRICKS_PER_ROW = 10;
+			var BRICK_HEIGHT = 10;
+			var SPACE_FOR_BRICKS = getWidth() - (NUM_BRICKS_PER_ROW + 1) * BRICK_SPACING;
+			var BRICK_WIDTH = SPACE_FOR_BRICKS / NUM_BRICKS_PER_ROW;
+			var ROW_COLOR = [Color.RED, Color.RED, Color.ORANGE, Color.ORANGE,
+							 Color.GREEN, Color.GREEN, Color.BLUE, Color.BLUE];
 
-	        /* Constants for ball and paddle */
-	        var PADDLE_WIDTH = 80;
-	        var PADDLE_HEIGHT = 15;
-	        var PADDLE_OFFSET = 10;
+			/* Constants for ball and paddle */
+			var PADDLE_WIDTH = 80;
+			var PADDLE_HEIGHT = 15;
+			var PADDLE_OFFSET = 10;
 
-	        var BALL_RADIUS = 15;
+			var BALL_RADIUS = 15;
 
-	        // Event Listener
-	        var instructionsOnClick = new Event("instructionsOnClick"); // Derived from https://stackoverflow.com/a/31222710/9091276
+			// Event Listener
+			var instructionsOnClick = new Event("instructionsOnClick"); // Derived from https://stackoverflow.com/a/31222710/9091276
 
-	        /* Variables for default values */
-	        var score, lives;
+			/* Variables for default values */
+			var score, lives;
 
-	        /* Constants for flags */
-	        var gameRunning;
-	        var gameIsEnding;
-	        var canRestart;
+			/* Constants for flags */
+			var gameRunning;
+			var gameIsEnding;
+			var canRestart;
 
-	        /* Ball bouncing constants */
-	        var dx = -4;
-	        var dy = 4;
+			/* Ball bouncing constants */
+			var dx = -4;
+			var dy = 4;
 
-	        /* Button and Text constants */
-	        var startButton, instructionButton;
+			/* OBJECT Constants */
+			var paddle;
+			var ball;
+			var startButton, instructionButton;
 
-	        /* OBJECT Constants */
-	        var paddle;
-	        var ball;
+			var fontConst = " sans-serif"; // This font is used everywhere, so just define it here.
+			var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
 
-	        var fontConst = " sans-serif"; // This font is used everywhere, so just define it here.
-	        var screenTypes = [getWidth(), getHeight(), getWidth() / 2, getHeight() / 2];
+			function start() {
+				gameIsEnding = false;
+				score = 0;
+				lives = 3;
+				dx = -4;
+				dy = 4;
+				startButton = [];
+				instructionButton = [];
 
-	        function start() {
-	            gameIsEnding = false;
-	            score = 0;
-	            lives = 3;
-	            dx = -4;
-	            dy = 4;
-	            startButton = [];
-	            instructionButton = [];
+				drawMenu();
+			}
 
-	            drawMenu();
-	        }
+			function startGame() {
+				removeAll();
+				gameRunning = true;
+				drawBricks();
+				drawPaddleAndBall();
+				setTimer(bounceBall, 20);
+				mouseMoveMethod(movePaddle);
+			}
 
-	        function beginGame() {
-	            gameRunning = true;
-	            drawBricks();
-	            drawPaddleAndBall();
-	            setTimer(bounceBall, 20);
-	            mouseMoveMethod(movePaddle);
-	        }
+			function endGame() {
+				gameIsEnding = true;
+				stopTimer(bounceBall);
+				remove(ball);
+				createText("Game over", "14pt" + fontConst, screenTypes[2], screenTypes[3], null);
+			}
 
-	        function endGame() {
-	            gameIsEnding = true;
-	            stopTimer(bounceBall);
-	            remove(ball);
-	            createText("Game over", "14pt" + fontConst, screenTypes[2], screenTypes[3], null);
-	        }
+			function drawMenu() {
+				createText("Breakout!", "30pt" + fontConst, screenTypes[2], 0, null);
+				createButton("Start", "24pt" + fontConst, 100, 50, screenTypes[2] - screenTypes[0] / 4, screenTypes[3] + screenTypes[1] / 4, startButton);
+				createButton("Instructions", "16pt" + fontConst, 80, 50, screenTypes[2] + screenTypes[0] / 4, screenTypes[3] + screenTypes[1] / 4, instructionButton);
 
-	        function drawMenu() {
-	            createText("Breakout!", "30pt" + fontConst, screenTypes[2], 0, null);
-	            createButton("Start", "24pt" + fontConst, 100, 50, screenTypes[2] - screenTypes[0] / 4, screenTypes[3] + screenTypes[1] / 4, startButton);
-	            createButton("Instructions", "16pt" + fontConst, 80, 50, screenTypes[2] + screenTypes[0] / 4, screenTypes[3] + screenTypes[1] / 4, instructionButton);
+				mouseClickMethod(performAction_Click);
+			}
 
-	            mouseClickMethod(performAction_Click);
-	        }
+			function drawBricks() {
+				for (var row = 0; row < NUM_ROWS; row++){
+					for (var brick = 0; brick < NUM_BRICKS_PER_ROW; brick++) {
+						var obj = new Rectangle(BRICK_WIDTH, BRICK_HEIGHT);
+						obj.setPosition(BRICK_SPACING + (brick * BRICK_WIDTH) + (brick * BRICK_SPACING), BRICK_TOP_OFFSET + (row * BRICK_HEIGHT) + (row * BRICK_SPACING));
+						obj.setColor(ROW_COLOR[row]);
+						add(obj);
+					}
+				}
+			}
 
-	        function drawBricks() {
-	            for (var row = 0; row < NUM_ROWS; row++) {
-	                for (var brick = 0; brick < NUM_BRICKS_PER_ROW; brick++) {
-	                    var obj = new Rectangle(BRICK_WIDTH, BRICK_HEIGHT);
-	                    obj.setPosition(BRICK_SPACING + (brick * BRICK_WIDTH) + (brick * BRICK_SPACING), BRICK_TOP_OFFSET + (row * BRICK_HEIGHT) + (row * BRICK_SPACING));
-	                    obj.setColor(ROW_COLOR[row]);
-	                    add(obj);
-	                }
-	            }
-	        }
+			function drawPaddleAndBall() {
+				paddle = new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT);
+				paddle.setPosition(0 + PADDLE_OFFSET, (getHeight() - PADDLE_HEIGHT) - PADDLE_OFFSET);
+				add(paddle);
 
-	        function drawPaddleAndBall() {
-	            paddle = new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT);
-	            paddle.setPosition(0 + PADDLE_OFFSET, (getHeight() - PADDLE_HEIGHT) - PADDLE_OFFSET);
-	            add(paddle);
+				ball = new Circle(BALL_RADIUS);
+				ball.setPosition(screenTypes[2], screenTypes[3]);
+				add(ball);
+			}
 
-	            ball = new Circle(BALL_RADIUS);
-	            ball.setPosition(screenTypes[2], screenTypes[3]);
-	            add(ball);
-	        }
+			function bounceBall() {
+				var element = getElementAt(ball.getX(), ball.getY());
+				// Ball has touched ground, penalize
+				if (ball.getY() + ball.getRadius() > screenTypes[1]) {
+					resetBallPosition();
+				}
 
-	        function bounceBall() {
-	            var element = getElementAt(ball.getX(), ball.getY());
-	            // Ball has touched ground, penalize
-	            if (ball.getY() + ball.getRadius() > screenTypes[1]) {
-	                resetBallPosition();
-	            }
+				// Bounce off right wall or left wall
+				if ((ball.getX() + ball.getRadius() > screenTypes[0]) || (ball.getX() - ball.getRadius() < 0)) {
+					dx = -dx;
+				}
 
-	            // Bounce off right wall or left wall
-	            if ((ball.getX() + ball.getRadius() > screenTypes[0]) || (ball.getX() - ball.getRadius() < 0)) {
-	                dx = -dx;
-	            }
+				// Bounce off bottom wall
+				if (ball.getY() - ball.getRadius() < 0) {
+					dy = -dy;
+				}
 
-	            // Bounce off bottom wall
-	            if (ball.getY() - ball.getRadius() < 0) {
-	                dy = -dy;
-	            }
+				ball.move(dx, dy);
+			}
 
-	            ball.move(dx, dy);
-	        }
+			function movePaddle(e) {
+				if (e.getX() - paddle.getWidth() / 2 > 0 && e.getX() + paddle.getWidth() / 2 < getWidth()) {
+					paddle.setPosition(e.getX() - paddle.getWidth() / 2, paddle.getY());
+				}
+			}
 
-	        function movePaddle(e) {
-	            if (e.getX() - paddle.getWidth() / 2 > 0 && e.getX() + paddle.getWidth() / 2 < getWidth()) {
-	                paddle.setPosition(e.getX() - paddle.getWidth() / 2, paddle.getY());
-	            }
-	        }
+			function performAction_Click(e) {
+				var element = getElementAt(e.getX(), e.getY());
+				if (gameRunning == true) { // Reduce the amount of checks if game is running, since menu elements are no longer displayed
+					if (canRestart == true && gameIsEnding == false) {
+						setTimer(bounceBall, 20);
+					}
+				}
+				else if (element !== null) { // This is to prevent any undefined element errors{
+					if (buttonIndex(instructionButton[0], element) > -1) {
+						document.dispatchEvent(instructionsOnClick);
+					}
+					else if ((buttonIndex(startButton[0], element) > -1) || (buttonIndex(retryButton[0], element) > -1)) {
+						stopAllTimers();
+						startGame();
+					}
+				}
+			}
 
-	        function performAction_Click(e) {
-	            var element = getElementAt(e.getX(), e.getY());
-	            if (gameRunning == true) { // Reduce the amount of checks if game is running, since menu elements are no longer displayed
-	                if (canRestart == true && gameIsEnding == false) {
-	                    setTimer(bounceBall, 20);
-	                }
-	            }
-	            else if (element !== null) { // This is to prevent any undefined element errors
-	                if (buttonIndex(instructionButton[0], element) > -1) {
-	                    document.dispatchEvent(instructionsOnClick);
-	                }
-	                else if ((buttonIndex(startButton[0], element) > -1) || (buttonIndex(retryButton[0], element) > -1)) {
-	                    stopAllTimers();
-	                    beginGame();
-	                }
-	            }
-	        }
+			function resetBallPosition() {
+				stopTimer(bounceBall);
+				ball.setPosition(screenTypes[2], screenTypes[3]);
+				reduceLives();
+				canRestart = true;
+			}
 
-	        function resetBallPosition() {
-	            stopTimer(bounceBall);
-	            ball.setPosition(screenTypes[2], screenTypes[3]);
-	            reduceLives();
-	            canRestart = true;
-	        }
+			function reduceLives() {
+				checkForEndGame();
+			}
 
-	        function reduceLives() {
-	            checkForEndGame();
-	        }
+			function checkForEndGame() {
+				if (lives == 1) {
+					endGame();
+				}
+				else {
+					lives--;
+				}
+			}
 
-	        function checkForEndGame() {
-	            if (lives == 1) {
-	                endGame();
-	            }
-	            else {
-	                lives--;
-	            }
-	        }
+			// Creates a graphic text string
+			function createText(text, font, cX, cY, array) {
+				// If the array is already defined, define it again. You may also add a remove element in the array, but removeAll() handles that for me already.
+				if (array !== null && array.length == 1) { array.pop(); }
+				var pText = { // This object is pushed to an array for control
+					t: new Text(text, font),
+				};
 
-	        if (typeof start === 'function') {
-	            start();
-	        }
-	    });
+				// Set its x position based on the xCoordinate subtract its width divided by 2, which usually centers it at x param. Same thing for y, except divided 2 would not be needed
+				pText.t.setPosition(cX - pText.t.getWidth() / 2, cY + pText.t.getHeight());
+				pText.t.setColor(Color.black);
+
+				// This is done if this function isn't supposed to push to an array (if the element won't be managed afterwards)
+				// This just prevents any errors
+				if (array !== null) {
+					array.push(pText);
+				}
+
+				add(pText.t);
+			}
+
+			// Creates a smooth button, with text inside it, where c = container, and t = text
+			function createButton(text, font, cWidth, cHeight, cX, cY, array) {
+				// If the array is already defined, define it again. You may also add a remove element in the array, but removeAll() handles that for me already.
+				if (array !== null && array.length == 1) { array.pop(); }
+				var pButton = { // Big nice object, which has a lot of elements
+					t: new Text(text, font),
+					c: new Rectangle(cWidth, cHeight),
+					c1: new Circle(cHeight / 2),
+					c2: new Circle(cHeight / 2),
+				};
+
+				// Center the text based on the rectangle dimensions, and self dimensions
+				pButton.t.setPosition(cX - pButton.t.getWidth() / 2, cY + pButton.c.getHeight() / 2 + (pButton.t.getHeight() / 3));
+				pButton.t.setColor(Color.black);
+
+				// Set the two circles based on the rectangle x and y, making sure they dont end up offscreen or not attached correctly.
+				pButton.c1.setPosition(cX - pButton.c.getWidth() / 2, cY + pButton.c.getHeight() / 2);
+				pButton.c2.setPosition(cX + pButton.c.getWidth() / 2, cY + pButton.c.getHeight() / 2);
+
+				pButton.c1.setColor(Color.gray);
+				pButton.c2.setColor(Color.gray);
+
+				pButton.c.setPosition(cX - pButton.c.getWidth() / 2, cY);
+				pButton.c.setColor(Color.gray);
+
+				// This is done if this function isn't supposed to push to an array (if the element won't be managed afterwards)
+				// This just prevents any errors
+				if (array !== null) {
+					array.push(pButton);
+				}
+
+				// Add the big list of elements
+				add(pButton.c1);
+				add(pButton.c2);
+				add(pButton.c);
+				add(pButton.t);
+			}
+			function buttonIndex(array, compare) {
+				// Derived from https://stackoverflow.com/a/13737101
+				try {
+					return ([array.t, array.c, array.c1, array.c2].indexOf(compare));
+				}
+				catch (err) { console.log(err); } // This is done if you press something that isn't within an array (pText or pButton).
+			}
+
+
+			if (typeof start === 'function') {
+				start();
+			}
+		});
 	</script>
 </body>
 </html>

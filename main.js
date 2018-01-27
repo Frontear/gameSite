@@ -130,4 +130,13 @@ function createButton(text, font, cWidth, cHeight, cX, cY, array) {
 	add(pButton.t);
 }
 
+// Returns numerous values, within an array, compared to one variable
+function buttonIndex(array, compare) {
+				// Derived from https://stackoverflow.com/a/13737101
+				try {
+					return ([array.t, array.c, array.c1, array.c2].indexOf(compare));
+				}
+				catch (err) { console.log(err); } // This is done if you press something that isn't within an array (pText or pButton).
+			}
+
 /// - CodeHS Functions
