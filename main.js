@@ -36,7 +36,7 @@
 					'<i class="fa fa-bullseye" aria-hidden="true"></i>' +
 				'&nbsp;Fast Aim</a>' +
 				// Breakout
-                '<a href="breakout.html">' +
+                '<a href="breakout.html" style="color: lightgray;" onclick="return false;">' +
                     '<i class="fa fa-window-minimize" aria-hidden="true"></i>' +
                 '&nbsp;Breakout</a>' +
 			'</div>' +
@@ -85,7 +85,7 @@ function createText(text, font, cX, cY, array) {
 
 	// This is done if this function isn't supposed to push to an array (if the element won't be managed afterwards)
 	// This just prevents any errors
-	if (array != null) {
+	if (array !== null) {
 		array.push(pText);
 	}
 
