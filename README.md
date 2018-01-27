@@ -1,0 +1,2 @@
+# Human Reaction Site [![CodeFactor](https://www.codefactor.io/repository/github/frontear/gamesite/badge/master)](https://www.codefactor.io/repository/github/frontear/gamesite/overview/master)
+This is my final project for class ICS201. The website provides four games that you can play, one being a Reaction Time Test, another being an object collection game, the third being an aiming game, and the fourth (currently not done) is a game similar to pong, where you hit a ball at static objects.
