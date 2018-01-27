@@ -138,7 +138,8 @@
 
 				var target = {
 					// Calculations to make the circle's within smaller, in order to make a nice looking target
-					// I originally planned to use a webImage, the issue with this, is that it defines a larger, invisible portion of the image, which would be counted as an element, allowing you to click even if the object wasn't actually there
+					// I originally planned to use a webImage, the issue with this, is that it defines a larger, invisible portion of the image, which would be
+					// counted as an element, allowing you to click even if the object wasn't actually there
 					// This forced me to resort to this method.
 					c: new Circle(radius),
 					c1: new Circle(radius - (radius / 4)),
@@ -187,11 +188,11 @@
 
 			function rewardThePlayer() {
 				removeTheTarget();
-				if (difficulty > 400) { // Does anyone know anyone who can react and click within 400ms? I want to meet them
+				if (difficulty > 400) { // Do you know someone who can react and click within 400ms? I want to meet them
 					difficulty -= 10; // Make the game slightly more difficult each time. Of course, it cant keep infinitely going, otherwise user won't even be able to play
 				}
 				if (radius > 48) { // This game isn't about clicking molecules, we want nice, large circles. I dont need players using microscopes to play.
-					radius -= 1; // Make the circle slightly smaller each time, adding to the difficulty.
+					radius -= 1; // Make the circle slightly smaller each time, adding to the difficulty. Again, cant be infinite
 				}
 				clickedCircle = true;
 				score++;
