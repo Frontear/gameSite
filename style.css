@@ -1,8 +1,7 @@
 /* https://goo.gl/wLpCv5 */
 li a, .button {
-	transition: all .7s
+	transition: all .7s;
 }
-
 p, a, h1, h3, .button {
 	font-family: sans-serif
 }
@@ -117,12 +116,12 @@ footer {
 	}
 
 .bg-gradient {
-	-moz-animation: gradient 45s ease infinite;
-	-o-animation: gradient 45s ease infinite;
-	-webkit-animation: gradient 45s ease infinite;
-	animation: gradient 45s ease infinite;
-	background: linear-gradient(225deg,#4467ae,#449fae,#44ae8e,#9eae44,#ae7844,#ae4444,#ae4497,#7544ae);
-	background-size: 1600% 1600%
+	background: linear-gradient(225deg, #b92424, #b96724, #b9a924, #88b924, #24b937, #24b98c, #248ab9, #2434b9, #5c24b9, #9124b9, #b924a0, #b92444);
+	background-size: 2400% 2400%;
+	-webkit-animation: newGradient 45s ease infinite;
+	-moz-animation: newGradient 45s ease infinite;
+	-o-animation: newGradient 45s ease infinite;
+	animation: newGradient 45s ease infinite;
 }
 
 .fg-white {
@@ -184,107 +183,47 @@ footer {
 	}
 
 @media screen and (max-height: 450px) {
-	.sidenavBar {
-		padding-top: 15px
-	}
-
-		.sidenavBar a {
-			font-size: 18px
-		}
+	.sidenavBar { padding-top: 15px }
+	.sidenavBar a { font-size: 18px }
 }
 
 @-webkit-keyframes fade {
-	from {
-		opacity: 0
-	}
-
-	to {
-		opacity: 1
-	}
+	from { opacity: 0 }
+	to { opacity: 1 }
 }
 
 @-moz-keyframes fade {
-	from {
-		opacity: 0
-	}
-
-	to {
-		opacity: 1
-	}
+	from { opacity: 0 }
+	to { opacity: 1 }
 }
 
 @-o-keyframes fade {
-	from {
-		opacity: 0
-	}
-
-	to {
-		opacity: 1
-	}
+	from { opacity: 0 }
+	to { opacity: 1 }
 }
 
 @keyframes fade {
-	from {
-		opacity: 0
-	}
-
-	to {
-		opacity: 1
-	}
+	from { opacity: 0 }
+	to { opacity: 1 }
 }
 
-@-webkit-keyframes gradient {
-	0% {
-		background-position: 0 50%
-	}
-
-	50% {
-		background-position: 100% 50%
-	}
-
-	100% {
-		background-position: 0 50%
-	}
+@-webkit-keyframes newGradient {
+    0% { background-position:0% 51% }
+    50% { background-position:100% 50% }
+    100% { background-position:0% 51% }
 }
-
-@-moz-keyframes gradient {
-	0% {
-		background-position: 0 50%
-	}
-
-	50% {
-		background-position: 100% 50%
-	}
-
-	100% {
-		background-position: 0 50%
-	}
+@-moz-keyframes newGradient {
+    0% { background-position:0% 51% }
+    50% { background-position:100% 50% }
+    100% { background-position:0% 51% }
 }
-
-@-o-keyframes gradient {
-	0% {
-		background-position: 0 50%
-	}
-
-	50% {
-		background-position: 100% 50%
-	}
-
-	100% {
-		background-position: 0 50%
-	}
+@-o-keyframes newGradient {
+    0% { background-position:0% 51% }
+    50% { background-position:100% 50% }
+    100% { background-position:0% 51% }
 }
-
-@keyframes gradient {
-	0% {
-		background-position: 0 50%
-	}
-
-	50% {
-		background-position: 100% 50%
-	}
-
-	100% {
-		background-position: 0 50%
-	}
+@keyframes newGradient {
+    0% { background-position:0% 51% }
+    50% { background-position:100% 50% }
+    100% { background-position:0% 51% }
 }
