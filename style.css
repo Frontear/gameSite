@@ -208,22 +208,22 @@ footer {
 }
 
 @-webkit-keyframes newGradient {
-    0% { background-position:0% 51% }
+    0% { background-position:0 51% }
     50% { background-position:100% 50% }
-    100% { background-position:0% 51% }
+    100% { background-position:0 51% }
 }
 @-moz-keyframes newGradient {
-    0% { background-position:0% 51% }
+    0% { background-position:0 51% }
     50% { background-position:100% 50% }
-    100% { background-position:0% 51% }
+    100% { background-position:0 51% }
 }
 @-o-keyframes newGradient {
-    0% { background-position:0% 51% }
+    0% { background-position:0 51% }
     50% { background-position:100% 50% }
-    100% { background-position:0% 51% }
+    100% { background-position:0 51% }
 }
 @keyframes newGradient {
-    0% { background-position:0% 51% }
-    50% { background-position:100% 50% }
-    100% { background-position:0% 51% }
+    0% { background-position:0 51% }
+    50% { background-position:100 50% }
+    100% { background-position:0 51% }
 }
